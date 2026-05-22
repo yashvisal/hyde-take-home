@@ -1,0 +1,11 @@
+{
+  "document": "Razorpay General Terms of Use",
+  "source_url": "https://razorpay.com/terms/",
+  "requested_url": "https://razorpay.com/terms/",
+  "source_fetched_at": "2026-05-22T19:44:43Z",
+  "source_hash": "sha256:684e37541a8f723d2111b3b1a18c5c18d16aa14154a706f9064babf6ca6d17f0",
+  "raw_html_path": "data/raw/razorpay_terms.html",
+  "clean_text_path": "data/processed/razorpay_terms_clean.txt",
+  "raw_html_bytes": 1164044,
+  "clean_text_chars": 149565
+}

@@ -1,0 +1,780 @@
+PAYMENTS: TERMS AND CONDITIONS
+PART A: GENERAL TERMS AND CONDITIONS
+This document/agreement/understanding is a computer-generated electronic record published in terms of Rule 3 of the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021 (amended from time to time) read with Information Technology Act, 2000 (amended from time to time) and does not require any physical or digital signatures.
+These Payment Terms and Conditions (“Terms”) constitute a legal agreement between You (the Merchant) and Razorpay PA (as defined below). You acknowledge that the payment aggregation business, assets, and all associated contractual obligations pertaining to the Services will stand legally transferred from Razorpay Software Private Limited (“Transferor Entity”) to and vested in Razorpay Payments Private Limited (“Transferee Entity”) pursuant to a corporate demerger and regulatory approvals, operationalized from January 1, 2026 (the “Transfer Date”). You agree that from the Transfer Date, the rights and obligations under these Terms shall stand transferred to the Transferee Entity. All references to “Razorpay PA”, “us,” or “we," or "our " under these Terms will automatically and exclusively mean and refer to the Transferor Entity till the Transfer Date and to the Transferee Entity from the Transfer Date. Your continued access to or use of the Services on or after the Transfer Date constitutes Your express and irrevocable consent to the novation of this Agreement to the Transferee Entity, which shall be Your sole contracting party from the Transfer Date. The Terms, constituted of Part A: General Terms and Conditions and Part B: Specific Terms and Conditions, govern Your access to and use of Razorpay PA’s payment services, including payment aggregation, point of sale devices and soundboxes (“Devices”), technology, software, analytics or any other services, tools or products offered or made available by Razorpay PA and/or its Facility Providers (“Services”). The Services may be offered or made available to You via the Website, mobile applications, software, APIs, social media, or other access channels (“Platform”). Your use of the Platform and Services is also subject to the Website Terms of Use, which are incorporated herein by reference. “You”, “Your(s)”, “Yourself” or “Merchant” refers to a merchant, (whether a non-registered individual/sole proprietor or corporate body), who registers for use, or accesses the Platform or Services. The Services provided by Razorpay PA through the Platform are available and are appropriate only for use in India. If You are a Merchant based outside of India collecting monies from Indian buyers, the provision of these Services is governed by Part A (General Terms and Conditions) and the combined provisions of Part B, Part I (Payment Aggregation Services), and Part B, Part IB (Specific Terms for Cross-Border Outward Transactions), with Part IB superseding any conflicting general provisions.
+Please read these Terms carefully before accessing the Platform or using the Services. By accessing, registering for or using the Platform or any of  the Services, You agree to be bound by these Terms, including our Privacy Policy, Website Terms of Use and any other policy applicable to the Services received via the Platform. If You do not agree to these Terms or do not wish to be bound by these Terms, You must immediately stop/terminate the use of the Services and/or refrain from accessing the Platform. Razorpay PA reserves the right to amend or otherwise modify the Terms at any time by posting an updated version on the website. The updated Terms shall take effect immediately upon posting. In addition to posting the updated Terms on the Platform, Razorpay PA may notify You of material changes via email or a prominent notification within the Platform. However, failure to receive such a notification shall not affect the immediate enforceability of the updated Terms. It is Your responsibility to review these Terms periodically for updates/amendments. Your continued access of the Platform or use of the Services signifies Your assent/ratification of the updated or modified Terms. If You object to these Terms or any subsequent modifications to these Terms in any way, Your only recourse is to immediately terminate/stop the use of the Services.
+We may require You to agree to additional terms in connection with specific Services, provided by Razorpay PA, that You may avail from time to time. You agree to be bound by supplemental terms of any specific Service that You access or use via our Platform and/or are available by hyperlink on our Platform. We may ask You to agree to those supplemental terms by way of ‘acceptance’. Should You choose to avail any specific Service, You may be required to complete forms and provide additional data/information. You hereby give your consent for us to store and use the data/information You provide on the Platform during (i) the initial sign up/registration process and (ii) registration or onboarding for any specific Service in future. You hereby further give Your consent for us to pre-fill forms for the registration or onboarding process of any specific Service with such data/information provided. You acknowledge and agree that we reserve the right to verify, and re-verify where applicable, the data/information You provide in relation to any specific Service. Your right to access and use any specific Service is subject to successful completion, at our sole discretion, of registration or onboarding process for that specific Service. To the extent these Terms are inconsistent with any supplemental terms for a specific Service, then those specific terms shall prevail over these Terms.
+Where You intend to avail online as well as offline payment aggregation services, You understand and agree that the provision of offline payment aggregation services by Razorpay PA will be governed Part A (General Terms and Conditions) and the combined provisions of Part B, Part I (Payment Aggregation Services), and Part B, Part IA (Additional Terms for Offline Payment Aggregation and Device Terms), with Part IA superseding any conflicting general provisions.
+DEFINITIONS
+-
+“AD-1 Bank” means a scheduled commercial bank in India which is authorized under the relevant legislation to undertake all current and capital account transactions according to the directions issued by the RBI from time to time.
+-
+“Affiliate” shall mean any entity that directly or indirectly controls, is controlled by, or is under common control with Razorpay, whereby “control” (including, with correlative meaning, the terms “controlled by” and “under common control”) means the possession, directly or indirectly, of the power to direct, or cause the direction of the management   and   policies   of   such   person,   whether   through   the ownership of voting securities, by contract, or otherwise.
+-
+“Applicable Laws ” shall mean (i) any law, statute, rule, regulation, order, circular, decree, directive, judgment, decision or other similar mandate   of   any   applicable   central,   national,   state   or   local governmental/regulatory authority having competent jurisdiction and force of law over, or applicable to You, us or the subject matter in question, as may be amended from time to time, and (ii) shall without limitation include any notification, circular, directive or other similar instruction issued by the ‘Financial Sector Regulators' including but not   limited   to   the   Reserve   Bank   of   India   (RBI)   and/or   rules, regulations, roles, responsibilities and processes as defined by NPCI on their website www.npci.org.in.
+-
+“Card Network” or “Card Association” shall mean Visa, MasterCard, RuPay, American Express, or other association of which the issuer of a card is a member and includes reference to banks or other entities that issue cards including credit card, debit card, prepaid card which may be used by a Customer.
+-
+“Card Payment Network Rules" refer to the written rules, regulations, releases, guidelines, processes, interpretations and other requirements (whether contractual or otherwise) imposed and adopted by the Card Networks. These card payment networks have infrastructure and processes to enable transaction authorisation. The Card Networks require You to comply with all applicable guidelines, rules, and regulations formulated by them.
+-
+“Chargeback”  shall   mean   the   reversal   (such   reversal   being requested by a Facility Provider pursuant to a request from the Facility Provider's customer) of the debit of the Transaction Amount that was charged by You, where the reversal is approved by the Facility Provider following examination of the Transaction related documents and information furnished by You, consequently resulting in Razorpay PA being charged the Transaction Amount and charges, penalties or fines associated with processing the Chargeback.
+-
+“Chargeback Amount” shall mean the aggregate amount that the Facility Provider charges Razorpay PA pursuant to a Chargeback.
+-
+“Chargeback Request” means a claim for Chargeback by the Facility Provider's customer.
+-
+“Claims” means any claim asserted against You, that is paid or payable to a third party pursuant to an order of a court of law, judicial and quasi-judicial authorities.
+-
+“Customer” means the Merchant's customer who will be making payments to the Merchant in consideration for goods/services availed of by such customer from the Merchant.
+-
+“Dashboard” is a Razorpay PA owned and established electronic information management tool that tracks, displays and stores metrics and data points and online terms pertaining to Services being provided to You and which is accessible by You to facilitate the use of the Services. Dashboard can also be used by You to provide instructions relating to Services, which shall be binding.
+-
+“Device” means the point of sale (POS) or mobile point of sale (mPOS) devices or soundboxes on which the Razorpay POS Software is enabled.
+-
+“Escrow Account” is an account held by Razorpay PA with an Escrow Bank for the purpose of receiving the Transaction Amount and effecting settlements to You including the inward collection account and the outward collection account.
+-
+“Escrow Bank” means a bank that is authorised by the RBI, to operate   an   Escrow   Account   under   the   Payment Aggregation Guidelines.
+-
+“Escrow Bank Working Days” means days on which the Escrow Bank is operational to undertake settlements.
+-
+“Facility Providers” shall means banks, financial institutions, NPCI, technology service providers, or other third parties facilitating the provisions of Services or any part thereof, including but not limited to (a) acquiring banks, (b) banks issuing credit cards, debit cards, prepaid instruments and accounts, and (c) Card Networks.
+-
+“KYC Guidelines” means KYC norms as set out in the Master Direction - Know Your Customer, 2016 notified by Reserve Bank of India through circular no. Master Direction DBR.AML.BC.No.81/14.01.001/2015-16, to the extent applicable to the Services and as may be determined by Razorpay PA or the Facility Providers including any amendments, clarifications, FAQs, etc. which may be issued from time to time.. KYC means know-your-customer.
+-
+“NPCI” means the National Payments Corporation of India constituted pursuant to the provisions of the Payment and Settlement Systems Act, 2007.
+-
+“OFAC” means   the   Office   of   Foreign   Assets   Control constituted under the law of the United States of America.
+-
+“PA - CB Inward Transactions” shall mean provisions of Services for the purchase of goods, services, or investment products where Transaction involves the inflow of foreign exchange into India.
+-
+“Payment Aggregator Guidelines”/ “Master Directions” means the RBI circular RBI/DPSS/2025-26/141 CO.DPSS.POLC.No.S-633/02-14-008/2025-26 dated September 15th, 2025, including any amendments, clarifications, FAQs, etc. which may be issued from time to time.
+-
+“Payment Instrument” includes credit card, debit card, bank account, prepaid payment instrument or any other instrument issued under Applicable Law, used by a customer to pay the Transaction Amount.
+-
+“Permissible Deductions” means (a) fees charged by Razorpay PA; (b) Chargeback Amount including fines and penalties; and (c) any other sum due and payable by You to Razorpay PA.
+-
+“Refund” means processing of Your request to Razorpay PA, for returning the Transaction Amount (or part thereof) to the Payment Instrument   which   was   used   for   effecting   the   payment of the Transaction Amount.
+-
+“RBI” shall mean the Reserve Bank of India.
+-
+“Terminal ID (TID)” shall mean a unique number assigned to a Merchant that is set up in the Razorpay PA system. TIDs may also be associated with any Device at the discretion of Razorpay PA and the Merchant. Any Device can be deactivated at any time at the request of the Merchant.
+-
+“Transaction” means an order or request placed by the customer with You (or a third-party vendor availing of Your services) for purchasing goods/services from You, which results in a debit to the customer's Payment Instrument.
+-
+“Transaction   Amount” means   the   amount   paid   by   the Customer in connection with Transaction.
+-
+PROPRIETARY RIGHTS
+1.1 We (and our successors and licensors, as applicable) remain the sole owner of all rights, title and interest in the Services, including the Platform, and all underlying intellectual property rights (whether registered or not). Razorpay PA grants You a personal, revocable, non-exclusive, non-transferable, limited right to access the Platform and make use of the Platform and the Services in accordance with the Terms. You shall not remove, obscure, or alter any proprietary rights notices (including trademark and copyright notices), which may be affixed to or contained within the Services. We reserve all rights not granted under the Terms. We (and our successors and licensors, as applicable) retain our rights in and to trademarks, trade names, service marks, logos, domain names, and other distinctive brand features (“marks”) owned or used by us in the course of our business. You do not have the right to use any of our marks without explicit consent from us. You shall not download, copy, create a derivative work, modify, reverse engineer, reverse assemble, transmit or otherwise attempt to discover any source code, sell, assign, sub-license, grant a security interest in or otherwise transfer any right in the Services or marks. You further acknowledge and agree that the Services may contain information that is designated confidential by us and You shall not disclose such information without our prior written consent.
+1.2 You grant a royalty-free, non-exclusive, irrevocable, transferable and sub-licensable license to Razorpay PA, the Group Entities and third-party service providers, to use Your data, Your customer’s data, information, content, trademarks, logos and any other materials/information You upload or make available to us or on the Platform (“Your materials”). You agree that Razorpay PA may use Your materials to operate and improve the Platform and/or the Services and fulfil Razorpay PA’s rights and discharge its obligations under the Terms, including providing the Services. You agree that Razorpay PA may use Your materials in its marketing and promotional materials without requiring any incremental consent from You. You further agree that Razorpay PA may conduct analytics on Your materials and that Razorpay PA shall retain ownership of the results or reports derived from such data (which shall be in aggregated and anonymised form) for its business purposes in accordance with Applicable Laws. You shall indemnify and hold harmless Razorpay PA, the Group Entities and its service providers on demand against all claims and losses arising out of or in connection with our use of Your Materials in accordance with this clause.
+-
+USAGE OF THE SERVICES BY THE USER
+2.1 You shall register to become a user of the Services and/or the Platform only if You are of the age of 18 or above and possess the legal capacity and full authority to enter into and perform binding contracts as per Applicable Laws. You are responsible for maintaining the secrecy of all Your passwords, keys, security codes, login and account information (“Secure Credentials”) associated with Your account with Razorpay PA and API access. You are responsible for maintaining the confidentiality of the Secure Credentials. You will be responsible for the use of the Platform and/ or Services by You or anyone using Your Secure Credentials including but not limited to any unauthorized access, fraudulent transactions, or loss of data resulting from Your failure to maintain the confidentiality of Your Secure Credentials. You are solely responsible for all activities that occur under Your account/in using Your Secure Credentials and Razorpay PA shall not be liable for any such change or action performed by using Your Secure Credentials on the Website.
+2.2 You shall ensure that all information provided to Razorpay PA (as and when prompted by the Platform) including, but not limited to KYC Documents, financial statements, business details, and contact information is true, accurate, current and complete. If You provide any information that is untrue, inaccurate, not updated or incomplete (or becomes untrue, inaccurate or incomplete), or if Razorpay PA has reasonable grounds to suspect that such information is untrue, inaccurate, not updated or incomplete, Razorpay PA shall have the right to immediately suspend Services and/or terminate Your account and/or refuse any and all current or future use of the Platform or Services, or any portion thereof, in connection thereto.
+2.3 By using the Services and providing your contact information, you consent to receiving information about, and offers for, various products and services from Razorpay PA, the Group Entities and/or third parties. These communications may occur through various channels, including but not limited to telephone, SMS, email, WhatsApp, other messaging services, or any other physical, electronic, or digital means. You agree that Razorpay PA may contact you electronically or by phone to gauge your interest in specific products and services and to process your requests or applications. Additionally, you authorize Razorpay PA, along with its partners, service providers, vendors,, to contact you for purposes such as (i) presenting or soliciting your interest in other products or services from third parties, or (ii) sending marketing materials, offers, or other information through the Website or via other methods including telephone, SMS, email, WhatsApp, or other messaging services or digital means. You consent to receiving these communications on the phone or mobile number you provided on the website and explicitly waive any registration or preferences listed under the Do Not Disturb (DND) or National Customer Preference Register (NCPR) in accordance with Telecom Regulatory Authority of India (TRAI) regulations.
+2.4 You agree and authorize Razorpay PA to share your information with its partner banks, financial institutions, group companies, Group Entities, vendors, service providers, and other third parties as necessary to provide the various products and services you select or to offer additional value-added services. You also consent to receiving communications via email, telephone, and/or SMS from Razorpay PA or these third parties. If you request to opt out of receiving such communications or marketing materials in the future, this request will only apply prospectively and will not affect data that has already been shared by Razorpay PA with your prior consent.
+2.5 By accessing the Platform or using our Services, You acknowledge and agree that we may display offers, promotions, and other content from our partners, Group Entities, and third parties to You or Your end users. These offers and promotions may be tailored based on the information, including past information on our Platform, provided by You or Your end users pursuant to the use of our Services. We may leverage the data, including personal data, that You or Your end users submit to personalize and optimize these offers, ensuring that they are relevant and valuable to You, and You explicitly consent to such usage. This may include, but is not limited to, Your or Your end user preferences, interactions, and usage patterns on our Platform. We do not guarantee the accuracy, quality or suitability of any offers presented, and such offers may be subject to additional terms and conditions. Your, or an end user’s engagement with these offers is solely at Your discretion.
+2.6 You acknowledge and agree that for undertaking any payment and/or financial transaction through the Platform/Devices, Razorpay PA may undertake due diligence measures and seek information required for KYC purposes, which as a customer/merchant You are obliged to give in accordance with Applicable Laws. You acknowledge and agree that Razorpay PA may undertake enhanced due diligence measures (including any documentation), to satisfy itself relating to due diligence requirements in line with the requirements and obligations under Applicable Laws. You are solely responsible for understanding and complying with all Applicable Laws, including but not limited to the provisions of the Master Directions, Payment and Settlement Systems Act, 2007, Prevention of Money Laundering Act, 2002, KYC Guidelines, etc. issued by the RBI as may be amended from time to time that may be applicable to You in connection with Your business and use of Platform or Services.
+2.7 You agree and covenant that before the commencement of any Service(s) and on an ongoing basis thereafter, as part of Razorpay PA’s mandatory customer due-diligence (CDD) process, Razorpay PA shall have the absolute right to retrieve Your records and documents (as determined in Razorpay PA's sole discretion or when required by Facility Providers or governmental authorities or law enforcement agencies) (collectively “KYC Documents”) from the Central KYC Records (“CKYCR”) without any intimation or pre-approval from You in accordance with Applicable Laws. You expressly consent to this retrieval in accordance with Applicable Laws. In the event Your KYC Documents are not available in CKYCR, or if the retrieved record is not updated or is incomplete, You shall provide the necessary documents to enable Razorpay PA to conduct/complete the due diligence in respect of You and Your business / activities. Razorpay PA shall have the right to share the KYC Documents (or the information therein) and other related documents with the Facility Providers or governmental authorities or law enforcement agencies or the Financial Intelligence Unit-India (FIU-IND) , as required under the Applicable Laws. You expressly consent to Razorpay PA  relying on the KYC Documents provided by You for providing Services. You further acknowledge and agree that Razorpay PA reserves the right at all times to monitor, review, retain and/or disclose any information in relation to the Service(s) as necessary to satisfy any Applicable Laws, legal process or governmental request. You agree to promptly update Razorpay PA of any change in Your Information, promptly upon such change taking effect.
+2.8 Razorpay PA shall have the right to demand from You, any (i) additional KYC Documents and /or (ii) any KYC related or other documents of Your customers or invoices, in its sole discretion and / or as per the Applicable Laws or pursuant to requests from governmental authorities, law enforcement agencies or Facility Providers. Your failure to submit the KYC Documents when requisitioned shall entitle Razorpay PA to suspend the Services and/or stop settlement of monies (as applicable) until You submit such KYC Documents to the sole satisfaction of Razorpay PA.
+2.9 You agree that Razorpay PA shall neither be responsible for any delivery and after-sales service requests, pertaining to the goods and services offered by You, nor for any refund requests , invoicing or collection, customer enquiries (not limited to sales enquiries), technical support maintenance services and/or any other obligations or services relating to or in respect of Your products or services. Such obligations shall be Your sole responsibility. You shall indemnify Razorpay PA against any claim arising from such services or obligations and shall bear any and all expenses and/or costs relating thereto.
+2.10 Throughout Your use of the Services, You declare that You or Your affiliates and/ or its Beneficial Owner are not a Politically Exposed Person. You shall forthwith inform us in writing if this declaration becomes untrue during any period of Your use of the Services. Capitalised terms used here but not defined shall have the meaning ascribed to them in the KYC Guidelines issued by the RBI, as amended from time to time.
+2.11 You agree and covenant that You shall not use the Platform and/or Services for any purpose that is unlawful, illegal, fraudulent or forbidden by these Terms, nor shall You offer or sell any goods or services that are prohibited by Razorpay PA's policies, these Terms, card network rules or any Applicable Laws, including any local laws that might apply to You. We may, at our sole discretion, at any time and without advance notice or liability, suspend, terminate or restrict Your access to all or any component of the Platform and/or Services.
+2.12 You are prohibited from posting or transmitting to or through this Platform: (i) any unlawful, threatening, libelous, defamatory, obscene, pornographic or other material or content that would violate rights of publicity and/or privacy or that would violate any law or that harms minors in any way; (ii) any commercial material or content (including, but not limited to, solicitation of funds, advertising, or marketing of any good or services); (iii) any material or content that infringes, misappropriates or violates any copyright, trademark, patent right or other proprietary right of any third party; (iv) any file that contains software viruses or any other computer code, files or programs designed to interrupt, destroy or limit the functionality of any computer resource; (v) threatens the unity, integrity, defense, security or sovereignty of India, friendly relations with foreign states, or public order or causes incitement to the commission of any cognizable offence or prevents investigation of any offence or is insulting to any other nation; (vi) impersonates another person; or (vii) is illegal in any other way. You shall be solely liable for any damages resulting from any violation of the foregoing restrictions, or any other harm resulting from Your posting of content to this Platform.
+2.13 You represent, undertake and warrant that
+-
+You are duly incorporated or established under the laws of Your jurisdiction and have all requisite power and authority to own and operate Your business.
+-
+You have the full legal capacity and power to enter into, exercise Your rights under, and perform Your obligations under these Terms.
+-
+The execution, delivery and performance of these Terms has been authorized by all necessary corporate and organizational actions including but not limited to board resolution and/or power of attorney and/or letter of authority to bind Your business and Your company/firm/organization.
+-
+You have duly accepted these Terms, which form a legal, valid and binding obligation, enforceable in accordance with its clauses.
+-
+You do not, and shall not, engage in any activity related to virtual currency, cryptocurrency and other crypto products (like non-fungible tokens or NFTs), prohibited investments for commercial gain or credits that can be monetized, re-sold or converted to physical or digital goods or services or otherwise exit the virtual world. Any breach of this provision shall be subject to immediate suspension or termination of Your access to or use of the Platform or any or all Services, at Razorpay PA's sole discretion. You shall indemnify Razorpay PA from any losses arising from Your breach of this provision.
+2.14 You further represent, warrant, and covenant that:
+-
+Your use of the Platform and Services and sale of Your products/services are solely for Your own bona fide business activities which are in compliance with the Applicable Laws and also the instructions issued from time to time by the Razorpay PA and its Facility Providers.
+-
+Your use of the Services corresponds to those activities under the categories You have expressly registered for at the time of entering into these Terms and as set out in Your onboarding form on the Razorpay PA dashboard or as otherwise approved in writing by Razorpay PA.
+-
+You shall not resell or assign the Services, in whole or in part, or otherwise allow the use of the Services by any third parties, including Your affiliates.
+-
+Your use of Services does not facilitate any activity which is unlawful, illegal, unauthorised, is carried on with the intent to defraud, or is likely to result in Your unjust enrichment and/or unlawful gain.
+-
+Your use of Services does not facilitate the offer, sale or purchase of prohibited products and/or services specified under these Terms.
+2.15 You hold express informed consent of Your customers to share customers’ information, including personal data, with Razorpay PA and the Group Entities (i) in connection with provision of Services to You and other users of the Platform or Services, (ii) for the purposes of sharing such information with governmental authorities as and when demanded under Applicable Laws, (iii) for the purpose of transaction tracking and fraud prevention, or (iv) pursuant to regulatory authorities' orders and/or notices including but not limited to notices under Section 94 of BNSS.
+2.16 You acknowledge and agree that the provision of Services or the Platform is inherently complex and requires the interposition of the Facility Providers. You acknowledge and agree that Razorpay PA shall only be liable for acts or omissions which are solely and directly attributable to Razorpay PA, and expressly disclaim any liability, for acts or omissions on the part of the Facility Providers.
+2.17 In order to avail the Services, You shall take all necessary steps to facilitate the integration of Razorpay PA's solutions with Your platform, where applicable. It is hereby clarified that any Server to Server (S2S) integration, if done, shall be solely for the purpose of availing the Services and intended to be used or accessed only by You.
+2.18 You shall assist Razorpay PA in furnishing to its auditors, the Facility Providers, governmental authorities, or law enforcement agencies, forthwith upon request from time to time, KYC Documents, relevant books, the original copy / copies of proof of transactions, invoices or other records, including pertaining to any order placed by Your customers. You shall retain records relating to transactions for a period of 10 (ten) years from the relevant date of the order placed on Your site. Razorpay PA and the Facility Providers, and/or governmental agencies and/or law enforcement agencies shall be entitled to audit and inspect the records and other data relating to the customer's orders at any time whatsoever and without any prior notice. You shall ensure cooperation with Razorpay PA, its auditors, Facility Providers, governmental authorities, or law enforcement agencies for any audit, inspection or pursuant to any other request.
+2.19 You shall not (whether online or otherwise): (i) describe Yourself as an agent or representative of Razorpay PA or the Facility Provider; (ii) represent that You have any rights to offer any products or services offered by Razorpay PA or the Facility Provider; and (iii) make any representations to Your customer or any third party or give any warranties which may require Razorpay PA or Facility Provider to undertake to or be liable for, whether directly or indirectly, any obligation and/or responsibility to Your customer or any third party.
+2.20 When a customer purchases goods or services from You, You may, in Your sole discretion, impose any convenience fee on the customer. Any responsibility or losses incurred by Razorpay PA as a result of the charge of any such convenience fee by You to Your customers shall be borne by You. You shall also indemnify Razorpay PA for such liability or losses.
+2.21 You shall not engage, appoint, or otherwise utilize any third-party service provider in connection with the Services under this Agreement without the prior written consent of Razorpay PA. You further agree that You shall utilize the Services or Platform (a) directly from Razorpay PA; or (b) through a payment orchestration solution provided or expressly approved by Razorpay PA; or (c) via a proprietary in-house orchestration solution developed by the Merchant, subject to Razorpay PA’s prior written approval. You shall not engage, integrate, or route any payments through a third-party payment orchestrator not explicitly approved by Razorpay PA. Any breach of this clause, including use of an unapproved third-party orchestrator, shall entitle Razorpay PA to immediately suspend and/or terminate the Services without any liability to Razorpay PA.
+2.22 Where You are an e-commerce marketplace, as defined in the Master Directions, You further represent that all payments accepted by You under these Terms shall only be in relation to sellers who have been onboarded by You and who have a contractual obligation with You.
+2.23 ​​Razorpay PA may, at its reasonable discretion and in compliance with Applicable Laws, blacklist Your end users to manage fraud and risk. Blacklisted Users may be permanently restricted or temporarily suspended from initiating Transactions through the Services. Removal of such restriction may occur based on updated risk assessments conducted solely by Razorpay PA. You acknowledge and agree that Razorpay PA may take such measures to protect the integrity of the payment ecosystem. Razorpay PA is not obligated to provide prior notice or reasons for these actions.
+2.24 You shall at all times while receiving Services, comply with: (i) Applicable Laws, (ii) Card Association Rules, and/or (iii) such rules, guidelines, issued by Facility Provider(s) (as may be notified to You).
+2.25 You agree and understand that in case any penalty/other liability is imposed/passed on to Razorpay PA by a law enforcement agency or a regulatory body or Card Association or an institution including a Facility Provider or under Applicable Laws, due to any act or failure to act attributable to You, then Razorpay PA shall be entitled to recover such amounts, including by deducting the amount from Your settlement amount. Without prejudice to any other remedies available to Razorpay PA herein, Razorpay PA may also initiate the requisite proceedings against You to recover such amounts.
+2.26 Both Parties shall work together to link the Razorpay PA APIs with Your platform for enabling the Services (“Integration”). You shall implement necessary encryption/ security controls to ensure security/ integrity of the Integration, including any precautions and measures as may be directed by Razorpay PA/ Facility Provider, or as maybe prescribed under Applicable Laws.
+2.27 Notwithstanding anything to the contrary herein, You hereby consent(s) towards sharing of Usage Data (as defined below) by Razorpay PA with its Group Entities and their business partners for the purpose of internal analysis and/or offering their products/services to You, based on Your eligibility/other factors. “Usage Data”, for the purpose of this clause, shall mean data that Razorpay PA has access to further to these Terms, and shall include Your Account/transactional information, Your Platform, financial/banking information, settlement details and personal information.
+2.28 For the above purpose, You expressly authorize Razorpay PA and its Group Entities, including their agents and business partners, to contact You, via phone calls, WhatsApp messages, email address, or any other mode(s). You acknowledge that regulations related to unsolicited communication under the 'National Do Not Call Registry' of Telecom Regulatory Authority of India will not apply to such communications.
+2.29 You shall conduct all Your dealings in an ethical manner and with the highest business standards, and that the product(s)/services provided by You to the end customer shall, at all times, be in compliance with Applicable Laws, and be clearly marketed/ sold as product(s)/services of You, as the case may be.
+2.30 You undertake not to use the APIs or software provided by Razorpay PA or Facility Provider(s) software in any form whatsoever to design, disassemble, adapt, modify, transform, realize, distribute, break down by integrated protection system, or market a similar software program, or allow unauthorised use or access to The Platform/checkout and/or Facility Provider software.
+2.31 You further understand and agree that as required under Applicable Law and the Master Direction, Razorpay PA shall at all times monitor the transactions of You to ensure that these transactions are in line with Your business profile.
+-
+FEES
+3.1 Applicable fees for the provision of Services/Devices shall be levied by Razorpay PA from time to time. You agree that the fees shall be charged according to the manner, rates and frequency determined by Razorpay PA. Razorpay PA reserves the right to update the amount of the fees charged at its sole discretion. Razorpay PA fees allow access to the entire suite of payments products, dashboard and custom reports, and includes MDR charges, if any, for payment instruments as prescribed under Applicable Law. For clarity, Razorpay PA fees include zero MDR for Rupay Debit Cards and UPI transactions.
+3.2 Fees are exclusive of applicable taxes and Razorpay PA will charge such applicable taxes on the fees from time to time. You agree that any statutory variations in applicable taxes during the subsistence of these Terms shall be borne by You.
+3.3 We will raise monthly invoices in respect of fees charged for Services provided during such months. Invoices are available on the dashboard on a monthly basis. Any dispute in respect of an invoice must be communicated by You to us via a notice no later than ten (10) days from the date of the invoice, failing which such invoices would be deemed to be accepted by You. For disputed invoices, Razorpay PA shall use good faith efforts to reconcile any reasonably disputed amounts.
+3.4 You shall be responsible for daily reconciliation of all the transactions processed. In case of discrepancies, You shall report to Razorpay PA regarding such discrepancy within three (3) days upon the receipt of the fund settlements. Razorpay PA shall not be liable for any reconciliation issue if the same is highlighted by You to Razorpay PA after such time.
+3.5 For fees deducted upfront before provision of the specific Service, it is agreed that if You deposit applicable taxes under Section 194H of the Income Tax Act, 1961 (in respect of invoices received by You) and furnish to Razorpay PA Form 16-A in respect of such taxes paid, then Razorpay PA shall reimburse to You, on a quarterly basis, the amount in respect of such taxes paid. In all other cases, with respect to invoices received by You, at the time of payment of the Fees, You will withhold applicable taxes under Section 194H of the Income Tax Act, 1961 (in case LTDC is provided as per the LTDC issued). You shall deposit the withheld taxes with the government treasury, file the statutorily mandated returns and furnish the requisite tax deduction certificate (Form 16-A) to Razorpay PA within one hundred and eighty (180) days so as to enable Razorpay PA to obtain full credit for the taxes deducted at source.
+3.6 If You operate as an e-commerce operator, facilitating the sale of goods or provisions of services of a resident e-commerce participant, You shall evaluate and comply with the requirements of TDS under Section 19.40 of the Income Tax Act, 1961. You, as an e-commerce operator, will withhold tax under Section 19.40 of the Act and deposit the same within the applicable timelines, including carrying out all the necessary compliances as prescribed under the Income Tax Act, 1961. As the payment service provider, Razorpay PA would not be obligated to deduct tax under Section 19.40 and the same will be Your responsibility as the e-commerce operator. For the purposes of this clause 3.5A, "e-commerce operator" and "e-commerce participant" shall have the meaning assigned to them in section 19.40 of the Income Tax Act, 1961.
+3.7 You shall be solely responsible for updating Your GST registration number on the Razorpay PA dashboard before Razorpay PA generates the invoice and shall also submit the GST certificate as part of KYC. Razorpay PA will raise a GST tax invoice and report the transactions in the GST returns based on the information provided by You. The GST returns will be filed as per the statutory timelines, to enable You to avail appropriate input tax credit. Razorpay PA shall not be responsible for any mistake and or misrepresentation by You in updating the GST number and other particulars as per the GST certificate. Further, any liability raised on Razorpay PA by the GST authorities due to incorrect information provided by You or deliberate withholding of any statutory information by You shall be recovered by Razorpay PA from You.
+3.8 In order for Razorpay PA to issue a proper B2B tax invoice under the GST law and to ensure GST input credit is available to You, Razorpay PA shall record Your correct GSTIN. Towards this, You are advised to verify Your GSTIN and registered address captured within the account maintained with Razorpay PA at periodical intervals and correct the same wherever necessary.  In the event, correct GSTIN is not updated in Your account maintained with Razorpay PA, then You shall be solely responsible in respect thereof and Razorpay PA shall not be liable to accommodate any request for revision of invoice and / or amendment to GST reporting.
+-
+PRIVACY POLICY
+4.1 By using the Services or the Platform, You hereby consent to the use of Your information by Razorpay PA and the Group Entities, as outlined in our Privacy Policy
+-
+OUR PARTNERS
+5.1 This Platform also offers You access to information primarily about certain financial products/services including, but not restricted to loan facility, credit cards facility and investment services such as current accounts offered by our lending partners. The terms and conditions for the same can be accessed here.
+-
+DISCLAIMER OF WARRANTY
+6.1 To the maximum extent permitted by Applicable Laws, the Platform and the Services are provided on an “as is” basis. You acknowledge that Razorpay PA does not warrant that the Service(s) will be uninterrupted or error free or fit for Your specific business purposes.
+-
+LIMITATION OF LIABILITY
+7.1 Razorpay PA (including its officers, directors, employees, representatives, Group Entities, and providers) will not be responsible or liable for (a) any injury, death, loss, claim, act of God, accident, delay, or any direct, special, exemplary, punitive, indirect, incidental or consequential damages of any kind (including without limitation lost profits or lost savings), whether based in contract, tort, strict liability or otherwise, that arise out of or is in any way connected with (i) any failure or delay (including without limitation the use of or inability to use any component of the Services and/or Platform), or (ii) any use of the Platform or Services or content therein, or (iii) the performance or non-performance by us or any Facility Provider, even if we have been advised of the possibility of damages to such parties or any other party, or (iv) any damages to or viruses that may infect Your computer equipment or other property as the result of Your access to the Platform or Services or Your use of any content therein.
+7.2 Notwithstanding anything under these Terms, Razorpay PA's aggregate liability and that of the Group Entities, officers, employees, Facility Providers and agents relating to the Service(s), will not exceed an amount equal to one (1) month fees paid by You for the specific Service(s) giving rise to the liability. Razorpay PA's liability under or in connection with Terms will be proportionately reduced to the extent any loss or damage is contributed to by You or Your third-party providers.
+-
+INDEMNITY
+8.1 You agree to indemnify and hold Razorpay PA (and its Facility Providers, officers, the Group Entities, directors, agents and employees) harmless from any and against all claims, whether or not brought by third parties, causes of action, demands, recoveries, losses, damages, fines, penalties or other costs or expenses of any kind or nature, including reasonable attorneys' fees, or arising out of or related to Your breach of these Terms, Your violation of any Applicable Laws or the rights of a third party, or Your use of the Platform, any claim brought by a third party in relation to the goods and/or services sold by You, breach of Your confidentiality obligations, Your integration with Razorpay PA leading to mismatches, frauds, hacking, data leakage or any other harm that Razorpay PA suffers or any disputes between You and any third party. The covenants of indemnity set forth herein shall survive and continue even after the termination of Your use of the Services.
+-
+CARD ASSOCIATION RULES
+9.1 The Card Networks reserve the right to amend their guidelines, rules and regulations from time to time. We may be required to amend, modify or change these Terms pursuant to amendments to the Card Payment Network Rules and such amendments, if any, shall be deemed to be binding on You with immediate effect.
+9.2 You agree to fully comply with all programs, guidelines, requirements that may be published and/or mandated by the Card Networks. Notwithstanding our assistance in understanding the Card Payment Network Rules, You expressly acknowledge and agree that You are assuming the risk of compliance with all provisions of the Card Payment Network Rules, regardless of whether You are aware of or have access to those provisions. For illustration purposes - MasterCard, Visa, Diners, RuPay, and American Express make excerpts of their respective rules available on their internet sites.
+9.3 In the event that Your non-compliance of Card Payment Network Rules, results in any fines, penalties or other amounts being levied on or demanded of us by a card payment network, then without prejudice to our other rights hereunder, You shall forthwith reimburse us in an amount equal to the fines, penalties or other amount so levied or demanded or spent by us in any manner in relation to such fines, penalties and levies. If You fail to comply with Your obligations towards the Card Networks, Razorpay PA may suspend settlement or suspend/terminate the Services forthwith.
+-
+. WAIVER
+10.1 Razorpay PA shall not be deemed to have waived any right or provision of this Agreement unless such waiver is made in writing. A waiver of any term or condition of this Agreement shall not be deemed a waiver of any other term or condition, nor shall it be a continuing waiver.
+-
+FORCE MAJEURE
+11.1 If performance of Services/Platform by Razorpay PA is prevented, restricted, delayed or interfered with, by reason of labour disputes, strikes, acts of God, epidemic, pandemic, floods, lightning, severe weather, shortages of materials, rationing, inducement of any virus, malware, trojan or other disruptive mechanisms, any event of hacking or illegal usage of the Services or Platform, utility or communication failures, earthquakes, war, revolution, acts of terrorism, civil commotion, acts of public enemies, blockade, embargo or any law, order, proclamation, regulation, ordinance, demand or requirement having legal effect of any government, regulatory or any judicial authority or representative of any such government, or any other act whatsoever, whether similar or dissimilar to those referred to in this clause, which are beyond the reasonable control of Razorpay PA, then Razorpay PA shall be excused and discharged from such performance to the extent of and during the period of such force majeure event, and such non-performance shall, in no manner whosoever, amount to a breach by Razorpay PA of its obligations herein or incur any legal liability on Razorpay PA.
+-
+. DATA PROTECTION
+12.1 You acknowledge that Your use of the Services is subject to and governed by the Privacy Policy, which is incorporated into these Terms by reference. You consent to the collection, storage, processing, and transfer of personal data and transaction data by Razorpay PA and its Facility Providers strictly in accordance with the Privacy Policy and Applicable Laws.
+12.2 You are and shall remain solely and absolutely responsible for all personal data, sensitive personal data, and confidential information collected by You from Your customers ("Customer Data"). You covenant that You have obtained and will maintain all necessary consents and approvals from Your customers required to collect, use, store, and transmit Customer Data to Razorpay PA for the purpose of utilizing the Services.
+12.3 You shall immediately notify Razorpay PA, and in no event later than twenty-four (24) hours, upon becoming aware of any actual or suspected data security breach, unauthorized access, loss, misuse, or compromise of Customer Data in Your possession or control, or within Your systems. You shall cooperate fully with Razorpay PA and any regulatory authority or Card Network in the investigation and remediation of any such incident.
+12.4 You shall not, under any circumstance, store or any sensitive Customer Data, including full card credentials (full card number, CVV, expiry date, or PIN), within Your systems or infrastructure or access any server or database containing or any sensitive Customer Data, including full card credentials (full card number, CVV, expiry date, or PIN).
+-
+ANTI BRIBERY AND SANCTIONS LAWS
+13.1 You agree to comply with all applicable anti-bribery and anti-corruption laws which prohibit officials, representatives, agents or any other person associated with or acting on behalf of You from giving, offering, promising to offer, receiving/ accepting or acting in any other manner so as to induce a payment, gift, hospitality or anything else of value (either directly or indirectly) whether from within the country or from abroad to government officials, public servants, regulatory bodies, judicial authorities, persons in positions of authority, elected or contesting electoral candidates, political parties or office bearers thereof or any other third party or person in order to obtain an improper commercial/ business advantage of any kind. Government officials include any government employee, candidate for public office, an employee of government- owned or government–controlled companies, public international organisations and political parties. You also agree not to give, offer, pay, promise or authorise to give or pay, directly, indirectly or through any other person, of anything of value to anybody for the purpose of inducing or rewarding any favourable action or influencing any decision in Your favour.
+-
+ADDITIONAL TERMS
+14.1 You shall not assign or otherwise transfer Your rights or obligations under these Terms. Razorpay PA may assign its rights and duties under these Terms without any such assignment being considered a change to the Terms and without any notice to You. If we fail to act on Your breach or anyone else's breach on any occasion, we are not waiving our right to act with respect to future or similar breaches.
+14.2 Additional terms applicable to the Services are as under:
+-
+The laws of India, without regard to its conflict of laws, rules, will govern these Terms, as well as Your and our observance of the same. If You take any legal action relating to Your use of the Services/ Platform or these Terms, You agree to file such action only in the courts located in Bangalore, India. You acknowledge that You have read and have understood these Terms, and that these Terms have the same force and effect as a signed agreement. This clause shall survive termination of the Terms
+-
+Without prejudice to any other rights or remedies Razorpay PA may have, You hereby agree and confirm that Razorpay PA shall have the right to set-off by whatever means the whole or any part of Your liability to Razorpay PA under these Terms (or any other agreement between You and Razorpay PA or its Group Entities) against any funds, sums or other amounts credited to, or owing to, You under these Terms (or any other agreement between You and Razorpay PA or its affiliates). You agree that Razorpay PA may exercise the right of set-off at any time, without any prior notice to You. In the event such set off does not fully reimburse Razorpay PA for the liability owed, You shall pay Razorpay PA a sum equal to any shortfall thereof.
+-
+You shall not (whether on-line or otherwise): (i) describe Yourself as an agent or representative of Razorpay PA or any Facility Provider; (ii) represent that You have any rights to offer any products or services offered by Razorpay PA or the Facility Provider; and (iii) make any representations to Your customer or any third party or give any warranties which may require Razorpay PA or Facility Provider to undertake to or be liable for, whether directly or indirectly, any obligation and/or responsibility to customer or any third party. (d) Razorpay PA reserves the right to make changes to the website, related policies and agreements, these Terms, Website Terms of Use, and the Privacy Policy at any time as it deems fit and proper, including but not limited to comply with changes in law or regulation, correct inaccuracies, omissions, errors or ambiguities, reflect changes in the process flow, scope and nature of the Services and ancillary services, company reorganization, market practice or customer requirements.
+-
+If You require Razorpay to settle the Transaction Amount to a third party, then on Your instructions, Razorpay may make settlement of the Transaction Amount to the respective third party, either fully or in part, and You represent that such third party to whom Razorpay is instructed to make settlements, directly interfaces (as a Payee) with the Customers (as a Payer), in respect of such Transaction. In this regard, You further represent and confirm that You have an annual turnover exceeding ₹40 lakh (or annual export turnover exceeding ₹5 lakh, as applicable) and shall at all times maintain such annual turnover and inform Razorpay immediately, if its annual turnover falls below the said threshold
+14.3 You agree that the fees for any Services under these Terms shall be charged according to the manner, rates and frequency determined by Razorpay PA. Razorpay reserves the right to update the amount of the fees including for Services for which no charge has been levied previously in accordance with this clause. You agree that You shall be liable to pay any additional fees as determined by Razorpay PA in the event:
+-
+You avail certain value-added services available on the dashboard irrespective of whether they have been available free of charge previously.
+-
+You avail any new Services not mentioned in these Terms.You agree that Your use of any Service or a value-added service shall be construed as a consent to any additional fees which may be levied by Razorpay on such additional Service or value-added service.
+14.4 An end user may avail dynamic currency conversion ("DCC") services, as applicable. The transaction amount payable by the end user towards the purchase of goods or services from a Merchant shall be inclusive of charges for such DCC services availed by the end user.
+14.5 You shall not make any representation, warranty or declaration that might mislead, confuse or convey that Your product(s)/service(s) provided to the Customer, are associated with the Facility Provider(s) and/or Razorpay PA and/or its Group Entities in any manner. All disputes/queries in relation to the product(s)/services (such as non-delivery, delay, quality issues) shall be resolved directly between You and the Customer as per the agreed terms. Further, Razorpay PA and/or Facility Provider(s) shall not be liable for any risk/dispute/issue associated with product(s)/services provided by You, and in no event shall be made a party to any such risk/dispute/issue.
+14.6 Without prejudice to any other rights or remedies available to Razorpay PA, the Facility Providers, or the Card Networks, You expressly acknowledge and agree that all Transactions processed through the Services, including but not limited to card-not-present transactions (CNP), recurring transactions, and cross-border transactions, shall be undertaken and borne entirely at Your own risk.
+14.7 You undertake and covenant that You shall not (i) impose any minimum or maximum transaction values for any goods or services sold to your customers; (ii) discriminate against the use of cards (or any other payment instrument) as a payment method at Your platform/website/application in any way; (iii) split a single sale into two or more Transactions for the Customer; (iv) accept a Transaction or present transaction data for processing which was not undertaken directly between You and the cardholder/Customer; (v) accept or process transactions in order to give customers cash; (vi) accept transactions relating to goods or services that fall outside the approved description of Your business profile on file with Razorpay PA and the Facility Providers; or (vii) submit any transaction which You know or ought to have known is illegal, fraudulent, or in violation of any Applicable Laws (including PMLA/FEMA); (vii) Discourage or encourage the end Customers from using any payment type or card/card network.
+14.8 You shall be solely responsible for the accuracy of all information and validity of the prices and any other charges / information which are displayed on Your website in relation to the product(s) / service(s) sold by You. Any dispute in relation to quality, quantity, merchantability, non-delivery, delay in delivery of the products / variation in prices and/or products / services sold by You, shall be resolved between You and the Customer without making Facility Provider(s)/ Card Networks, or Razorpay PA, a party to such dispute. All risk associated with the sale and delivery of the products to the Customer shall be Yours.
+14.9 In order to enhance the security of the transactions facilitated for the Customer(s) by the Facility Provider and/or Card Network(s) (as the case may be), You agree to comply with any direction(s) / instructions issued by the Facility Provider(s) and/or Card Networks, in respect of use of such hardware, software and/or equipment for the said purpose. You agree to suitably modify / upgrade your systems to comply with the standards communicated by the Facility Provider(s) and/or Card Networks.
+14.10 You expressly covenant and warrant that You shall not use the Services or the Platform for the sale, promotion, facilitation, or acceptance of payments related to any form of real money online gaming or an online money game/online money game service as defined under the Promotion and Regulation of Online Gaming Act, 2025.
+14.1.1 All intellectual property (a) related to the Services contemplated under these Terms, (b) pertaining to the Dashboard or API that are (i) pre-existing; and/or (ii) conceived, generated, derived, produced or reduced to practice, by Razorpay PA or any of its affiliates or Group Entities, as a result of the Services performed by Razorpay PA or such affiliate or Group Entities shall be and shall remain the exclusive property of Razorpay PA or such affiliate. For the avoidance of any doubt, intellectual property created by Razorpay PA or its affiliate or Group Entities in the course of undertaking its duties and obligations under or during the Term of this Agreement shall be owned by Razorpay PA (or the affiliate) unless otherwise stated in writing.
+-
+ADVERTISING
+15.1 Some of the Services may be supported by advertising revenue and may display advertisements and promotional material. These advertisements may be targeted to the content of information stored on the Services; queries made through the Services or other information. The manner, mode and extent of advertising by Razorpay PA are subject to change without any specific notice to You. In consideration for Razorpay PA granting You access to and use of the Services, You agree that Razorpay may place such advertisements on the Services through website, print media, electronic media, social media, advertising platforms, etc.
+-
+SUSPENSION AND TERMINATION
+16.1 Notwithstanding anything to the contrary, Razorpay PA shall have the right to immediately suspend Services and settlement of any monies or payments to You, without any liability to You, in the event of the following:
+-
+You breach any clause of these Terms.
+-
+You facilitate any transaction which is unlawful or in contravention with ‘Prohibited Products and Services' listed below in clause 17 of Part A: General Terms and Conditions.
+-
+Razorpay PA receives instructions from Facility Providers or governmental authorities or law enforcement agencies to either suspend the Services, or part thereof, or directs to suspend the Services or part thereof regardless of whether there is pending investigation/enquiry into any alleged illegal/unlawful activities.
+-
+You use the Services for any transactions which have a high-risk score as per Razorpay PA's internal fraud assessment tools and other policies.
+-
+Razorpay PA is of the opinion that there are suspicious circumstances surrounding Your activities.
+-
+Razorpay PA is of the opinion that there are pending, anticipated, or excessive disputes, refunds, or reversals relating to Your use of Services.
+-
+Your products/services infringe, or are suspected of infringing, intellectual property rights, copyrightable works, patented inventions, trademarks and trade secrets, or You are suspected of selling counterfeit and/or knock-off goods.
+-
+You materially change the type of the products/services provided to end customers and as declared on the onboarding form, without obtaining Razorpay PA's prior written permission to use the Services for the new or changed types of services/products, or it is discovered by Razorpay PA that You provided substantially misleading and/or false information about Your products/services as part of the onboarding activities.
+-
+Razorpay PA in its sole discretion determines that Your activities expose Razorpay PA to risks which are unacceptable to Razorpay.
+-
+Razorpay PA in its sole discretion is required to do so due to regulatory changes impacting the Services.
+16.2 These Terms are effective upon the date You first access or use the Platform or Services and continue until such access and use is terminated by You or Razorpay PA. Unless you have a separate offline agreement with Razorpay PA in relation to use the Services, or any part thereof, these Terms will apply. The executed offline agreement shall prevail only for the specific Services and provisions expressly addressed therein. For all other Services, including any Services enabled or used subsequently, these Terms shall apply, until covered under an addendum/amendment executed between the Parties. We may terminate these Terms or close Your account with Razorpay PA at any time for any reason (including, without limitation, for any activity that may create harm or loss to the goodwill of Razorpay PA). Where Applicable Laws require advance notice of termination to be provided, we will, prior to termination, provide You with the required advance notice of termination.
+16.3 Termination does not immediately relieve You of obligations incurred by You under these Terms. Upon termination, You agree to stop using the Services. Your continued or renewed use of the Services after termination serves to renew Your consent to the Terms. In addition, upon termination You understand and agree that we will not be liable to You for compensation, reimbursement, or damages related to Your use of the Services, or any termination or suspension of the Services or deletion of Your information or account data; and You will still liable to us for any fees or fines, or other financial obligation incurred by You or through Your use of the Services prior to termination.
+-
+SUSPENSION AND TERMINATION
+-
+Adult goods and services which includes pornography and other sexually suggestive materials (including literature, imagery and other media); escort or prostitution services; website access and/or website memberships of pornography or illegal sites;
+-
+Alcohol which includes alcohol or alcoholic beverages such as beer, liquor, wine, or champagne;
+-
+Body parts which include organs or other body parts;
+-
+Bulk marketing tools which include email lists, software, or other products enabling unsolicited email messages (spam);
+-
+Cable descramblers and black boxes which includes devices intended to obtain cable and satellite signals for free;
+-
+Child pornography which includes pornographic materials involving minors;
+-
+Copyright unlocking devices which include mod chips or other devices designed to circumvent copyright protection;
+-
+Copyrighted media which includes unauthorized copies of books, music, movies, and other licensed or protected materials;
+-
+Copyrighted software which includes unauthorized copies of software, video games and other licensed or protected materials, including OEM or bundled software;
+-
+Counterfeit and unauthorized goods which includes replicas or imitations of designer goods; items without a celebrity endorsement that would normally require such an association; fake autographs, counterfeit stamps, and other potentially unauthorized goods;
+-
+Drugs and drug paraphernalia which includes illegal drugs and drug accessories, including herbal drugs like salvia and magic mushrooms;
+-
+Drug test circumvention aids which includes drug cleansing shakes, urine test additives, and related items;
+-
+Endangered species which includes plants, animals or other organisms (including product derivatives) in danger of extinction;
+-
+Gaming/gambling which includes lottery tickets, sports bets, memberships/ enrolment in online gambling sites, and related content;
+-
+Government IDs or documents which includes fake IDs, passports, diplomas, and noble titles;
+-
+Hacking and cracking materials which includes manuals, how-to guides, information, or equipment enabling illegal access to software, servers, website, or other protected property;
+-
+Illegal goods which include materials, products, or information promoting illegal goods or enabling illegal acts;
+-
+Miracle cures which include unsubstantiated cures, remedies or other items marketed as quick health fixes;
+-
+Offensive goods which include literature, products or other materials that: (a) defame or slander any person or groups of people based on race, ethnicity, national origin, religion, sex, or other factors; (b) encourage or incite violent acts; or (c) promote intolerance or hatred.
+-
+Offensive goods, crime which includes crime scene photos or items, such as personal belongings, associated with criminals;
+-
+Pyrotechnic devices, combustibles, corrosives and hazardous materials which includes explosives and related goods; toxic, flammable, and radioactive materials and substances;
+-
+Regulated goods which include air bags; batteries containing mercury; Freon or similar substances/refrigerants; chemical/industrial solvents; government uniforms; car titles; license plates; police badges and law enforcement equipment; lock-picking devices; pesticides; postage meters; recalled items; slot machines; surveillance equipment; goods regulated by government or other agency specifications;
+-
+Securities which include government bonds or related financial products;
+-
+Tobacco and cigarettes which includes cigarettes, cigars, chewing tobacco, and related products;
+-
+Traffic devices which include radar detectors/jammers, license plate covers, traffic signal changers, and related products;
+-
+Weapons which include firearms, ammunition, knives, brass knuckles, gun parts, and other armaments;
+-
+Wholesale currency which includes discounted currencies or currency exchanges;
+-
+Live animals or hides/skins/teeth, nails and other parts etc. of animals;
+-
+Multi-level marketing collection fees;
+-
+Matrix sites or sites using a matrix scheme approach;
+-
+Offering work-at-home approach and/or work-at-home information; with an intention to deceive;
+-
+Drop-shipped merchandise;
+-
+Any product or service which is not in compliance with all applicable laws and regulations whether federal, state, local or international, including the laws of India;
+-
+Provision of any services that have the potential of casting the payment gateway facilitators in a poor light and/or that may be prone to buy and deny attitude of the cardholders when billed (e.g. adult material/mature content/escort services/friend finders) and thus leading to chargeback and fraud losses;
+-
+Businesses or website that operate within the scope of laws which are not absolutely clear or are ambiguous in nature (e.g. web-based telephony, Website supplying medicines or controlled substances, website that promise online matchmaking);
+-
+Businesses outrightly banned by law (e.g. betting and gambling/ publications or content that is likely to be interpreted by the authorities as leading to moral turpitude or decadence or incite caste/communal tensions, lotteries/sweepstakes & games of chance;
+-
+If You deal in intangible goods/ services (eg. software download/health/beauty products), and businesses involved in pyramid marketing schemes or get-rich-quick schemes and any other product or service, which in the sole opinion of either the partner bank or the acquiring bank, is detrimental to the image and interests of either of them/both of them, as communicated by either of them/both of them to You from time to time. This shall be without prejudice to any other terms and conditions mentioned in these Terms;
+-
+Mailing lists;Virtual currency, cryptocurrency and other crypto products (like non-fungible tokens or NFTs), prohibited investments for commercial gain or credits that can be monetized, re-sold or converted to physical or digital goods or services or otherwise exit the virtual world;
+-
+Money laundering services;
+-
+Database providers (for tele-callers);
+-
+Bidding/auction houses;
+-
+Activities prohibited by the Telecom Regulatory Authority of India;
+-
+Any other activities prohibited by Applicable Laws;
+-
+Entities operating as chit funds/ nidhi companies (except government or public sector unit (PSU) entities);
+-
+Unregulated/unlicensed money service business (MSB) or money and value transfer services (MVTS) like exchange houses, remittance agents or individuals running such businesses in jurisdictions that require license for such businesses.
+The above list is subject to updates / changes by Razorpay based on instructions received from Facility Providers.
+PART B: SPECIFIC TERMS AND CONDITIONS
+Part I - Specific Terms For Payment Aggregation Services
+-
+PAYMENT PROCESSING
+-
+Subject to Part A: General Terms and Conditions in conjunction with Part I: Specific Terms for Payment Aggregation Services, Razorpay PA shall facilitate collection of online and offline payments for products/services sold by You. You agree that where any settlement amount is less than Rupee 1, Razorpay shall endeavour to, but is not obligated to You, make such settlement.
+-
+Subject to Clause 2 and 3 of Part B, Part I of these Terms, Razorpay PA shall settle the Transaction Amount (net of Permissible Deductions) into your account as per timelines specified below in accordance with the Payment Aggregator Guidelines. You acknowledge and agree that the foregoing is subject to credit to / receipt of funds by Razorpay PA in the Escrow Account from our Facility Providers and risk/compliance check of the Transaction by Razorpay and/or Facility Providers.
+Particulars
+Settlement Timelines
+Domestic
+5 (five) days from the date of receipt of Transaction Amount in the Escrow Account
+International / PA - CB Inward Transaction
+15 (fifteen) days from the date of receipt of Transaction Amount in the Escrow Account
+PA-CB Outward Transaction
+As specified in Part B, Part IB of these Terms
+c. If Razorpay PA settles the Transaction Amount under these Terms, at an earlier time than agreed above, Razorpay PA shall have an absolute right to recover the Transaction Amount forthwith if the same is not received in the Escrow Account within three (3) Escrow Bank Working Days following the date of the Transaction for any reason whatsoever.
+d. Razorpay PA shall have an absolute right to place limits on the Transaction value.
+e. You may choose to purchase Fee Credits from Razorpay PA in respect of the online payment aggregation Services. It is agreed that in respect of each Transaction, Razorpay PA shall be entitled to deduct an amount equivalent to Razorpay PA fees along with applicable taxes from the Fee Credit. You agree that if sufficient funds are not available in the Fee Credits, then Razorpay PA shall be entitled to deduct fees along with applicable taxes from the Transaction Amount. “Fee Credits” are the credits using which You may receive the full settlement amount without any fee deduction. For example, if You have a Fee Credit of INR 100 then all the Transactions will be settled in full and the fees for these payments will be deducted from the Fee Credit of INR 100.
+f. You agree that Razorpay PA shall be entitled, at its sole discretion, to recover any amounts from You that are charged to Razorpay PA and/or debited by Facility Providers from accounts maintained by You or any reason attributable to the provision of Services to You by way of deduction from (i) the Transaction Amount to be settled to You and /or (ii) any of Your other funds held by Razorpay PA in the course of providing the Services. In the event such set off or recovery does not fully reimburse Razorpay PA for the liability owed, You shall pay Razorpay PA a sum equal to any shortfall thereof.
+g. You hereby acknowledge and agree that in case of reversal of Transaction Amount to Razorpay PA's Escrow Account due to any reason, including but not limited to, your bank (where your settlement account resides) rejecting acceptance of the Transaction Amount for any reason whatsoever, Razorpay PA may refund the monies to the source account from which it was received.
+h. Notwithstanding anything set forth in the Terms, You acknowledge, agree and affirm that in the event Razorpay PA in its absolute discretion determines that, for reasons including but not limited to internal decisions or regulatory mandates, it is not feasible or suitable to settle the funds held in the Escrow Account to you, Razorpay PA reserves the right to withhold such settlement and after giving prior notice to you, shall refund the said amount back to the source account from which it was received.
+i.You hereby consent and confirm that, where any bank as a payment aggregator/payment facilitator takes Services for processing settlement of funds to You, acting as Razorpay PA’s partner bank, You authorize Razorpay PA to make settlements to such partner bank or any third party, whereby You may provide instructions to such effect either directly to Razorpay PA or to such partner bank which is made available to Razorpay PA by such partner bank. Additionally, You acknowledge and agree that Razorpay PA may carry out Your CDD through any permissible means.
+-
+CHARGEBACKS
+-
+If a Facility Provider communicates to Razorpay PA the receipt of a Chargeback Request, You will be notified of the Chargeback. You agree that liability for Chargeback, whether domestic or international, under the Terms solely rests with You. You further agree that it is Your sole discretion whether to avail non-3D secure services or not. Subject to availability of funds, Razorpay PA upon receipt of a Chargeback Request shall forthwith deduct Chargeback Amount from the Transaction Amounts, which may be used, based on the decision of the Facility Provider, either to a) process Chargeback in favour of the customer or b) credit to You. For the avoidance of doubt, Razorpay PA shall be entitled to deduct the Chargeback Amount upon receiving a Chargeback claim. You shall be entitled to furnish to Razorpay PA documents and information (“Chargeback Documents”) pertaining to the Transaction associated with the Chargeback Request in order to substantiate (i) the completion of the aforesaid Transaction; and /or; (ii) delivery of goods/services sought by the customer pursuant to the said Transaction. You shall furnish the Chargeback Documents within three (3) calendar days (or such other period specified by the Facility Provider) of receiving notification of the Chargeback Request.
+-
+You agree that (i) if You are unable to furnish Chargeback Documents; and /or; (ii) the Facility Provider is not satisfied with the Chargeback Documents furnished by You, then the Facility Provider shall be entitled to order Razorpay PA to effect a reversal of the debit of the Chargeback Amount associated with the Chargeback such that the said Chargeback Amount is credited to the customer's Payment Instrument.
+-
+Notwithstanding anything in these Terms, if the Facility Providers charge the Chargeback Amount from Razorpay PA then You agree and acknowledge that Razorpay PA is entitled to recover such Chargeback Amount from You by way of deduction from (i) the Transaction Amounts to be settled to You and (ii) any of Your other funds held by Razorpay PA in the course of providing the Services. Provided however, if the available Transaction Amounts or other funds are insufficient for deduction of the Chargeback Amount, then Razorpay PA is entitled to issue a debit note seeking reimbursement of the Chargeback Amount. You shall reimburse the Chargeback Amount within seven (7) days of receipt of the debit note.
+-
+On the issuance of notice of termination under the Terms, Razorpay PA reserves the right to withhold from each settlement made during the notice period, a sum computed based on a Stipulated Percentage (defined hereinbelow) for a period of one hundred and twenty (120) days (“Withholding Term”) from the date of termination of these Terms. The sums so withheld shall be utilized towards settlement of Chargebacks. After processing such Chargebacks, Razorpay PA shall transfer the unutilized amounts, if any, to You forthwith upon completion of the Withholding Term. The ‘Stipulated Percentage' is the proportion of the Chargeback Amounts out of the total Transaction Amounts settled during the subsistence of these Terms.
+-
+Notwithstanding anything in the Terms, if the amount withheld pursuant to clause 2.4 above is insufficient to settle Chargebacks Amounts received during the Withholding Term, then Razorpay PA is entitled to issue a debit note seeking reimbursement of the Chargeback Amount. You shall reimburse the Chargeback Amount within seven (7) days of receipt of the debit note.
+-
+The following applies for Chargebacks associated with EMI products which are supported by Facility Providers. For any loan cancellation requests, You need to respond to Razorpay PA within seven (7) working days with a suitable response. If loan is to be cancelled, then the same needs to be informed to Razorpay PA and if cancellation request is to be declined then You need to provide proof of delivery and justification. For loans which would get cancelled on the basis of Your confirmation, the amount would be recovered from the daily settlement.
+-
+REFUNDS
+-
+You agree and acknowledge that subject to availability of funds received in the Escrow Account, You are entitled to effect Refunds at Your sole discretion
+-
+You further agree and acknowledge that initiation of Refunds is at Your discretion and Razorpay PA shall process a Refund only upon initiation of the same on the Platform.
+-
+All Refunds initiated by You shall be routed to the same payment method through which the Transaction was processed.
+-
+You agree that Razorpay PA fees shall always be applicable and payable by You on each Transaction irrespective of whether You have refunded the same to Your customer either through normal channels of refunds or through the instant refund service of Razorpay PA Group Entities (if availed).
+-
+You acknowledge and agree that for payments that are late authorized but not captured by You, Razorpay PA may initiate auto-refund to the customer within five (5) days.
+-
+FRAUDULENT TRANSACTIONS
+-
+Subject to clause 2.1 and 2.2 of this Part B, Part I, if Razorpay PA is intimated, by a Facility Provider, that a customer has reported an unauthorised debit of the customer's Payment Instrument (“Fraudulent Transaction”), then in addition to its rights under clause 16 of Part A: General Terms and Conditions, Razorpay PA shall be entitled to suspend settlements to You during the pendency of inquiries, investigations and resolution thereof by the Facility Providers.
+-
+If the amount in respect of the Fraudulent Transaction has already been settled to You pursuant to these Terms, any dispute arising in relation to the said Fraudulent Transaction, following settlement, shall be resolved in accordance with the RBI's notification DBR.No.Leg.BC.78/09.07.005/2017-18, dated July 6, 2017 read with RBI's notification DBOD. LEG. BC 86/09.07.007/2001-02 dated April 8, 2002, and other notifications, circulars and guidelines issued by the RBI in this regard from time to time.
+-
+Subject to clause 4.2 above, if the Fraudulent Transaction results in a Chargeback, then such Chargeback shall be resolved in accordance with the provisions set out in the Terms.
+-
+You acknowledge that Razorpay PA shall not be responsible for any liability arising in respect of Fraudulent Transactions whether it is an international or a domestic transaction.
+-
+You shall be liable in the event of breach of the fraud amount thresholds as provided under the NPCI guideline on ‘Fraud liability guidelines on UPI transactions' NPCI/2022- 23/RMD/001. You hereby understand and agree that the decision of the NPCI or the concerned acquiring bank, as the case may be, shall be final and binding.
+-
+GENERAL
+-
+In the event of any conflict between Part A: General Terms and Conditions and Part B: Specific Terms and Conditions, Part B: Specific Terms and Conditions shall prevail. To the maximum extent feasible, they shall be construed harmoniously.
+-
+Capitalised terms used but not defined in this Part I: Specific Terms for Payment Aggregation Services of Part B shall have the meaning ascribed to such terms in Part A: General Terms and Conditions.
+-
+Clauses 2 and 4 (and all sub-clauses thereof) of Part B, Part I shall survive the termination of the Terms.
+-
+You hereby consent for Razorpay PA to share Your information/data, including activity related information and personal information, with its Affiliates, for (i) the Affiliates to facilitate access to/market along with Razorpay PA, such products and services as the Group Entities may deem You eligible; and/or (ii) to share such information with Facility Providers (such as banks, NBFCs) associated with the Group Entities, for such Facility Providers to assess Your eligibility for the proposed products and services. To revoke or modify such consent please reach out to razorpay.com/support.
+-
+You hereby agree that Razorpay may deduct amounts from Your settlement account in accordance with instructions provided by You to Razorpay PA. Razorpay PA may first deduct its fees and other liabilities, including but not limited to chargebacks, fines, and penalties followed by other deductions, based on the chronological order of the instructions received from you.
+-
+COMPLIANCE WITH PAYMENT AGGREGATOR GUIDELINES
+-
+You represent and warrant that (i) You shall during the entire term of the usage of the Services, implement, observe and comply with applicable requirements prescribed under Applicable Laws, including but not limited to the provisions of the Payment Aggregator Guidelines. You shall further ensure that Your operations are in compliance with the Payment Aggregator Guidelines and You shall not undertake any action in breach of the same (ii) You shall on Your website/web app/mobile site/mobile app/ other modes of customer interface clearly indicate/display (a) the return and refund policy of Your products/services to Your customers, including the timelines for processing such returns, refunds or cancellations; and (b) the general terms of use and conditions of use by Your customers. You shall ensure that You deliver products and services in accordance with instructions of the customers. (iii) You shall at no time hold, store, copy or keep any customer data relating to a customer's Payment Instrument and shall notify in writing to Razorpay without any delay if You suspect or have become aware of a possible security breach related to any customer data. (iv) You shall not store any data pertaining to the Payment Instrument / customer Payment Instrument credentials or access any database or server containing any data pertaining to Payment Instrument/Payment Instrument credentials. On demand, You shall provide a written confirmation, in a form and manner acceptable to Razorpay PA and Facility Providers, certifying compliance to this aspect.
+-
+You shall comply with or enter into an agreement with a third party service provider of payment processing services for compliance with the Payment Card Industry Data Security Standard (“PCI DSS”), as may be amended from time to time, and the Payment Application-Data Security Standard (“PA-DSS”), if applicable. You shall also submit an annual report in writing to Razorpay PA signifying proof of compliance with the above. If You become aware that You will not be or are likely not to be, in compliance with PCI DSS or PA DSS for any reason, You will promptly report in writing to Razorpay such non-compliance or likely non-compliance.
+-
+You shall provide Razorpay PA with evidence of compliances listed in this clause 6 at Razorpay PA's request and provide, or make available, to Razorpay PA copies of any audit, scanning results or related documents relating to such compliance. Notwithstanding the above, Razorpay PA shall have the right to conduct a security audit to check Your compliance with this clause 6 and in such cases, You shall extend full cooperation to Razorpay PA and its representatives so as to enable them to conduct the audit to their sole satisfaction.
+-
+You agree to implement, maintain and enforce appropriate measures for the security and privacy of customer data in accordance with Applicable Laws. You shall promptly report security incidents or breaches involving customer data to https://razorpay.com/grievances/.
+-
+Razorpay PA shall have the right to conduct detailed KYC/ CDD at the time of onboarding and/or at any time during the Term, as well as to monitor and report transactions as required under the Master Directions, Applicable Laws and Razorpay PA policies.
+-
+Razorpay PA further reserves the right to retrieve You KYC Documents from the CKYCR, as required under the Master Directions.
+-
+You shall (a) maintain a fair return, cancellation or adjustment policy in accordance with its business; (b) disclose its return/refund or cancellation policy to Customers at the time of purchasing/availing product(s)/services. You shall also cooperate with Razorpay PA in resolving any issue or concern raised by the Customer in this regard and escalate to Razorpay PA for resolution.
+-
+You shall not save/ store card related data, data related to Payment Instruments, and Razorpay PA may undertake security assessments of these safeguards, at the time of onboarding and at any time during the Term, as may be necessary.
+-
+You shall not make any representation, warranty or declaration that might mislead, confuse or convey that the product(s)/service(s) of You, provided to the Customer, are associated with the Facility Provider(s) and/or Razorpay PA in any manner. All disputes/queries in relation to the product(s)/services of You (such as non-delivery, delay, quality issues) shall be resolved directly between You and the Customer as per the agreed terms. Further, Razorpay PA and/or Facility Provider(s) shall not be liable for any risk/dispute/issue associated with product(s)/services provided by You, and in no event shall be made a party to any such risk/dispute/issue.
+-
+You shall ensure that all its complaints/queries (including with respect to frauds, transactions, Product(s)/Service(s)), are responded to within timelines as may be agreed timelines or as prescribed by RBI/any other regulator/ authority. You shall resolve such matters within D+4 business days (wherein ‘D’ is the date on which the complaint/query is received by You). You shall co-operate with Razorpay PA and/or the Facility Provider(s) to facilitate any investigation/ resolution of Customer queries/ complaints in a reasonable timeframe, including by furnishing transaction details, invoices/ records pertaining to any Customer’s order etc.
+-
+Requirements of Facility Provider(s) and Card Association(s):
+-
+Notwithstanding anything contained in the Terms, You further acknowledge and agree that: (i) Razorpay PA, upon request by the Card Association/ Facility Provider, can provide to Card Association/Facility Provider, any information in relation to You, in accordance with the terms of the Agreement; (ii) Facility Provider may: (1) directly seek information and records from You, (2) hold funds and/or make a direct claim for recovery of outstanding balances/losses from You.
+-
+You shall be responsible for obtaining Customer consent for sharing of Customer information with Razorpay PA/Facility Provider(s) for the provision of Services and/or for sharing with regulatory or governmental authorities as and when required under Applicable Laws, for the purpose of transaction tracking, fraud prevention, or otherwise required pursuant to regulatory authorities' orders and/or notices from law enforcement agencies.
+-
+Without prejudice to any other rights of Razorpay PA, Facility Providers or the Card Association, You acknowledge and agree that the transactions including card not present transactions, and the recurring transactions (as applicable) shall be at its own risk.
+-
+You undertakes that, in relation to any transaction(s) initiated at Your Platform, You shall not (a) impose any minimum or maximum transaction values for any product / service(s) sold by You and applicable to its Customer(s); (b) discriminate against the use of cards (as a payment instrument at You’s Platform) in any way; (c) split a transaction into two or more transactions for the Customer(s); (d) accept transactions relating product(s) / service(s) sold by You, which fall outside the description of a Merchant’s business; (e) accept a transaction or present transaction data for processing which was not undertaken directly between You and the cardholder / Customer; (f) accept or process transactions in order to give cardholders / Customer(s) cash; (g) submit any transaction which Merchant knows or ought to have known is illegal; and/or (h) refund transactions to a card which was not originally used to make such transactions.
+-
+You are solely responsible for the accuracy of all information and validity of the prices and any other charges / information which are displayed on Your website in relation to the product(s) / service(s) sold by You. Any dispute in relation to quality, quantity, merchantability, non-delivery, delay in delivery of the products / variation in prices and/or products / services sold by You, shall be resolved between You and the Customer without making Facility Provider(s)/ Card Association, or Razorpay PA, a party to such dispute. All risk associated with the sale and delivery of the products to the Customer shall be of You.
+-
+In order to enhance the security of the transactions facilitated for the Customer(s) by the Facility Provider and/or Card Association(s) (as the case may be), You agrees to comply with any direction(s) / instructions issued by the Facility Provider(s) and/or Card Association, in respect of use of such hardware, software and/or equipment for the said purpose. You agree to suitably modify / upgrade its systems to comply with the standards communicated by the Facility Provider(s) and/or Card Association.
+-
+You understands that breach of any of the terms mentioned in these Terms, can have an adverse impact on Razorpay PA, and notwithstanding anything contained in the Terms, You shall be bound to indemnify Razorpay PA against any actions, proceedings, claims, liabilities (including statutory liability), penalties, demands and costs, awards, damages, losses and/or reasonable expenses as maybe incurred by Razorpay PA due to such reason
+-
+VALUE ADDED SERVICES
+You may opt for certain value-added services related to payments and settlements, available on the dashboard which will be subject to an additional charge to be agreed upon by the parties. Such charges are to be paid on a monthly / quarterly / annual basis or other frequency as may be agreed mutually.
+7.1 Optimizer
+For the purpose of these services, unless the context otherwise requires:
+-
+“Optimizer Services” means a technology solution developed by Razorpay PA which enables You to route Your payments through specific payment gateways based on Your business conditions and preferences. This solution is a software layer on top of Your payment to route every payment request received for Your unique id, based on the rules created by You on Optimizer's merchant facing dashboard.
+-
+“Optimizer Transaction” means any transaction routed by You through the Optimizer Services, which involves an order or request placed by the customer with You by paying the Optimizer Transaction Amount to You, while using the services of any payment gateway or payment aggregator.
+-
+“Optimizer Transaction Amount” means the amount paid by the customer to You which is then routed by You through the Optimizer Services.
+-
+You agree that the Optimizer Services are being provided by Razorpay PA solely as a software as a solution (SaaS) provider. The Optimizer Services are independent and separate from the other Services being provided to You. It is clarified that, for these Optimizer Services, Razorpay PA's role will strictly be that of a SaaS provider and will not be that of a payment service provider.
+-
+You hereby consent Razorpay PA to use or process any type of data shared by You for the provision of the Optimizer Services.
+-
+Razorpay PA shall have the right to charge additional fees for provision of the Optimizer Services.
+-
+You shall for Your omission/commission indemnify and hold Razorpay PA, its directors, managers, officers, employees and agents harmless from and against all losses arising from claims, demands, actions or other proceedings as a result of disputes or claims raised by any payment gateway / payment aggregator in relation to Optimizer Services.
+7.2 Customisable Templates
+-
+In addition to the above, You acknowledge that Razorpay PA provides as a value added service certain customisable templates for website terms of use and conditions, return and refund and shipping policy, privacy policy, etc. (together, “Customisable Templates”) which You may choose to use to display on Your website / web app / mobile site / mobile app / other digital app in order to comply with Your obligations under the Payment Aggregator Guidelines. You acknowledge and agree that: (a) the Customisable Templates are available during the onboarding process to be used at Your sole discretion; (b) Razorpay provides the Customisable Templates on an “as is” basis; and (iii) You represent and warrant (i) that it is Your sole responsibility to verify the suitability of the Customisable Templates for Your products/services, (ii) that You have sought independent legal advice prior to using the Customisable Templates, (iii) that You absolve Razorpay of any liability arising from the use of the Customisable Templates, (iv) that You have read and modified the Customisable Templates as necessary before publishing on Your website / web app / mobile site / mobile app. Notwithstanding anything to the contrary in these Terms, Razorpay expressly disclaims all liability in respect of any actions or omissions based on any or all of the Customisable Templates. Razorpay does not necessarily endorse and is not responsible for any third-party content that may be accessed through the Customisable Templates.
+-
+SPECIFIC TERMS FOR SNRR MERCHANTS
+8.1 You agree that the following terms shall only apply in case You hold a Special Non-Resident Rupee Account (“SNRR Account”) pursuant to the RBI ‘Master Direction - Deposits and Accounts' dated January 1, 2016, and Circular on ‘Non-resident Rupee Accounts – Review of Policy' dated November 22, 2019, detailed hereinbelow.
+8.2 Any person resident outside India, having a business interest in India shall open an SNRR Account with an authorised dealer for the purpose of putting through bona fide transactions in rupees, not involving any violation of the provisions of Applicable Laws. The business interest, apart from generic business interest, shall include the following INR transactions, namely :-
+-
+Investments made in India in accordance with Foreign Exchange Management (Non-debt Instruments) Rules, 2019 dated October 17, 2019, and Foreign Exchange Management (Debt Instruments) Regulations, 2019 notified vide notification no. FEMA 396/2019-RB dated October 17, 2019, as applicable, as amended from time to time;
+-
+Import of goods and services in accordance with Section 5 of the Foreign Exchange Management Act 1999 (42 of 1999), read with Notification No. G.S.R. 381(E) dated May 3, 2000, viz., Foreign Exchange Management (Current Account Transaction) Rules, 2000, as amended from time to time;
+-
+Export of goods and services in accordance with Section 7 of the Foreign Exchange Management Act 1999 (42 of 1999), read with Notification No. G.S.R. 381(E) dated May 3, 2000, viz., Foreign Exchange Management (Current Account Transactions) Rules, 2000, as amended from time to time, and further read with FEMA Notification No.23(R)/2015-RB dated January 12, 2016, as amended from time to time;
+-
+Trade credit transactions and lending under External Commercial Borrowings (ECB) framework in accordance with Foreign Exchange Management (Borrowing and Lending) Regulations, 2018, as amended from time to time; and
+-
+Business related transactions outside International Financial Service Centre (IFSC) by IFSC units at GIFT city like administrative expenses in INR outside IFSC, INR amount from sale of scrap, government incentives in INR, etc. The account will be maintained with a bank in India (outside IFSC).
+8.3 The SNRR Account shall carry the nomenclature of the specific business for which it is in operation. Indian banks may, at its discretion, maintain a separate SNRR Account for each category of transactions or a single SNRR Account for a person resident outside India engaged in multiple categories of transactions provided it is able to identify/segregate and account them category-wise.
+8.4 You shall ensure that the operations in the SNRR Account shall not result in the account holder making available foreign exchange to any person resident in India against reimbursement in rupees or in any other manner.
+8.5 The SNRR Account shall not bear any interest.
+8.6 The debits and credits in the SNRR Account shall be specific/incidental to the business proposed to be done by the account holder.
+8.7 The tenure of the SNRR Account shall be concurrent to the tenure of the contract / period of operation / the business of the account holder and in no case shall exceed seven years. Approval of the RBI shall be obtained in cases requiring renewal, provided the restriction of seven years shall not be applicable to SNRR accounts opened for the purposes stated at sub. paragraphs i to v of paragraph 1 of Schedule 4 of Regulation 5(4) of Foreign Exchange Management (Deposit) Regulations, 2016.
+8.8 All the operations in the SNRR Account shall be in accordance with the provisions of the Act, rules and regulations made thereunder.
+8.9 The balances in the SNRR Account shall be eligible for repatriation.
+8.10 You shall not transfer from any Non-Resident Ordinary account (“NRO”) account to the SNRR Account.
+8.11 All transactions in the SNRR Account shall be subject to payment of applicable taxes in India.
+8.12 SNRR Account may be designated as resident rupee account on the account holder becoming a resident.
+8.13 The amount due/ payable to non-resident nominee from the account of a deceased account holder, shall be credited to NRO account of the nominee with an authorised dealer/ authorised bank in India.
+8.14 The transactions in the SNRR Account shall be reported to the RBI in accordance with the directions issued by it from time to time.
+8.15 You shall ensure that You have prior approval of RBI in case You have entities incorporated in Pakistan and/or Bangladesh or You are a Pakistan or Bangladesh national.
+Part IA: Additional Terms For Offline Payment Aggregation And Device Term
+1.1 The terms and conditions set forth in this Part IA apply exclusively to You when You utilize the Devices and/or use  offline payment aggregation (PA-P)  (defined as facilitating transactions where both the acceptance device and payment instrument are physically present in close proximity while making the transaction). This Part IA shall be read in conjunction with and is supplementary to the Part A (General Terms and Conditions) and Part I (Payment Aggregation Services) of these Terms. All terms and conditions detailed in Part A and Part I remain in full force and effect. In the event of any irreconcilable conflict between the express provisions of this Part IA and those of Part I or Part A, the provisions of this Part IA shall prevail only to the extent necessary to govern the specific requirements of offline payment aggregation. Your access to or use of the Device or offline payment aggregation services confirms Your full, binding acceptance of these additional terms.
+1.2 You shall avail the Services and Devices subject to the terms incorporated herein. Razorpay PA will provide offline payment collection and aggregation Services (for the offline transactions conducted via Devices) and the Devices to You for Your legitimate, bonafide and legal business activities only. In cases where Razorpay PA is not performing any payment collection and aggregation services and has only provided the Devices, then Razorpay PA shall not be liable for settlement of the funds.
+1.3 Razorpay PA may provide:
+-
+offline payment aggregation services which include the ability to process payments from various modes of payment opted by the Merchant.
+-
+Acceptance of American Express cards - Upon Your request, Razorpay PA has the ability to support American Express Cards on the Devices opted by You. Activation of American Express will be subject to Razorpay PA’s  approval and shall comply with American Express policy.
+-
+Mobile Application: In support of the above services, Razorpay PA will supply to You with a mobile application (which is an interface required to access the Razorpay PA software solutions through the Device) and the Razorpay PA SDK for using the Services for offline payments.
+-
+Portal: Razorpay PA agrees to retain and maintain transaction records for the Services and provide a portal to You showing such records and allows You to download such records from time to time.
+-
+Affordability Services:
+-
+At Your request, Razorpay PA will enable affordability payment options on the POS terminals which will provide an option to Your customers to pay via EMI (CC, DC, Brand EMI , NBFC)/ BNPL / Cashback Offers / IBD (Instant Discount)  payment option.
+-
+You understand and agree that Razorpay PA is merely a facilitator for the enablement of various affordability payment options and is not responsible for any decline in these transactions or non-approval of customer loan request by the respective NBFC / Banks / lending service provider or brand EMI scheme / cashback offers by the partner brand (as the case may be) for whatsoever reasons.
+-
+For brand EMI services, brand schemes and other necessary details as intimated by the respective brand partner to Razorpay PA are pre-fed in the POS terminal and are subject to change from time to time at the discretion of the brand.
+-
+The Parties shall be responsible for compliance and payment of all taxes, duties, levies, surcharge, cess or any other charges that may be applicable to the respective Party under the Applicable Law, in relation to the Services. Any settlement with respect to Affordability Services shall be agreed to with You separately.
+-
+SMS Pay – Card Not Present (CNP):
+-
+The Merchant has requested Razorpay PA to enable SMS pay service wherein the Merchant can collect payments from the customers via SMS pay links.
+-
+As per the Services, an SMS pay link will be sent to the customer mobile number. Subsequently, the Customer may open the SMS pay link and initiate the payment by entering requisite details.
+-
+The Merchant understands that the SMS pay link is sent to the customers on behalf of the Merchant. Therefore, the responsibility for recording explicit consent from the customers for using their mobile numbers for sending out SMS pay links shall solely vest with the Merchant.
+-
+Digital Invoicing services: At the request of Merchant, Razorpay PA will enable Digital Invoicing Services for the Merchant, wherein the Merchant and its customer will have an option to share and / or maintain the invoice copy relating to the transaction in a digital form. The Merchant has agreed to avail such Digital Invoicing Services on such Terms and conditions mentioned here.
+-
+Devices terms and conditions:
+-
+Razorpay PA will provide Devices to the Merchant on agreed pricing terms. The Merchant shall provide necessary KYC details and other information as may be required by Razorpay PA in relation to Merchant stores and locations, where the Devices are requested to be deployed.
+-
+Merchant agrees that each Device ordered by Merchant shall have a minimum period of usage of 36 (thirty-six) months , also referred to as the “Lock-in period” commencing from the date of deployment of such Device at the Merchant location. It is to be clarified that in the event the Merchant deactivates or returns a particular Device or set of Devices, before the expiry of the Lock-in period, Merchant shall make a one-time payment to Razorpay PA of an amount equivalent to the remaining rental or fees (as applicable) for the unexpired duration of the Lock-in Period for such Devices. On termination of Services for whatever reasons, the Merchant shall return all the Devices immediately to Razorpay PA (if taken on rental basis).
+-
+Razorpay PA will provide Devices and mobile application that are necessary for the provision of the Services. Merchant shall acknowledge the receipt of such Device in a form and manner acceptable to Razorpay PA and each such acknowledgement shall be deemed to be a part of these Terms.
+-
+Razorpay PA, or its business associate, shall after receiving instructions in writing, install the Device at Merchant’s premises. Merchant shall ensure that the necessary infrastructure (like mobile phone(s) or tablet(s) and internet) required to install the Device is available at the Merchant’s designated location. To the fullest extent permitted by law, Razorpay PA is not responsible for any delays, delivery failures, or any other loss or damage resulting from (i) the transfer of data over public communications networks and facilities, including the internet, or (ii) any delay or delivery failure on the part of any other service provider not contracted by us, and You acknowledge that the service may be subject to limitations, delays and other problems inherent in the use of such communications facilities.
+-
+Merchant shall arrange, co-operate, and provide for installation at its premises the Device and such related accessories and software as Razorpay PA may deem fit and appropriate. Merchant states and agrees that the Device shall be used exclusively at the Merchant’s designated establishment/ location for the purchase of goods or services for which the Merchant has been signed up and for no other purpose whatsoever.  Devices shall not be used in extreme or hazardous environments like (exposure to high heat, fire hazard or water) neither Merchant shall forcefully plug and unplug the charging interface or tilt it.
+-
+Merchant shall retain in its possession and for its exclusive use the Device and keep the same in good condition. Merchant agrees and acknowledges to safe keep and control the use of the Device such that any transaction using the Device shall be deemed to be authorized and sanctioned by Merchant. Merchant shall not use the Device for any fraudulent transactions, business malpractices and illegal activities. Merchant shall not and shall ensure that the personnel of Merchant using the Device shall not, use the Device in such a manner that it harms the security systems enabled on the Device.
+-
+Merchant shall not lease or resell the Device and / or such other services as may be mutually agreed to between Merchant and Razorpay PA to any other Party without the permission, in writing, of Razorpay PA.
+-
+Razorpay PA shall be entitled to charge Merchant for the costs and charges of the Device (including accessories) and/or the costs of repairing the Device/s in the event the Device(s) is/are damaged or lost as a result of improper handling by Merchant unless the Device is bought (and not leased/ rented) by Merchant from Razorpay PA.
+-
+In case the Device is provided by Razorpay PA to Merchant on rental basis, then the Device shall be the exclusive property of Razorpay PA, and Merchant shall forthwith (not less than 3 days) surrender the Device to Razorpay PA in the event of termination of this arrangement for any reason whatsoever. During the tenure of this arrangement and thereafter Merchant shall not claim any right, title, interest or lien over the Device.
+-
+In case the Device is provided by Razorpay PA on lease to Merchant, Merchant shall not (i) sell, assign, transfer, lease or otherwise cause \or allow or attempt to cause or allow, any dealings with the Device or any encumbrance on the Device to be created (ii) remove, conceal or alter any markings, tags or plates attached to the Device or part of it indicating Razorpay PA’s’ ownership of the Device (iii) reverse engineer, decompile, disassemble, tamper with or otherwise seek to obtain the source code or non-public APIs to the software or the Device; (c) copy or modify the software or Device or any documentation, or create any derivative work from it  (iv)Cause or allow Razorpay PA’s’ right to access, repossession or disposition of the Device pursuant to this Agreement or otherwise to be encumbered in any way jeopardized by any act of/by Merchant or its servants or agents or by any other factor within its control (iv) Permit any third party to perform the maintenance services on the Device or effect modifications, enhancement or software/hardware changes to the Device without the prior written consent of Razorpay PA.
+-
+The loss or damage caused to Razorpay PA arising out of negligence, or misuse of the Device and / or default in payment due to any reason whatsoever or that of any telecommunication devices attached to / inbuilt within / embedded in the Device, by the Merchant or its employees shall be to the account of Merchant, and Razorpay POS will recover such losses and expenses from Merchant.
+-
+Merchant shall permit the representatives of Razorpay PA or any other concerned service provider to carry out physical inspections of the Device or telecom equipment (or possession of any of these, in case of termination of this arrangement) during business hours, with or without prior notice (in cases where Devices are taken on rental basis).
+-
+You agree that Razorpay PA, may obtain information related to accounts and transaction along with personal information of the Merchant and its respective Customers, and Razorpay may use such data to analyse, improve, market, support and operate the Device and the services and otherwise for any business purpose during the term and after termination of the present engagement. All usage of such data, its retention and process shall be governed under applicable law(s) and internal policies of Razorpay PA.
+-
+Limited to the jurisdiction of India, Merchant shall ensure that: (a) it enter into transactions only in Indian Rupees unless otherwise permitted by Bank/ Razorpay PA in advance in writing; (b) Retain invoices, charge slip’s   for a minimum period of six (6) months and provide the same in legible format as and when required by Razorpay PA, (c) while presenting any transaction information, certify to Razorpay PA that (i) that the sale of such goods and /or services are not unlawful, (ii) the transaction information pertaining to each sale has been supplied only once (iii) Merchant has supplied goods and /or services to which the transaction information relates and to the value stated therein, and (iv) all statements of facts contained therein are true and complete in all respects. (d) in the event Device is leased by Razorpay PA, accept any decision to remove the said Device  due to the reason of  non-performance of the term mentioned herein or any fraud (e) the Merchant shall immediately return the Device to Razorpay PA upon request.
+-
+Razorpay PA shall have the right to recover or take back the Device where (a) YOU are in breach of its applicable Terms and Conditions; (b) Upon termination or expiry of this Terms and Conditions; (c) Upon Your failure to pay the Fees for a period of 60 days; (d) At Razorpay PA’s sole discretion.
+-
+In cases of rental Devices, any losses or damages caused to Devices shall be calculated as below:
+-
+Lost/Misplaced/Irreparable Device charges: In the event there is any loss/misplacement/irreparable harm to a Device, the Merchant shall be liable to pay the full Price of the Device, in addition to the applicable taxes.
+-
+Damaged Repairable Devices (including accessories): The Merchant shall be liable to pay repair charges including inspection charges, as incurred by Razorpay PA at actuals.
+1.4 Fee
+-
+Charges incidental with the provision of Services to the Merchant including Device rentals (“Fees”) shall be in accordance with the pricing terms agreed to by the Merchant at the time of subscribing to the Services on the Website. The Merchant agrees that such Fees shall be charged according to the manner, rates and frequency specified in the said pricing terms. All Fees will be deducted from the monies required to be settled to the Merchant as per Applicable Laws. However, if the Device rentals are not deducted from the transaction settlement amount, then the same will be deducted from e-nach /e-mandate set up by the Merchant at the instruction of Razorpay PA.
+-
+The Parties agree that the Fees are exclusive of applicable taxes and Razorpay PA shall charge such applicable taxes on the Fees from time to time. It is agreed that any statutory variations in applicable taxes during the subsistence of this Agreement shall be borne by the Merchant.
+-
+In the event of any delay in payment of any amounts to Razorpay PA beyond the due date of payment, Razorpay PA at its sole discretion may opt one or more of the following remedies:
+-
+Charge a late payment interest at the rate of 15% per annum on the due amount
+-
+Suspend some or all of the Service(s) it provides under this agreement, until payment of the due amount. Consequently, it is agreed between the parties that Razorpay PA shall not be liable for any loss, damages, claims including third party claims, which may result owing to suspension of some or all of services by Razorpay PA in case of non-payment or delayed payment.
+-
+Set off the due amount from the transaction settlement amount payable to the Merchant.
+Part IB: Specific Terms Applicable to PA-CB Outward Transactions
+PAYMENT PROCESSING
+1.1 The terms and conditions set forth in this Part IB apply exclusively to You when You are a Merchant based outside of India (including overseas seller, marketplace and/or payment service providers) utilizing the Services to facilitate the collection of funds from customers within India ("PA-CB Outward Transactions"). This Part IB shall be read in conjunction with and is supplementary to the Part A (General Terms and Conditions) and Part I (Payment Aggregation Services) of these Terms. All terms and conditions detailed in Part A and Part I remain in full force and effect. However, You expressly acknowledge and agree that the specific operational, regulatory, and settlement requirements for cross-border payments necessitate specialized rules. Accordingly, where any express provision of this Part IB conflicts with or provides a different regulatory/operational requirement than the terms in Part I or Part A, the provisions of this Part IB shall prevail and supersede the conflicting provision to the extent necessary to govern the PA-CB Outward Transactions.
+1.2 Subject to Clauses 2, 3, 4 and 5 as provided under Part B, Part I of these Terms, Razorpay PA shall settle the Transaction Amount, net of applicable fees, charges, taxes, and other permissible deductions (“Permissible Deductions”), into Your designated account as per timelines specified below in accordance with the Payment Aggregator Guidelines. You acknowledge and agree that the foregoing is subject to credit to / receipt of funds by Razorpay PA in the Escrow Account from our Facility Providers and risk/compliance check of the Transaction by Razorpay and/or Facility Providers
+Particulars
+Settlement Timelines
+PA-CB Outward Transactions
+25 (twenty-five) days from the date of receipt of Transaction Amount in the Escrow Account.
+1.3 You shall, within three (3) days from the date of request, provide all necessary transaction-related documents including but not limited to digital invoices, transport documents, and any other information or documentation as may be requested by Razorpay PA at its sole discretion, or as may be required under applicable laws or by Facility Providers (“Supporting Documents”) for every instance of fund repatriation. Delay in submission or discrepancies in the Supporting Documents may result in Razorpay PA rejecting the Transaction and refunding the Transaction Amount to the Customer. You agree that Razorpay PA may rely on the Supporting Documents provided by You without independent verification and may share such documents or related information with Facility Providers, Governmental Authorities, or law enforcement agencies as required under applicable law or upon request.
+1.4 Subject to Clauses 2, 3, 4 as provided under the Part B Part I of these Terms, Razorpay PA shall initiate the wire transfer to remit the Transaction Amounts collected in the Escrow Account (net of applicable fees) to Your designated account. You acknowledge and agree that the final remittance is dependent on processes beyond Razorpay PA’s control, and Razorpay PA shall not be liable for any delay or loss arising due to any such delay in final settlement of funds.
+1.5 Prior to such settlement of funds, Razorpay PA shall, if required, deduct applicable withholding taxes in accordance with prevailing Indian income tax laws. You shall provide such supporting documentation as required under applicable law. Razorpay PA shall issue quarterly Tax Withholding Certificates (i.e. Transaction Based Reports) to enable You to make any tax claims in the relevant overseas jurisdiction.
+1.6 Razorpay PA shall process settlements without withholding taxes provided that You furnish valid documentation, including but not limited to a No Permanent Establishment (No-PE) declaration and other certificates or documents required under applicable tax laws or double taxation avoidance agreements (DTAAs). In the event a tax authority imposes any taxes, penalties, interest or other charges due to Razorpay PA’s reliance on Your documentation, You agree to fully indemnify and hold Razorpay PA harmless from any such liabilities, including associated costs, expenses, and legal fees. You also agree to cooperate with Razorpay PA in responding to any claims or inquiries from tax authorities in this regard.
+1.7 You acknowledge that no settlement shall be made until the Escrow Account is duly credited with the relevant amount in accordance with these Terms. Razorpay PA shall not be liable for any delays in settlement resulting from non-receipt of funds in the Escrow Account.
+1.8 A currency conversion fee shall apply at the time of converting INR to Your chosen settlement currency. The conversion shall be based on the rate agreed between You and Razorpay PA. The applicable rate shall be the prevailing rate as of the date and time Razorpay PA initiates the actual settlement into Your account.
+1.9 You represent and warrant that You are, and shall at all times remain, in full compliance with all applicable tax laws and regulations in Your jurisdiction.
+1.10 If Razorpay PA makes any settlement or payment that was not due or is in excess of the amount required to be paid under these Terms, Razorpay PA reserves the right to recover such excess or erroneous amounts from You or any other appropriate party, at its sole discretion.
+1.11 You represent and warrant that You have independently assessed whether the services rendered by You fall under the definition and applicability of Online Information Database Access and Retrieval (OIDAR) services under Indian GST laws. You further agree to comply with all applicable GST requirements, including obtaining GST registration in India where applicable. In the event GST registration becomes mandatory, You shall promptly notify Razorpay PA and provide all relevant registration details.
+1.12 You agree that a Pre-Paid Instruments (“PPI”) shall not be an acceptable mode of payment for a Transaction, and therefore, the said payment method will not be enabled by Razorpay PA.
+1.13 The maximum value of a Transaction that can be processed by Razorpay PA is INR 25,00,000/- (Twenty-Five Lakhs).
+SPECIFIC TERMS FOR PAYMENT AGGREGATORS/E-COMMERCE MARKETPLACES ONBOARDED AS MERCHANTS
+1.14 These terms shall apply only if you are accepting payments on behalf of your   sellers/clients/customers (“Sub-Merchants”).
+1.15 You agree and undertake that You have and shall at all times maintain the requisite licenses, permissions and/or permits to operate as a payment aggregator/e-commerce marketplace in the jurisdiction wherein You are situated and operate its payment aggregation business/e-commerce marketplace.
+1.16 You will be onboarded as a master merchant with us to accept payments on behalf of your Sub-Merchants.
+1.17 You represent that your Sub-Merchants have authorized you to collect payments on their behalf. Upon our request, you shall furnish evidence of such authorization.
+1.18 You agree and undertake the following:
+-
+You shall conduct due diligence on your Sub-Merchants as required by You under Applicable Laws;
+-
+You shall ensure that your Sub-Merchants do not sell prohibited products/services as listed in the Prohibited List of Goods and Services
+-
+You shall ensure that your Sub-Merchants accept and comply with the terms of our Services.
+-
+You are responsible for the actions and omissions of your Sub-Merchants and shall indemnify us from any related claims or liabilities.
+-
+If You operate as an e-commerce operator facilitating the sale of goods or provision of services by a resident e-commerce seller, it shall evaluate and ensure compliance with the requirements of Tax Deducted at Source (TDS) under Section 194O of the Income Tax Act, 1961 (“IT Act”). You shall be responsible for withholding tax under Section 194O, depositing the same within the prescribed timelines, and fulfilling all other compliance obligations as mandated under the IT Act. Razorpay shall not be obligated to deduct TDS under Section 194O. However, if You  identify any non-compliance with these obligations, it shall promptly notify Razorpay in writing.
+ADDITIONAL TERMS FOR TRANSACTIONS UNDER LIBERALISED REMITTANCE SCHEMES
+1.19 If You use the Services for Transactions that fall under the Liberalised Remittance Scheme issued by the Reserve Bank of India (“LRS Guidelines”), the following additional terms apply:
+-
+You represent, warrant, and agree that all Transactions under the LRS will fully comply with the Foreign Exchange Management Act, 1999 (“FEMA”), the LRS Guidelines, and all applicable RBI regulations, notifications, and circulars, as amended from time to time.
+-
+You shall collect from each Customer the LRS declaration and the Tax Collected at Source (“TCS”) declaration in the form and format prescribed or provided by Razorpay, in accordance with Section 206C(1G) of the Income Tax Act, 1961, and other applicable laws. Razorpay may update these forms as laws change, and you agree to implement such changes promptly. Copies of these declarations must be provided to Razorpay.
+-
+You must perform appropriate due diligence on your Customers to ensure all Transactions comply with applicable LRS limits and requirements.
+-
+You must immediately notify Razorpay in writing if you become aware of any non-compliance, investigation, or regulatory notice relating to Transactions under the LRS.
+-
+Razorpay reserves the right to suspend or terminate the processing of any LRS-related Transactions, without liability, if you are suspected or found to be in breach of the LRS Guidelines or any applicable law.
+-
+You agree to indemnify, defend, and hold harmless Razorpay and/or the AD-1 Bank against any losses, liabilities, damages, costs, expenses (including legal fees), fines, or penalties arising from any misrepresentation, omission, false declaration, or non-compliance by you or your Customers with the LRS Guidelines, FEMA, the Income Tax Act, or any other applicable law or regulation.
+Part II: Specific Terms For E-Mandate Services
+-
+Definitions:
+-
+“Bank Account” means a banking account maintained by Your customer with a Destination Bank as per Applicable Law.
+-
+“Collection Information” shall mean information or data provided by You in a secured format specifying the amount to be collected and other details to identify the Bank Account and the date on which the amount shall be collected.
+-
+“Destination Bank” means a bank registered with NPCI as per the Procedural Guidelines and which authenticates details of Your customer's Bank Account held with the Destination Bank and approves the E-Mandate Registration Request in accordance with the Procedural Guidelines.
+-
+“E-Mandate Payments” shall mean automated deductions of pre-determined payments specified from the Bank Account (pursuant to electronic mandates issued Your customers) in accordance with the Procedural Guidelines.
+-
+“E-Mandate Registration” means the approved and authenticated E-Mandate Registration Request based on which E-Mandate Payments can be effected.
+-
+“E-Mandate Registration Request” means the request (in electronic or physical form) made by Your customer for deduction of the customer's Bank Account for effecting an E-Mandate Payment to You.
+-
+“Escrow Account”  is an account held by Razorpay with an Escrow for the purpose of receiving the Transaction Amount and effecting settlements to You.
+-
+“Escrow Bank” means a bank that is authorised by the RBI, to operate an Escrow Account under Payment Aggregator Guidelines.
+-
+“Escrow Bank Working Days” means days on which the Escrow Bank is operational to undertake settlements.
+-
+“Procedural Guidelines” means the guidelines governing inter alia the processes to be followed and implemented by Sponsor Banks, Destination Banks and intermediaries for effecting E-Mandate Payments, issued by the NPCI and shall include any revisions, modifications and amendments thereto.
+-
+“Sponsor Banks” mean the banks / entities which are authorised to implement the E-Mandate Payments by inter alia receiving API calls from Razorpay for initiating E-Mandate Payments, communicating the necessary E-Mandate Registration information to NPCI, authentication by the Destination Bank and deduction of Bank Accounts, all in accordance with the Procedural Guidelines.
+-
+You shall provide the necessary KYC Documents to Razorpay as specified in this Part II: Specific Terms for E-Mandate Services of Part B (“Mandate Terms”), such that Razorpay can share the KYC Documents (or the information therein) to the Sponsor Bank for the Sponsor Bank's decision on issuing a registration to You to avail of services for e-mandate payments.
+-
+You acknowledge that the onboarding and registration process is a prerequisite under the Procedural Guidelines in order for You to avail of Services for e-mandate payments and the customers to be able to start submitting E-Mandate Registration Requests. Razorpay shall not be liable to provide any Services under these Terms until the Sponsor Bank has issued a registration in Your favour.
+-
+Following completion of integration, Razorpay shall enable E-Mandate registration requests by customers on Your website by making available the prescribed E-mandate Registration Request form issued by NPCI and also put in place the necessary API protocols to transmit customer information to the Sponsor Banks in order to facilitate the process of customer verification and authentication of customer and bank account details by the Destination Bank, following which the NPCI shall confirm the E-mandate Registration request.
+-
+Being an intermediary, Razorpay shall be responsible only for transmission of the customer details to the Sponsor Bank and shall not be responsible for failure or refusal of the E-Mandate Registration request by the Destination Bank or NPCI.
+-
+In the event any query or clarification is sought by NPCI, RBI or any governmental authority or Facility Provider in respect of any e-mandate payment transaction, You shall (forthwith upon communication of the query or clarification by Razorpay to You) provide the relevant transaction and/or customer details, as required by RBI or any governmental authority in India.
+-
+On successful approval of the E-Mandate Registration Request, Razorpay shall on a periodic basis (as per the E-Mandate Registration) initiate E-Mandate Payment requests with the Sponsor Bank and based on and pursuant to authentication by NPCI and the Destination Bank, receive the funds in the Escrow Account.
+-
+The periodic payments will be facilitated by Razorpay so long as the E-Mandate Registration is not cancelled by the Customer, Destination Bank or the Sponsor Bank. Razorpay shall not be liable for the failure of a payment on account of the decline of the approval by Destination Bank or NPCI or on account of cancellation of the E-Mandate Registration by the Sponsor Bank, Destination Bank, Your customer or NPCI.
+-
+Following the receipt of funds in the Escrow Account, Razorpay shall, subject to Razorpay's withholding rights under these Terms, settle the funds into Your designated account within the applicable settlement period.
+-
+If Razorpay settles the funds, at an earlier time than agreed above, Razorpay shall have an absolute right to recover such funds forthwith if the same is not received in the Escrow Account within three (3) working days following the date on which such funds were supposed to be realized in the Escrow Account.
+-
+In addition to rights under these Terms, if there are reasonable grounds for Razorpay to suspect that a transaction to effect an E-Mandate Payment is done fraudulently or if the Sponsor Bank, NPCI or Destination Bank suspecting so, communicate the same to Razorpay, then Razorpay shall be entitled to withhold settlements to You.
+-
+Pursuant to clause 11 above, You shall, to the extent available, provide information about such transactions to Razorpay, Sponsor Bank, NPCI or Destination Bank forthwith upon receiving a request from Razorpay, Sponsor Bank, NPCI or Destination Bank respectively.
+-
+Razorpay shall be entitled to terminate these Services if the Sponsor Bank or NPCI directs cancellation of Your registration. You acknowledge that Razorpay being merely an intermediary in the system for E-Mandate Payment is bound to follow directions from the Sponsor Bank, NPCI or the Destination Bank in matters relating to fraudulent or suspicious transactions.
+-
+Razorpay shall be entitled to recover from You (by deducting amounts from Your funds held by Razorpay in the course of providing the Services, or if the funds held are insufficient, by issuing a debit note to You), any amounts (a) charged by Sponsor Bank to Razorpay on account of refund and disputed claims from Your customers; and (b) representing penalties, fines or other charges (whatsoever name referred to) levied by the Sponsor Bank, NPCI or any governmental authority (in their sole discretion) on Razorpay on account of fraudulent transactions on Your website.
+-
+You agree that payments effected, or funds debited from Your customer's Bank Account on the following grounds shall not be the responsibility of Razorpay and no liability shall arise for Razorpay in respect of such claims from Your customers:
+-
+Your customer is disputing a transaction as not done or authorized by him.
+-
+The charge/debit on Your customer's Bank Account has occurred because of hacking, phishing, breach of security/ encryption of Your customer's PI through Your platform or any other third-party platform other than that of Razorpay.
+-
+Your customer claiming refund of the amounts deducted from his/her Bank Account on any ground whatsoever, including Your customer's dissatisfaction with Your sale of the goods and/or services to the Customer.
+-
+Razorpay will not be liable collect the amounts from Your customers and credit the same to You in the following circumstances:
+-
+If any of Your customers does not have sufficient funds in the Bank Account for debiting the amount mentioned in the Collection Information.
+-
+Razorpay is prohibited from debiting the amounts from Your customers' account by any governmental authority or Facility Provider.
+-
+If Your customer's account is closed or operations from such an account are barred by governmental authorities or Facility Providers.
+-
+If You do not provide complete and correct information
+-
+Any of Your Customers terminate the mandate.
+-
+Razorpay has reason to believe that Collection Information has not been properly authorized.
+-
+In the event of any conflict between the Part II: Specific Terms for E-Mandate Services and the rest of the Terms, then the former shall prevail. To the maximum extent feasible, they shall be construed harmoniously.
+-
+Capitalised terms used herein shall have the meaning ascribed to such terms in Part A: General Terms and Conditions.
+Part III: Specific Terms For TokenHQ Services
+-
+You understand and acknowledge that the TokenHQ is an end-to-end solution for You to allow Your customers to continue using the saved cards feature in compliance with RBI's guidelines on tokenisation set out in the Circular CO.DPSS.POLC.No.s-516/02-14-003/2021-22 read with DPSS.CO.PD No.1463/02.14.003/2018-19 dated January 8, 2019 and related guidelines and clarifications issued by the RBI (together “Circular”). For the purposes of these Terms, the Applicable Laws shall be deemed to include the Circular.
+-
+Where Razorpay is acting as a technical service provider and You are the token requestor, You acknowledge and agree that Razorpay shall have no liability towards You or any third party for Your acts or omissions or Your failure to comply with Applicable Laws.
+-
+Where Razorpay is acting as the token requestor on Your behalf, You acknowledge and agree that Razorpay's role is limited to requesting for tokens on Your behalf upon receiving consent of Your customers. Razorpay will integrate with available card networks and issuing banks (each a “Token Service Provider” or “TSP”) and its APIs will have the flexibility to respond back with token numbers for Your use.
+-
+You acknowledge and agree that in order to allow using the saved card feature, the customer card details must be tokenized. Accordingly, You shall, except in the case of standard checkout:
+-
+be solely responsible for obtaining consent of the customer to tokenize (and save) the customer's card. Such consent shall be explicit and not by way of a forced / default / automatic selection of checkbox, radio button, etc.
+-
+inform the customers of the purpose of obtaining such consent and that the card will not be tokenized (and saved) if the customer does not provide explicit consent and shall do all things as required to tokenize (and save) the card details pursuant to Applicable Laws.
+-
+share such customer consent with Razorpay in order for Razorpay to trigger the additional factor authentication (AFA) with the issuing bank which is required to register the tokenisation request. You acknowledge and agree that if such customer consent is not shared during the payment flow, then Razorpay shall not tokenize (and save) the customer card details.
+-
+provide the customer an option to de-register the token and delete the card.
+-
+You shall keep Razorpay fully indemnified at all times from and against all losses, damages, penalties, etc., incurred by or imposed on Razorpay to the extent it arises from any breach by You of Part III: Specific Terms for TokenHQ Services.
+-
+You shall keep a log of all instances of obtaining customer consent under Applicable Laws and of Your compliance with Part III: Specific Terms for TokenHQ Services and provide the same to Razorpay on a real time basis or as requested from time to time. In addition to any right hereunder, Razorpay and Facility Providers have the right to audit Your compliance with these terms and conditions at any time upon notice.
+-
+For the purposes of this service, token shall have the meaning as set forth in the Circular.
+-
+You agree that You shall be solely responsible for any hashed string storage undertaken by You.
+-
+In the event of any conflict between the Part III: Specific Terms for TokenHQ Services and the rest of the Terms, then the former shall prevail. To the maximum extent feasible, they shall be construed harmoniously.
+-
+Capitalised terms used herein but not defined shall have the meaning ascribed to such terms in the Terms.
+Part IV: Specific Terms For Subscription Services
+-
+Subscription services provide You the platform to create and manage subscription plans for Your customers with automated recurring transactions. With this product You can (i) create multiple subscription plans for customers, (ii) automatically charge customers based on a billing cycle that You control, and (iii) get instant alerts on payment activity as well as the status of subscriptions.
+-
+You acknowledge and agree that these terms (i) shall apply for debit, credit and prepaid instruments or other methods as notified from time to time (together “Card”) of customers, and (ii) does not apply to once-only / one-time payments.
+-
+You acknowledge and agree that:
+-
+The customer desirous of opting for e-mandate facility on Card is required to undertake a one-time registration process, with an Additional Factor Authentication (AFA) validation by the issuer bank and that an e-mandate on Card of customers for recurring transactions shall be registered only after successful AFA validation.
+-
+Where the first transaction is being performed along with the registration of e- mandate, then AFA validation may be combined. Subsequent recurring transactions shall be performed only for those Card which have been successfully registered and for which the first transaction was successfully authenticated and authorised.
+-
+On successful registration and approval of the e-mandate request, Razorpay shall on a periodic basis (as per the e-mandate) initiate subsequent recurring payments unless such e-mandate is modified or de-registered by the customer.
+-
+Razorpay expressly disclaims all liability for any outages or failures attributable to Facility Providers.
+-
+You further acknowledge and agree that in order to process recurring transactions, customer Card details will need to be saved/secured/tokenized in accordance with Applicable Laws. Accordingly, for custom checkout and server-to-server integration You shall:
+-
+solely be responsible for obtaining informed consent from customers for the purpose of processing of e-mandates, including saving/securing/tokenizing the customer's Card details, in accordance with Applicable Laws. Such consent shall be explicit and not by way of a forced / default / automatic selection of checkbox, radio button, etc.
+-
+share customer consent with Razorpay for Razorpay to trigger the AFA with the issuing bank which is required to both save the Card and process the e-mandate registration. You acknowledge and agree that if such customer consent is not shared during the payment flow, then Razorpay will not tokenize the card or process the e-mandate/ recurring transaction.
+-
+You agree that payments effected, or funds debited from a customer's bank account on the following grounds shall not be the responsibility of Razorpay and no liability shall arise for Razorpay in respect of such customer claims:
+-
+Customer disputing a transaction as not done or authorized by him/her.
+-
+The charge/debit on the customer's bank account has occurred because of hacking, phishing, breach of security/ encryption of the customer's personal data through Your platform or any other third-party platform other than that of Razorpay.
+-
+Customer claiming refund of the amounts deducted from his/her bank account on any ground whatsoever, including customer's dissatisfaction with Your sale of the goods and/or services to the customer.
+-
+You agree that there are instances where Razorpay is only acting as a technical service provider and You are the token requestor for the purposes of saving/ securing/ tokenizing the Card and You shall accordingly be liable to pass the customer's informed consent for saving the Card and registering the e-mandate to Razorpay. You agree that Razorpay shall have no liability towards You or any third party for Your acts or omissions or its failure to comply with Applicable Laws.
+-
+You agree to keep Razorpay fully indemnified at all times from and against all losses, damages, penalties, etc., incurred by or imposed on Razorpay to the extent it arises from any breach by You of Part IV: Specific Terms for Subscription Services.
+-
+You shall maintain records of its activities under these terms, including where applicable keeping log of all instances of obtaining customer consent, and shall provide the same to Razorpay on a real time basis or as requested from time to time. In addition to any right under Part IV: Specific Terms for Subscription Services, Razorpay and Facility Providers have the right to audit Your compliance hereunder at any time upon notice.
+-
+You agree that You shall be solely responsible for any hashed string storage undertaken by You.
+-
+In the event of any conflict between the Part IV: Specific Terms for Subscription Services and the rest of the Terms, then the former shall prevail. To the maximum extent feasible, they shall be construed harmoniously.
+-
+Capitalised terms used herein but not defined herein shall have the meaning ascribed to such terms in the Terms.
+PART V: Razorpay Partner Program
+The Razorpay partner program is a referral program through which You can refer the Razorpay services to Your clients or customers and get rewarded. You may become a partner by agreeing to the detailed Partner Terms and Conditions and signing up as a partner.
+Part VI: Magic Checkout
+Magic checkout is the checkout technology platform developed by Razorpay for Your customers registered with Razorpay which enables the customer to seamlessly save and use their information for placing orders with You (“Magic Checkout Services”). You can avail Magic Checkout Services as per terms specified below:
+-
+PRIVACY AND DATA PROTECTION RIGHTS
+1.1 Razorpay has adopted reasonable security practices and procedures that are commensurate with the information assets being protected, and has implemented relevant technical, operational, managerial and physical security control measures to protect the information in its possession from loss, misuse and unauthorized access, disclosure, alteration and destruction.
+1.2 In the process of providing Magic Checkout Services, You acknowledge and agree that Razorpay may collect, store and use certain information, including personal data, from Your customers. Razorpay is committed to protect such information and to take all reasonable precautions for maintaining confidentiality thereof. Additionally, for the purposes of providing Magic Checkout Services, You hereby understand and agree that Razorpay shall have the right to collect, store and use of customers' personal data, including but not limited to name, email address, phone number and address, as provided by the customers and/or You to Razorpay from time to time directly or indirectly (or provided in past).
+1.3 The information, as referred above, may be used by Razorpay for: (i) providing Magic Checkout Services (including for the purposes of verification of the identity, processing of payment, communication regarding the purchase and monitoring of past behaviour to identify fraudulent transactions); (ii) administrative, marketing and customer support purposes; and/or (iii) providing other Razorpay services.
+1.4 You represent and warrant to Razorpay that:
+-
+You shall use the Magic Checkout Services solely for providing services/goods to Your customers.
+-
+You shall obtain all consents required under Applicable Law from Your customers before sharing PII of the Customers with Razorpay.
+1.5 Your usage/access of the Magic Checkout Services shall constitute Your acceptance to the Terms and the Privacy Policy. You acknowledge and confirm that You shall obtain a valid consent under the Applicable Law to share the personal data of the customers with Razorpay. In the event You withdraw Your consent/acceptance to these terms (including withdrawing consent for using of personal data by Razorpay and/or defaults in its representation and warranties), Razorpay may in its sole discretion discontinue Your access, in part or full, to the Services (including but not limited to discontinuing the access to Magic Checkout Services), associated features and/or present and future benefits. You also acknowledge that You shall immediately inform Razorpay in the event that any customer withdraws their consent/acceptance to sharing of their personal data with Razorpay. You shall indemnify and keep Razorpay, its directors, officers, employees, and affiliates indemnified at all times from any and all claims, liabilities, losses, damages and the like incurred by Razorpay as a result of any breach of these terms, including Your obligations hereunder.
+-
+RTO Protection
+2.1 In case You are availing the RTO Protection as a service from Razorpay for a consideration, You shall be entitled to claim reimbursement for, the return shipping fees incurred by You on such orders which have been returned to You (“RTO Protection”) provided that each of the following conditions are met:
+-
+You have switched on/accepted the Magic Intelligence (the proprietary technology solution developed by Razorpay which analyses, identifies orders placed by customers that may potentially result into ‘return to origin') feature at all times on Your dashboard.
+-
+The return of such orders have been solely due to the Magic Intelligence feature failing to detect/identify such ‘return to origin' order. It is however clarified that any return shipping fees incurred by You on exchange/product return/product refusal after delivery, by customers shall not be covered under RTO Protection.
+-
+The orders for which RTO Protection is claimed are not pre-paid orders.
+2.1 You agree that Razorpay shall be liable to provide reimbursement to You under RTO Protection only upon submission of return shipping invoice/documents as validated by Razorpay.
+2.2 You shall, at the end of every month, raise an invoice for claiming reimbursements under the RTO Protection, which shall be discharged by Razorpay within a period of 30 (thirty) days from the date of the invoice, provided all the conditions specified under Clauses 2.1 and 2.2 above are fulfilled to the satisfaction of Razorpay.
+2.3 In the event of any conflict between the Part VI: Magic Checkout and the rest of the Terms, then the former shall prevail. To the maximum extent feasible, they shall be construed harmoniously.
+2.4 Capitalised terms used herein but not defined herein shall have the meaning ascribed to such terms in the Terms.

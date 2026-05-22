@@ -1,0 +1,202 @@
+{
+  "metadata_counts": {
+    "record_count": 473,
+    "section_count": 42,
+    "clause_count": 431
+  },
+  "first_legal_record": {
+    "source_span_id": "rzp_terms_2026_00001",
+    "clause_id": "Unparted.1.payments_terms_and_conditions",
+    "display_citation": "Section 1, PAYMENTS: TERMS AND CONDITIONS",
+    "hierarchy": {
+      "document": "Razorpay General Terms of Use",
+      "part": null,
+      "subpart": null,
+      "part_key": "Unparted",
+      "section_id": "Unparted.1.payments_terms_and_conditions",
+      "section_title": "PAYMENTS: TERMS AND CONDITIONS",
+      "clause_number": "1",
+      "heading_level": null
+    },
+    "text": "PAYMENTS: TERMS AND CONDITIONS",
+    "normalized_text": "payments: terms and conditions",
+    "span_location": {
+      "char_start": 0,
+      "char_end": 30
+    },
+    "relationships": {
+      "parent_clause_id": null,
+      "child_clause_ids": [],
+      "sibling_clause_ids": []
+    },
+    "references": {
+      "cross_references_raw": [],
+      "cross_references_resolved": [],
+      "unresolved_cross_references": [],
+      "external_references": []
+    },
+    "taxonomy": {
+      "topic_tags": [],
+      "service_area": "unknown",
+      "actor_scope": [],
+      "payment_stage": [],
+      "issue_type": [],
+      "taxonomy_method": "keyword_v0.2"
+    },
+    "provenance": {
+      "source_url": "https://razorpay.com/terms/",
+      "source_hash": "sha256:684e37541a8f723d2111b3b1a18c5c18d16aa14154a706f9064babf6ca6d17f0",
+      "source_fetched_at": "2026-05-22T19:44:43Z",
+      "raw_html_path": "data/raw/razorpay_terms.html",
+      "clean_text_path": "data/processed/razorpay_terms_clean.txt"
+    },
+    "record_type": "section"
+  },
+  "last_legal_record": {
+    "source_span_id": "rzp_terms_2026_00472",
+    "clause_id": "PartB.PartVI.2.4",
+    "display_citation": "Part B SPECIFIC TERMS AND CONDITIONS, Part VI Magic Checkout, Clause 2.4, RTO Protection",
+    "hierarchy": {
+      "document": "Razorpay General Terms of Use",
+      "part": "Part B: SPECIFIC TERMS AND CONDITIONS",
+      "subpart": "Part VI: Magic Checkout",
+      "part_key": "PartB.PartVI",
+      "section_id": "PartB.PartVI.2.rto_protection",
+      "section_title": "RTO Protection",
+      "clause_number": "2.4",
+      "heading_level": null,
+      "source_order": 780,
+      "block_kind": "paragraph"
+    },
+    "text": "2.4 Capitalised terms used herein but not defined herein shall have the meaning ascribed to such terms in the Terms.",
+    "normalized_text": "2.4 capitalised terms used herein but not defined herein shall have the meaning ascribed to such terms in the terms.",
+    "span_location": {
+      "char_start": 149449,
+      "char_end": 149565
+    },
+    "relationships": {
+      "parent_clause_id": "PartB.PartVI.2.rto_protection",
+      "child_clause_ids": [],
+      "sibling_clause_ids": [
+        "PartB.PartVI.2.1",
+        "PartB.PartVI.2.1.Variant002",
+        "PartB.PartVI.2.2",
+        "PartB.PartVI.2.3"
+      ]
+    },
+    "references": {
+      "cross_references_raw": [],
+      "cross_references_resolved": [],
+      "unresolved_cross_references": [],
+      "external_references": []
+    },
+    "taxonomy": {
+      "topic_tags": [],
+      "service_area": "magic_checkout",
+      "actor_scope": [
+        "razorpay"
+      ],
+      "payment_stage": [],
+      "issue_type": [],
+      "taxonomy_method": "keyword_v0.2"
+    },
+    "provenance": {
+      "source_url": "https://razorpay.com/terms/",
+      "source_hash": "sha256:684e37541a8f723d2111b3b1a18c5c18d16aa14154a706f9064babf6ca6d17f0",
+      "source_fetched_at": "2026-05-22T19:44:43Z",
+      "raw_html_path": "data/raw/razorpay_terms.html",
+      "clean_text_path": "data/processed/razorpay_terms_clean.txt"
+    },
+    "record_type": "clause"
+  },
+  "part_boundaries_found": [
+    {
+      "part_key": "PartA",
+      "title": "Part A: GENERAL TERMS AND CONDITIONS",
+      "source_order": 2,
+      "char_start": 31,
+      "char_end": 67
+    },
+    {
+      "part_key": "PartB",
+      "title": "Part B: SPECIFIC TERMS AND CONDITIONS",
+      "source_order": 314,
+      "char_start": 71490,
+      "char_end": 71527
+    },
+    {
+      "part_key": "PartB.PartI",
+      "title": "Part I: Specific Terms For Payment Aggregation Services",
+      "source_order": 315,
+      "char_start": 71528,
+      "char_end": 71584
+    },
+    {
+      "part_key": "PartB.PartIA",
+      "title": "Part IA: Additional Terms For Offline Payment Aggregation And Device Term",
+      "source_order": 474,
+      "char_start": 101711,
+      "char_end": 101784
+    },
+    {
+      "part_key": "PartB.PartIB",
+      "title": "Part IB: Specific Terms Applicable to PA-CB Outward Transactions",
+      "source_order": 557,
+      "char_start": 116726,
+      "char_end": 116790
+    },
+    {
+      "part_key": "PartB.PartII",
+      "title": "Part II: Specific Terms For E-Mandate Services",
+      "source_order": 606,
+      "char_start": 126765,
+      "char_end": 126811
+    },
+    {
+      "part_key": "PartB.PartIII",
+      "title": "Part III: Specific Terms For TokenHQ Services",
+      "source_order": 683,
+      "char_start": 135600,
+      "char_end": 135645
+    },
+    {
+      "part_key": "PartB.PartIV",
+      "title": "Part IV: Specific Terms For Subscription Services",
+      "source_order": 712,
+      "char_start": 139143,
+      "char_end": 139192
+    },
+    {
+      "part_key": "PartB.PartV",
+      "title": "Part V: Razorpay Partner Program",
+      "source_order": 753,
+      "char_start": 144163,
+      "char_end": 144195
+    },
+    {
+      "part_key": "PartB.PartVI",
+      "title": "Part VI: Magic Checkout",
+      "source_order": 755,
+      "char_start": 144455,
+      "char_end": 144478
+    }
+  ],
+  "nav_footer_like_record_count": 0,
+  "nav_footer_like_titles": [],
+  "weird_part_id_count": 0,
+  "weird_part_ids": [],
+  "missing_required_sections": [],
+  "unresolved_reference_count": 0,
+  "missing_parent_count": 0,
+  "missing_child_count": 0,
+  "expected_assignment_clauses_found": {
+    "3.4": true,
+    "3.5": true,
+    "4.1": true,
+    "4.2": true,
+    "4.3": true,
+    "4.5": true,
+    "16.1": true
+  },
+  "validation_errors": []
+}
