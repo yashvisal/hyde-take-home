@@ -1,0 +1,66 @@
+{
+  "run_id": "2026-05-22_generation_v1",
+  "source_hash": "sha256:684e37541a8f723d2111b3b1a18c5c18d16aa14154a706f9064babf6ca6d17f0",
+  "source_fetched_at": "2026-05-22T19:44:43Z",
+  "generator_model": "gpt-5.5",
+  "generator_temperature": 1.0,
+  "python_random_seed": 42,
+  "max_attempts_per_row": 3,
+  "prompt_version": "generation_v1",
+  "final_row_count": 45,
+  "category_counts": {
+    "clarification_required": 15,
+    "clear_answer": 15,
+    "genuine_ambiguity": 15
+  },
+  "retry_count": 0,
+  "elapsed_seconds": 156.63,
+  "avg_seconds_per_row": 3.48,
+  "quality_review_flags": {
+    "schema_validation_rejections": 0,
+    "source_quality_rejections": 0,
+    "category_fit_rejections": 0,
+    "missing_visible_citation_rejections": 0,
+    "weak_quote_rejections": 0,
+    "weak_known_facts_rejections": 0,
+    "generic_answer_rejections": 0,
+    "accepted_after_retry": 0,
+    "final_quality_lint_flags": 6,
+    "source_quality_flags": 3,
+    "category_fit_flags": 1,
+    "missing_visible_citation_flags": 0,
+    "weak_quote_flags": 2,
+    "weak_known_facts_flags": 0,
+    "generic_answer_flags": 0,
+    "citation_repairs": 1,
+    "source_plan_review_flags": 14,
+    "source_plan_replacements": 6
+  },
+  "quality_gate_mode": "warn_only",
+  "quality_review_note": "Quality checks ran in warning mode. These flags guide downstream eval and V2 improvements; they do not block V1 dataset creation.",
+  "deterministic_outputs": [
+    "coverage plan",
+    "row IDs",
+    "source record selection",
+    "parser-owned source metadata",
+    "schema validation",
+    "final row ordering"
+  ],
+  "non_deterministic_outputs": [
+    "LLM-generated user wording",
+    "LLM-generated assistant wording",
+    "LLM-generated known facts",
+    "LLM-generated missing facts",
+    "LLM-generated clarifying questions",
+    "LLM-generated conditional outcomes",
+    "LLM-generated ambiguity explanations",
+    "LLM-selected support roles and quotes"
+  ],
+  "template_only": false,
+  "quality_gate": true,
+  "output_paths": {
+    "dataset": "data/output/razorpay_synthetic_qa.jsonl",
+    "run_manifest": "data/output/run_manifest.json",
+    "generation_summary": "data/output/generation_summary.md"
+  }
+}
