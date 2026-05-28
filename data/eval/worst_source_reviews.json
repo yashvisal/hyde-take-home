@@ -1,0 +1,83 @@
+[
+  {
+    "row_id": "rzp_clarification_009",
+    "source_adequacy_score": 82,
+    "original_sources_sufficient": true,
+    "better_candidate_clauses": [],
+    "source_issue_type": "answer_generation",
+    "diagnosis": "The cited clauses are the right sources for breach-based immediate suspension and settlement stoppage, but the answer wrongly makes Razorpay's identification of a specific breached clause in the email seem legally material when the cited terms only require an actual breach and contain no notice-specific requirement.",
+    "review_metadata": {
+      "judge_status": "ok",
+      "judge_model": "gpt-5.5",
+      "judge_temperature": null,
+      "source_review_prompt_version": "source_review_v1",
+      "judge_run_id": "20260528T013939Z_judge_v1_category_aware",
+      "candidate_count": 35,
+      "repair_attempted": false
+    }
+  },
+  {
+    "row_id": "rzp_clarification_014",
+    "source_adequacy_score": 45,
+    "original_sources_sufficient": false,
+    "better_candidate_clauses": [
+      {
+        "clause_id": "PartB.PartVI.2.1.item001",
+        "reason": "It states a specific RTO Protection condition: Magic Intelligence must have been switched on/accepted at all times on the dashboard."
+      },
+      {
+        "clause_id": "PartB.PartVI.2.1.item002",
+        "reason": "It states the key causation/exclusion condition: the return must be solely due to Magic Intelligence failing to identify an RTO order, and returns after delivery/exchange/product refusal are excluded."
+      },
+      {
+        "clause_id": "PartB.PartVI.2.1.item003",
+        "reason": "It confirms another condition for the claim: the order must not be prepaid, directly relevant because the user says the order was COD."
+      },
+      {
+        "clause_id": "PartB.PartVI.2.1.Variant002",
+        "reason": "It adds the documentation condition that Razorpay is liable to reimburse only upon submission and validation of return shipping invoice/documents."
+      },
+      {
+        "clause_id": "PartB.PartVI.2.2",
+        "reason": "It explains the claim process and timing: monthly invoice, payment within 30 days, and fulfillment of conditions to Razorpay's satisfaction."
+      }
+    ],
+    "source_issue_type": "multiple",
+    "diagnosis": "The original citation to Clause 2.1 only supports the paid-service prerequisite and omits the specific RTO Protection conditions and claim process, while Clause 2.4 is not useful for the reimbursement question.",
+    "review_metadata": {
+      "judge_status": "ok",
+      "judge_model": "gpt-5.5",
+      "judge_temperature": null,
+      "source_review_prompt_version": "source_review_v1",
+      "judge_run_id": "20260528T013939Z_judge_v1_category_aware",
+      "candidate_count": 35,
+      "repair_attempted": false
+    }
+  },
+  {
+    "row_id": "rzp_ambiguity_007",
+    "source_adequacy_score": 35,
+    "original_sources_sufficient": false,
+    "better_candidate_clauses": [
+      {
+        "clause_id": "PartA.16.1.item009",
+        "reason": "This clause directly uses the relevant unacceptable-risk language and states that Razorpay PA may suspend when it determines, in its sole discretion, that the merchant's activities expose Razorpay PA to risks unacceptable to Razorpay; it is therefore the most specific source for whether an exact standard or threshold is defined."
+      },
+      {
+        "clause_id": "PartA.16.1.item004",
+        "reason": "This clause is also more relevant than the original because it refers to transactions with a high-risk score under Razorpay PA's internal fraud assessment tools and policies, showing that risk assessment exists but without disclosing an objective score threshold."
+      }
+    ],
+    "source_issue_type": "weak_source_selection",
+    "diagnosis": "The original citation selected a generic breach-based suspension trigger instead of the clauses that directly address unacceptable risk and internal risk scoring.",
+    "review_metadata": {
+      "judge_status": "ok",
+      "judge_model": "gpt-5.5",
+      "judge_temperature": null,
+      "source_review_prompt_version": "source_review_v1",
+      "judge_run_id": "20260528T013939Z_judge_v1_category_aware",
+      "candidate_count": 35,
+      "repair_attempted": false
+    }
+  }
+]

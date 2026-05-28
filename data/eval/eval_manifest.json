@@ -1,0 +1,84 @@
+{
+  "judge_model": "gpt-5.5",
+  "judge_temperature": null,
+  "judge_temperature_note": "provider default",
+  "judge_prompt_version": "judge_v1_category_aware",
+  "source_review_prompt_version": "source_review_v1",
+  "diagnosis_prompt_version": "worst_diagnosis_v1",
+  "judge_run_id": "20260528T013939Z_judge_v1_category_aware",
+  "source_hash": "sha256:684e37541a8f723d2111b3b1a18c5c18d16aa14154a706f9064babf6ca6d17f0",
+  "input_paths": {
+    "dataset": "data/output/razorpay_synthetic_qa.jsonl",
+    "run_manifest": "data/output/run_manifest.json",
+    "generation_summary": "data/output/generation_summary.md",
+    "clause_index": "data/processed/clause_index.json"
+  },
+  "output_paths": {
+    "eval_results": "data/eval/eval_results.jsonl",
+    "worst_source_reviews": "data/eval/worst_source_reviews.json",
+    "eval_summary": "data/eval/eval_summary.md",
+    "eval_manifest": "data/eval/eval_manifest.json"
+  },
+  "row_count": 45,
+  "started_at": "2026-05-28T01:39:39Z",
+  "completed_at": "2026-05-28T01:48:18Z",
+  "elapsed_seconds": 519.0,
+  "dataset_checks": {
+    "row_count": 45,
+    "expected_row_count": 45,
+    "category_counts": {
+      "clarification_required": 15,
+      "clear_answer": 15,
+      "genuine_ambiguity": 15
+    },
+    "expected_category_counts": {
+      "clear_answer": 15,
+      "clarification_required": 15,
+      "genuine_ambiguity": 15
+    },
+    "source_hash_matches_manifest": true,
+    "all_rows_parse": true,
+    "parse_errors": [],
+    "dataset_validation_failures": []
+  },
+  "aggregate_metrics": {
+    "mean_score": 94.22,
+    "median_score": 96,
+    "lowest_score": 74,
+    "highest_score": 100,
+    "by_category": {
+      "clarification_required": {
+        "mean_score": 88.73,
+        "lowest_score": 74,
+        "row_count": 15
+      },
+      "clear_answer": {
+        "mean_score": 99,
+        "lowest_score": 92,
+        "row_count": 15
+      },
+      "genuine_ambiguity": {
+        "mean_score": 94.93,
+        "lowest_score": 79,
+        "row_count": 15
+      }
+    },
+    "dimension_means": {
+      "category_fit": 24.24,
+      "groundedness": 23.87,
+      "citation_source_sufficiency": 13.91,
+      "answer_usefulness": 8.93,
+      "no_overreach": 9.38,
+      "category_specific_behavior": 9,
+      "user_question_realism": 4.89
+    },
+    "failure_mode_counts": {
+      "missed_ambiguity": 1,
+      "missed_clarification": 3,
+      "unsupported_claim": 3,
+      "weak_citation": 5,
+      "weak_source_selection": 4
+    },
+    "judge_failure_count": 0
+  }
+}
