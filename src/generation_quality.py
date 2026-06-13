@@ -213,7 +213,12 @@ def validate_generation_quality(row: dict[str, Any], records: dict[str, dict[str
             result.warnings.append("weak_known_facts: known fact is phrased as a question")
 
     for source in row.get("source_clauses", []):
-        record = records[source["clause_id"]]
+        record = records.get(source.get("clause_id"))
+        if record is None:
+            # Unknown clause IDs are a hard schema failure; record a lint warning
+            # instead of crashing so eval can still process intentionally bad rows.
+            result.warnings.append(f"source_quality: unresolved clause_id {source.get('clause_id')}")
+            continue
         support_role = source.get("support_role")
         quote = source.get("relevant_quote", "")
         if support_role in {"primary", "conditional", "ambiguity_source"}:
