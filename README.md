@@ -8,7 +8,7 @@ The pipeline has three stages:
 2. Generate 45 structured synthetic Q&A examples across the required categories.
 3. Evaluate the dataset with deterministic validation plus an LLM-as-judge quality review.
 
-The evaluation framework has two versions. V1 (`data/eval/v1/`) is the originally submitted run. V2 (`data/eval/v2/`) re-evaluates the same, unchanged dataset with a hardened mechanism: blind judging, optional cross-model judging, a pipeline-selected human-review section, and an adversarial pack that tests whether each evaluation layer catches known-bad rows. See [Evaluation Design](#evaluation-design) and [Changes Since V1](#changes-since-v1-feedback-to-change-mapping).
+The evaluation framework has two major versions. V1 (`data/eval/v1/`) is the baseline run. V2 (`data/eval/v2/`) re-evaluates the same, unchanged dataset with a hardened mechanism: blind judging, optional cross-model judging, a pipeline-selected human-review section, and an adversarial pack that tests whether each evaluation layer catches known-bad rows. Existing v2 artifacts are versioned by run (`v2.0`, `v2.1`) so the iteration is visible without overwriting earlier evidence. See [Evaluation Design](#evaluation-design) and [Changes Since V1](#changes-since-v1).
 
 ## Dataset Categories
 
@@ -27,17 +27,18 @@ Generation outputs:
 - `data/output/run_manifest.json`: generation metadata, source hash, seeds, model settings, and determinism notes.
 - `data/output/generation_summary.md`: generation summary, coverage, quality lint flags, and validation status.
 
-Evaluation outputs (V1, original submission):
+Evaluation outputs (V1, baseline run):
 
 - `data/eval/v1/eval_results.jsonl`: one LLM-as-judge result per dataset row.
 - `data/eval/v1/worst_source_reviews.json`: deeper source-adequacy reviews for the lowest-scoring rows.
 - `data/eval/v1/eval_summary.md`: human-readable evaluation summary.
 - `data/eval/v1/eval_manifest.json`: evaluation metadata, judge settings, timestamps, source hash, and aggregate metrics.
 
-Evaluation outputs (V2, hardened mechanism — same files, same shapes):
+Evaluation outputs (V2, hardened mechanism):
 
-- `data/eval/v2/eval_results.jsonl`, `data/eval/v2/worst_source_reviews.json`, `data/eval/v2/eval_summary.md`, `data/eval/v2/eval_manifest.json`: the blind-judge re-evaluation of the unchanged dataset. The summary additionally contains a Label Agreement section, a Human Review section with verdict slots, and a Changes Since V1 comparison.
-- `data/eval/v2/adversarial/`: the same four artifacts for the adversarial pack run, with a per-layer catch-rate table in the summary.
+- `data/eval/v2/v2.0/`: first blind-judge v2 run, retained as an earlier iteration.
+- `data/eval/v2/v2.1/eval_results.jsonl`, `data/eval/v2/v2.1/worst_source_reviews.json`, `data/eval/v2/v2.1/eval_summary.md`, `data/eval/v2/v2.1/eval_manifest.json`: the current blind-judge re-evaluation of the unchanged dataset. The summary contains Label Agreement, a compact Human Review audit queue, and a Changes Since V1 comparison.
+- `data/eval/v2/v2.1/adversarial_report.md`: standalone adversarial report for the handcrafted stress-test pack. Adversarial mode intentionally does not emit the four normal dataset-eval files because its purpose is the targeted catch-rate report.
 
 Handcrafted evaluation inputs:
 
@@ -131,22 +132,22 @@ This assumes these files exist:
 - `data/output/generation_summary.md`
 - `data/processed/clause_index.json`
 
-This writes (the v1 artifacts in `data/eval/v1/` are never overwritten):
+This writes (the v1 artifacts in `data/eval/v1/` and older v2 runs such as `data/eval/v2/v2.0/` are never overwritten):
 
-- `data/eval/v2/eval_results.jsonl`
-- `data/eval/v2/worst_source_reviews.json`
-- `data/eval/v2/eval_summary.md`
-- `data/eval/v2/eval_manifest.json`
+- `data/eval/v2/v2.1/eval_results.jsonl`
+- `data/eval/v2/v2.1/worst_source_reviews.json`
+- `data/eval/v2/v2.1/eval_summary.md`
+- `data/eval/v2/v2.1/eval_manifest.json`
 
 To judge with a different model than the generator (recommended to reduce same-model bias), pass `--judge-model` or set `OPENAI_JUDGE_MODEL`. The eval manifest records `generator_model`, `judge_model`, and a `cross_model_judging` flag, and the script warns when the judge matches the generator.
 
 Run the adversarial pack through the same evaluation:
 
 ```bash
-uv run python scripts/evaluate_dataset.py --dataset data/tests/eval/adversarial_pack.jsonl --output-dir data/eval/v2/adversarial --adversarial
+uv run python scripts/evaluate_dataset.py --dataset data/tests/eval/adversarial_pack.jsonl --adversarial
 ```
 
-The `--adversarial` flag relaxes the 45-row/15-per-category expectations and adds a per-layer catch-rate table to the summary.
+The `--adversarial` flag relaxes the 45-row/15-per-category expectations and writes only `data/eval/v2/v2.1/adversarial_report.md`.
 
 ## Determinism And Reproducibility
 
@@ -176,8 +177,8 @@ Further reproducibility runs reproduce the structural guarantees: source hash, c
 Evaluation determinism:
 
 - Deterministic checks use `src/schemas.py` and `src/generation_quality.py`.
-- Judge calls are recorded with `judge_model`, `generator_model`, `cross_model_judging`, `judge_temperature`, `judge_prompt_version`, `judge_run_id`, timestamps, source hash, structured-output validation status, fallback failure count, and aggregate metrics in the run's `eval_manifest.json` (`data/eval/v1/` for v1, `data/eval/v2/` for v2).
-- The human-review sample selection is seeded (`seed 42`), so the same rows are selected for review across re-runs of the same eval results.
+- Judge calls are recorded with `judge_model`, `generator_model`, `cross_model_judging`, `judge_temperature`, `judge_prompt_version`, `judge_run_id`, timestamps, source hash, structured-output validation status, fallback failure count, and aggregate metrics in the run's `eval_manifest.json` (`data/eval/v1/` for v1, `data/eval/v2/v2.1/` for the current v2 run).
+- The human-review audit queue uses a seeded positive-control sample (`seed 42`), so perfect-score rows selected for review are reproducible across re-runs with the same eval results.
 - The selected GPT-5.5 endpoint does not expose an explicit temperature parameter through the provider interface used for this run, so the eval records `judge_temperature: null` and `judge_temperature_note: provider default`.
 
 ## Evaluation Design
@@ -197,8 +198,8 @@ Second, an LLM judge scores every row out of 100. In V2 the judge is blind: it s
 
 V2 adds two checks on the evaluation framework itself:
 
-- A Human Review section in `eval_summary.md`: the pipeline selects a seeded stratified sample (2 per category, seed 42), the 3 lowest-scoring rows, and all label-disagreement rows, and renders them with blank human verdict slots (`overall_verdict`, `category_verdict`, `groundedness_verdict`, `citation_sufficiency_verdict`). This is the gold human check on dataset quality.
-- An adversarial pack (`data/tests/eval/adversarial_pack.jsonl`): 8 hand-authored rows, each with exactly one planted flaw and an expected catching layer. Three rows violate hard constraints (fabricated quote, unknown clause ID, category-shape violation) and should be caught deterministically; two are schema-valid but weak (vague clarifying question, thin section-heading source) and should be caught by quality lints; three are clean at both lower layers (manufactured ambiguity over a clause that clearly answers, an invented 24-hour refund guarantee, an invented 180-day fund-hold maximum) and can only be caught by the blind judge. The eval reports which layers caught each flaw.
+- A Human Review section in `eval_summary.md`: the pipeline now produces a compact audit queue rather than a blank worksheet. It selects rows using a risk-first strategy: lowest judge scores, label disagreements, deterministic/schema failures, source-review insufficiency, capped judge/lint flags, category-coverage backfill, and a seeded sample of perfect-score rows as positive controls. The section lists only the row ID, planned-vs-predicted category, score, reason for review, and cited clauses to inspect.
+- An adversarial pack (`data/tests/eval/adversarial_pack.jsonl`): 8 hand-authored rows, each with exactly one planted flaw and an expected catching layer. Three rows violate hard constraints (fabricated quote, unknown clause ID, category-shape violation) and should be caught deterministically; two are schema-valid but weak (vague clarifying question, thin section-heading source) and should be caught by quality lints; three are clean at both lower layers (manufactured ambiguity over a clause that clearly answers, an invented 24-hour refund guarantee, an invented 180-day fund-hold maximum) and can only be caught by the blind judge. The adversarial result is documented in a focused standalone report instead of the normal four dataset-eval output files.
 
 The scoring rubric is:
 
@@ -219,11 +220,11 @@ For the lowest-scoring rows, the eval runs a deeper source-adequacy review using
 
 ## Evaluation Results
 
-The V1 eval run (category-aware judge) produced a mean of `94.22/100`, median `96/100`, lowest `74/100`, with zero judge fallback failures. The V2 blind re-evaluation of the same dataset produced:
+The V1 eval run (category-aware judge) produced a mean of `94.22/100`, median `96/100`, lowest `74/100`, with zero judge fallback failures. The current V2.1 blind re-evaluation of the same dataset produced:
 
-- Mean score: `93.96/100`
-- Median score: `96/100`
-- Lowest score: `74/100`
+- Mean score: `93.84/100`
+- Median score: `95/100`
+- Lowest score: `68/100`
 - Highest score: `100/100`
 - Judge fallback failures: `0`
 - Label agreement (blind judge prediction vs planned category): `45/45 (100%)`
@@ -235,16 +236,16 @@ By category (V2):
 
 | Category                 | Mean score | Lowest score | Rows |
 | ------------------------ | ---------- | ------------ | ---- |
-| `clear_answer`           | 98.07      | 80           | 15   |
-| `clarification_required` | 88.87      | 74           | 15   |
-| `genuine_ambiguity`      | 94.93      | 82           | 15   |
+| `clear_answer`           | 98.6       | 85           | 15   |
+| `clarification_required` | 87.6       | 68           | 15   |
+| `genuine_ambiguity`      | 95.33      | 90           | 15   |
 
 
-The most common failure modes were `weak_citation`, `weak_source_selection`, `unsupported_claim`, `missed_clarification`, and `low_business_value` — consistent with V1, which supports the V1 verdict despite the judge no longer seeing any automated signals.
+The most common failure modes were `weak_citation`, `unsupported_claim`, `missed_clarification`, `low_business_value`, and `missed_ambiguity` — consistent with V1's emphasis on source-selection and category-boundary issues, while making the weaker rows easier to route to review.
 
-Adversarial catch rate: the eval framework caught `8/8` planted flaws, and every flaw was caught by the layer designed to catch it. The three judge-only rows (clean schema, clean lints) scored 17–40/100 with correct failure-mode flags and category disagreements. Full table in `data/eval/v2/adversarial/eval_summary.md`.
+Adversarial catch rate: the eval framework caught `8/8` planted flaws, and every flaw was caught by the layer designed to catch it. The three judge-only rows (clean schema, clean lints) scored 17–38/100 with correct failure-mode flags and category disagreements. Full table in `data/eval/v2/v2.1/adversarial_report.md`.
 
-The lowest-scoring rows are documented in `data/eval/v2/eval_summary.md`, with approximately 50-word diagnoses explaining what failed, where in the pipeline the issue likely came from, and what rubric or code change would catch it.
+The lowest-scoring rows are documented in `data/eval/v2/v2.1/eval_summary.md`, with approximately 50-word diagnoses explaining what failed, where in the pipeline the issue likely came from, and what rubric or code change would catch it.
 
 ## Changes Since V1
 
@@ -253,12 +254,12 @@ The lowest-scoring rows are documented in `data/eval/v2/eval_summary.md`, with a
 | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Eval framework could leak signals to the judge | Blind judging: planned label, support roles, deterministic checks, and annotation fields are withheld; judge predicts the category itself (`judge_v2_blind`)                                                 |
 | Same model for generation and eval risks bias  | Cross-model judging supported via `--judge-model` / `OPENAI_JUDGE_MODEL`; provenance (`generator_model`, `judge_model`, `cross_model_judging`) recorded in the eval manifest; same-model runs emit a warning |
-| No gold human checks                           | Human Review section in `eval_summary.md` with pipeline-selected rows, selection criteria, and structured verdict slots                                                                                      |
-| No adversarial checks                          | `data/tests/eval/adversarial_pack.jsonl` plus `--adversarial` mode reporting a per-layer catch-rate table                                                                                                    |
-| Visible iteration                              | V2 artifacts isolated in `data/eval/v2/`; `eval_summary.md` includes a Changes Since V1 comparison against the frozen V1 manifest                                                                            |
+| No gold human checks                           | Human Review audit queue in `eval_summary.md` with pipeline-selected rows, review reasons, and cited clauses to inspect                                                                                      |
+| No adversarial checks                          | `data/tests/eval/adversarial_pack.jsonl` plus `--adversarial` mode writing a focused `adversarial_report.md` with per-layer catch-rate evidence                                                              |
+| Visible iteration                              | V2 artifacts versioned under `data/eval/v2/v2.0/` and `data/eval/v2/v2.1/`; `eval_summary.md` includes a Changes Since V1 comparison against the frozen V1 manifest                                         |
 
 
-The generated dataset (`data/output/razorpay_synthetic_qa.jsonl`) is byte-identical to the submission; V2 only hardens the evaluation mechanism around it.
+The generated dataset (`data/output/razorpay_synthetic_qa.jsonl`) is unchanged; V2 only hardens the evaluation mechanism around it.
 
 ## Notes On Quality Gates
 
