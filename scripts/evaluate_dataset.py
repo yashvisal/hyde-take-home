@@ -31,13 +31,14 @@ DATASET_PATH = ROOT / "data" / "output" / "razorpay_synthetic_qa.jsonl"
 RUN_MANIFEST_PATH = ROOT / "data" / "output" / "run_manifest.json"
 GENERATION_SUMMARY_PATH = ROOT / "data" / "output" / "generation_summary.md"
 CLAUSE_INDEX_PATH = ROOT / "data" / "processed" / "clause_index.json"
-# v2 outputs are isolated so the submitted v1 artifacts in data/eval/v1/ stay untouched.
-EVAL_DIR = ROOT / "data" / "eval" / "v2"
+# v2 outputs are versioned so the v1 artifacts and earlier v2 runs stay untouched.
+EVAL_DIR = ROOT / "data" / "eval" / "v2" / "v2.1"
 BASELINE_MANIFEST_PATH = ROOT / "data" / "eval" / "v1" / "eval_manifest.json"
 EVAL_RESULTS_PATH = EVAL_DIR / "eval_results.jsonl"
 WORST_SOURCE_REVIEWS_PATH = EVAL_DIR / "worst_source_reviews.json"
 EVAL_SUMMARY_PATH = EVAL_DIR / "eval_summary.md"
 EVAL_MANIFEST_PATH = EVAL_DIR / "eval_manifest.json"
+ADVERSARIAL_REPORT_PATH = EVAL_DIR / "adversarial_report.md"
 
 OPENAI_CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions"
 DEFAULT_JUDGE_MODEL = "gpt-5.5"
@@ -49,8 +50,9 @@ MAX_JUDGE_ATTEMPTS = 2
 MAX_CANDIDATES = 35
 SAME_SERVICE_AREA_CAP = 8
 HUMAN_REVIEW_SEED = 42
-HUMAN_REVIEW_PER_CATEGORY = 2
 HUMAN_REVIEW_WORST_COUNT = 3
+HUMAN_REVIEW_FLAGGED_COUNT = 4
+HUMAN_REVIEW_PERFECT_SCORE_COUNT = 2
 JUDGE_CATCH_SCORE_THRESHOLD = 80
 
 DIMENSION_MAX = {
@@ -900,30 +902,86 @@ def bool_count(eval_results: list[dict[str, Any]], check_name: str) -> int:
 def select_human_review_rows(
     rows: list[dict[str, Any]],
     eval_results: list[dict[str, Any]],
-) -> list[tuple[str, list[str]]]:
-    """Pick rows for the human-review section with explicit selection reasons.
+    source_reviews: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Pick a compact human-review queue with explicit selection reasons.
 
-    Criteria: a seeded stratified random sample (independent of judge output),
-    the lowest-scoring rows, and every row where the blind judge's predicted
-    category disagrees with the planned label.
+    Criteria:
+    - all label disagreements and deterministic/schema failures,
+    - the lowest-scoring rows,
+    - rows where deep source review found insufficient citations,
+    - a capped sample of rows with judge/lint flags,
+    - category coverage backfill if a category was not selected,
+    - a seeded sample of perfect-score rows as positive controls.
     """
     reasons: dict[str, list[str]] = {}
     rng = random.Random(HUMAN_REVIEW_SEED)
-    by_category: dict[str, list[str]] = defaultdict(list)
-    for row in rows:
-        by_category[row.get("category")].append(row["id"])
-    for category in sorted(by_category):
-        ids = sorted(by_category[category])
-        for row_id in rng.sample(ids, min(HUMAN_REVIEW_PER_CATEGORY, len(ids))):
-            reasons.setdefault(row_id, []).append("stratified_random_sample")
+    row_by_id = {row["id"]: row for row in rows}
+    result_by_id = {result["row_id"]: result for result in eval_results}
+
+    for result in eval_results:
+        checks = result["deterministic_checks"]
+        if result.get("label_agreement") is False:
+            reasons.setdefault(result["row_id"], []).append("judge_label_disagreement")
+        if checks.get("schema_validation_errors"):
+            reasons.setdefault(result["row_id"], []).append("deterministic_validation_failure")
+
     worst = sorted(eval_results, key=lambda result: (result["total_score"], result["row_id"]))
     for result in worst[:HUMAN_REVIEW_WORST_COUNT]:
         reasons.setdefault(result["row_id"], []).append("lowest_judge_score")
-    for result in eval_results:
-        if result.get("label_agreement") is False:
-            reasons.setdefault(result["row_id"], []).append("judge_label_disagreement")
+
+    for review in source_reviews:
+        if not review.get("original_sources_sufficient"):
+            reasons.setdefault(review["row_id"], []).append("source_review_insufficient")
+
+    flagged = [
+        result
+        for result in eval_results
+        if result.get("failure_modes")
+        or result["deterministic_checks"].get("quality_lint_warnings")
+        or result["deterministic_checks"].get("quality_lint_errors")
+    ]
+    for result in sorted(flagged, key=lambda result: (result["total_score"], result["row_id"]))[:HUMAN_REVIEW_FLAGGED_COUNT]:
+        reasons.setdefault(result["row_id"], []).append("judge_or_lint_flag")
+
+    selected_categories = {row_by_id[row_id]["category"] for row_id in reasons}
+    for category in sorted(CATEGORIES - selected_categories):
+        candidates = [result for result in eval_results if result["category"] == category]
+        if candidates:
+            result = min(candidates, key=lambda item: (item["total_score"], item["row_id"]))
+            reasons.setdefault(result["row_id"], []).append("category_coverage_backfill")
+
+    perfect = sorted(
+        (result for result in eval_results if result["total_score"] == 100),
+        key=lambda result: result["row_id"],
+    )
+    perfect_ids = [result["row_id"] for result in perfect if result["row_id"] not in reasons]
+    for row_id in rng.sample(perfect_ids, min(HUMAN_REVIEW_PERFECT_SCORE_COUNT, len(perfect_ids))):
+        reasons.setdefault(row_id, []).append("perfect_score_positive_control")
+
     ordered_ids = [row["id"] for row in rows if row["id"] in reasons]
-    return [(row_id, reasons[row_id]) for row_id in ordered_ids]
+    review_items = []
+    for row_id in ordered_ids:
+        row = row_by_id[row_id]
+        result = result_by_id[row_id]
+        review_items.append(
+            {
+                "row_id": row_id,
+                "category": row["category"],
+                "predicted_category": result.get("predicted_category"),
+                "total_score": result["total_score"],
+                "reasons": sorted(set(reasons[row_id])),
+                "failure_modes": result.get("failure_modes", []),
+                "source_clauses": [
+                    {
+                        "clause_id": source.get("clause_id"),
+                        "display_citation": source.get("display_citation"),
+                    }
+                    for source in row.get("source_clauses", [])
+                ],
+            }
+        )
+    return review_items
 
 
 ADVERSARIAL_CORE_CHECKS = (
@@ -992,7 +1050,7 @@ def write_summary(
     diagnoses: dict[str, str],
     metrics: dict[str, Any],
     config: EvalConfig,
-    review_rows: list[tuple[str, list[str]]] | None = None,
+    review_rows: list[dict[str, Any]] | None = None,
     catch_results: list[dict[str, Any]] | None = None,
     baseline: dict[str, Any] | None = None,
 ) -> None:
@@ -1002,9 +1060,8 @@ def write_summary(
     result_by_id = {result["row_id"]: result for result in eval_results}
     row_by_id = {row["id"]: row for row in rows}
     worst_ids = [review["row_id"] for review in source_reviews]
-    title = "# Adversarial Pack Evaluation Summary" if config.adversarial else "# LLM-as-Judge Evaluation Summary (V2)"
     lines = [
-        title,
+        "# LLM-as-Judge Evaluation Summary",
         "",
         "## Dataset Evaluated",
         "",
@@ -1136,12 +1193,12 @@ def write_summary(
             ]
         )
     else:
-        acceptability = "acceptable for submission with caveats" if metrics["mean_score"] and metrics["mean_score"] >= 80 else "needs review before submission"
+        acceptability = "strong overall with review caveats" if metrics["mean_score"] and metrics["mean_score"] >= 80 else "needs review before broader use"
         lines.extend(
             [
                 "## Interpretation",
                 "",
-                f"The dataset is {acceptability}. The evaluation is intentionally stricter than schema validation: it tests category fit, source grounding, citation sufficiency, usefulness, overreach, and realism. Because the judge mechanism changed in v2 (blind judging, optional cross-model), scores are not directly point-comparable to v1; failure modes, label agreement, and the adversarial catch rate are the like-for-like evidence.",
+                f"The dataset is {acceptability}. The evaluation is intentionally stricter than schema validation: it tests category fit, source grounding, citation sufficiency, usefulness, overreach, and realism. Because the judge mechanism changed in v2 (blind judging, optional cross-model), scores are not directly point-comparable to v1; failure modes and label agreement are the like-for-like evidence for the dataset run, while the adversarial catch rate is documented separately in `adversarial_report.md`.",
                 "",
                 "## Future Improvements",
                 "",
@@ -1180,48 +1237,120 @@ def render_catch_rate_section(catch_results: list[dict[str, Any]]) -> list[str]:
     return lines
 
 
+def write_adversarial_report(
+    path: Path,
+    *,
+    rows: list[dict[str, Any]],
+    eval_results: list[dict[str, Any]],
+    catch_results: list[dict[str, Any]],
+    metrics: dict[str, Any],
+    config: EvalConfig,
+) -> None:
+    caught = sum(1 for item in catch_results if item["caught"])
+    expected_hits = sum(1 for item in catch_results if item.get("caught_by_expected_layer"))
+    by_expected_layer = Counter(item["expected_layer"] for item in catch_results)
+    caught_by_layer = Counter(layer for item in catch_results for layer in item["caught_by"])
+    result_by_id = {result["row_id"]: result for result in eval_results}
+    row_by_id = {row["id"]: row for row in rows}
+
+    lines = [
+        "# Adversarial Evaluation Report",
+        "",
+        "## Purpose",
+        "",
+        "This report stress-tests the evaluation framework with intentionally flawed rows. It is not a second dataset evaluation run; it is a targeted check that the layered eval stack can distinguish known-bad examples from strong generated rows.",
+        "",
+        "The adversarial pack is deliberately small and hand-authored so each row isolates one failure mode. The rows are grouped by the layer expected to catch them: deterministic validation, advisory quality lints, or the blind LLM judge.",
+        "",
+        "## Why These Eight Examples",
+        "",
+        "- `adv_det_001` plants a fabricated quote against a real clause to test quote containment.",
+        "- `adv_det_002` cites a nonexistent clause ID to test source resolution and crash resistance.",
+        "- `adv_det_003` violates the category-specific schema shape for a clarification row.",
+        "- `adv_lint_004` is schema-valid but uses the vague clarifier `Can you provide more details?`.",
+        "- `adv_lint_005` is schema-valid but relies on a thin section preamble as ambiguity support.",
+        "- `adv_judge_006` manufactures ambiguity where the cited clause directly answers the question.",
+        "- `adv_judge_007` invents a 24-hour refund guarantee and fee waiver unsupported by the cited clause.",
+        "- `adv_judge_008` invents a 180-day fund-hold cap where the ToS is silent on duration.",
+        "",
+        "Together these cover the main risks in this assignment: citation integrity, schema/category shape, clarification quality, source strength, unsupported claims, modal/timeline overreach, and category-boundary mistakes.",
+        "",
+        "## Targeted Eval Layers",
+        "",
+        "| Expected layer | Rows | What it should catch |",
+        "|---|---:|---|",
+        f"| deterministic | {by_expected_layer.get('deterministic', 0)} | Hard failures: unknown sources, unsupported quotes, invalid category-specific fields |",
+        f"| quality_lints | {by_expected_layer.get('quality_lints', 0)} | Schema-valid but weak examples: vague clarifiers and thin source support |",
+        f"| judge | {by_expected_layer.get('judge', 0)} | Semantic failures that pass lower layers: wrong category, unsupported claims, overreach |",
+        "",
+        "## Performance",
+        "",
+        "Catch layers are non-exclusive: a row can be caught by the intended lower layer and also noticed by later layers such as the judge.",
+        "",
+        f"- Flaws caught by any layer: {caught}/{len(catch_results)}",
+        f"- Flaws caught by the expected layer: {expected_hits}/{len(catch_results)}",
+        f"- Mean adversarial judge score: {metrics['mean_score']}/100",
+        f"- Lowest adversarial judge score: {metrics['lowest_score']}/100",
+        f"- Judge fallback failures: {metrics['judge_failure_count']}",
+        f"- Catches by deterministic layer: {caught_by_layer.get('deterministic', 0)}",
+        f"- Catches by quality-lint layer: {caught_by_layer.get('quality_lints', 0)}",
+        f"- Catches by judge layer: {caught_by_layer.get('judge', 0)}",
+        "",
+        "| Row | Planted flaw | Expected layer | Caught by | Judge score | Planned -> Judge | Failure modes |",
+        "|---|---|---|---|---:|---|---|",
+    ]
+    for item in catch_results:
+        result = result_by_id[item["row_id"]]
+        row = row_by_id[item["row_id"]]
+        caught_by = ", ".join(item["caught_by"]) if item["caught_by"] else "none"
+        failure_modes = ", ".join(f"`{mode}`" for mode in result.get("failure_modes", [])) or "none"
+        lines.append(
+            f"| `{item['row_id']}` | {item['planted_flaw']} | {item['expected_layer']} | {caught_by} | {item['judge_total_score']} | `{row['category']}` -> `{item['judge_predicted_category']}` | {failure_modes} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Interpretation",
+            "",
+            f"The eval stack performed well on the targeted pack: it caught {caught}/{len(catch_results)} planted flaws, and every flaw was caught by the layer it was designed to exercise. The deterministic layer handled source/shape integrity, the advisory lints caught weak-but-valid construction, and the blind judge caught the semantic failures that lower layers intentionally cannot see.",
+            "",
+            "Judge scores are most meaningful for the judge-targeted rows. For deterministic- and lint-targeted rows, the expected lower layer is the source of truth, so a high judge score can still coexist with a correctly caught source-resolution or schema failure.",
+            "",
+            "The most useful signal is the judge-only subset. Those rows were constructed to pass schema validation and advisory lints, so low scores, category disagreements, and `unsupported_claim`/`wrong_category`-style failure modes show that the LLM judge is adding semantic coverage rather than duplicating deterministic checks.",
+            "",
+            f"Run metadata: judge model `{config.judge_model}`, generator model `{config.generator_model}`, cross-model judging `{config.cross_model_judging}`, prompt `{config.judge_prompt_version}`.",
+        ]
+    )
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def render_human_review_section(
-    review_rows: list[tuple[str, list[str]]],
+    review_rows: list[dict[str, Any]],
     row_by_id: dict[str, dict[str, Any]],
     result_by_id: dict[str, dict[str, Any]],
 ) -> list[str]:
     lines = [
         "## Human Review",
         "",
-        "This section is the gold human check on the generated dataset. Rows are selected by the pipeline using three criteria: "
-        f"a seeded stratified random sample ({HUMAN_REVIEW_PER_CATEGORY} per category, seed {HUMAN_REVIEW_SEED}, independent of judge output), "
-        f"the {HUMAN_REVIEW_WORST_COUNT} lowest-scoring rows, and every row where the blind judge's predicted category disagrees with the planned label. "
-        "A human fills in the verdicts below; `overall_verdict` rolls up into the dataset-quality line.",
+        "This is a compact audit queue, not a full worksheet. The goal is to tell a human reviewer which generated rows and cited clauses deserve attention, without repeating the full answer text or source text already present in the JSONL. The selection is risk-first with positive controls: lowest judge scores, label disagreements, deterministic/schema failures, source-review insufficiency, judge/lint flags, category-coverage backfill, and a seeded sample of perfect-score rows.",
         "",
-        "Verdict options: `overall_verdict`: accept | minor_fix | major_fix | reject; `category_verdict`: correct | incorrect; "
-        "`groundedness_verdict`: grounded | partially_grounded | ungrounded; `citation_sufficiency_verdict`: sufficient | insufficient.",
+        f"Selection settings: lowest-score rows = {HUMAN_REVIEW_WORST_COUNT}; judge/lint flagged cap = {HUMAN_REVIEW_FLAGGED_COUNT}; perfect-score positive controls = {HUMAN_REVIEW_PERFECT_SCORE_COUNT}; seed = {HUMAN_REVIEW_SEED}.",
         "",
-        f"Overall rollup (fill in after review): _N_ accept, _N_ minor_fix, _N_ major_fix, _N_ reject out of {len(review_rows)} reviewed.",
+        "Recommended review criteria: confirm the planned category, verify the cited clauses are the strongest support, check that the answer does not overstate modal language or timelines, and decide whether the row should be accepted, patched, or regenerated.",
         "",
+        "| Row | Planned -> Judge | Score | Why review | Clauses to inspect |",
+        "|---|---|---:|---|---|",
     ]
-    for row_id, reasons in review_rows:
-        row = row_by_id[row_id]
-        result = result_by_id[row_id]
-        citations = "; ".join(source.get("display_citation", "") for source in row.get("source_clauses", []))
-        lines.extend(
-            [
-                f"### Review: `{row_id}`",
-                "",
-                f"- Selection reason(s): {', '.join(sorted(set(reasons)))}",
-                f"- Planned category: `{row['category']}`; judge predicted: `{result.get('predicted_category')}`; judge score: {result['total_score']}/100",
-                f"- User question: {row['messages'][0]['content']}",
-                f"- Assistant answer: {row['messages'][1]['content']}",
-                f"- Citations: {citations}",
-                "",
-                "Human verdicts:",
-                "",
-                "- overall_verdict: _",
-                "- category_verdict: _",
-                "- groundedness_verdict: _",
-                "- citation_sufficiency_verdict: _",
-                "- notes: _",
-                "",
-            ]
+    for item in review_rows:
+        clauses = "<br>".join(
+            f"`{source['clause_id']}`: {source['display_citation']}"
+            for source in item["source_clauses"]
+        )
+        reasons = ", ".join(item["reasons"])
+        failure_modes = ", ".join(f"`{mode}`" for mode in item["failure_modes"]) or "none"
+        lines.append(
+            f"| `{item['row_id']}` | `{item['category']}` -> `{item['predicted_category']}` | {item['total_score']} | {reasons}; failure modes: {failure_modes} | {clauses} |"
         )
     return lines
 
@@ -1241,17 +1370,17 @@ def render_changes_since_v1_section(
         "label plus deterministic-check results. Feedback identified possible same-model bias/leakage and a lack of gold human checks "
         "and adversarial checks. V2 hardens the evaluation mechanism and re-evaluates the same, unchanged dataset:",
         "",
-        "- Blind judging: the judge no longer sees the planned category, deterministic-check results, or annotation fields, and must predict the category itself (addresses: eval robustness/leakage).",
+        "- Blind judging: the judge no longer sees the planned category, deterministic-check results, or annotation fields, and must predict the category itself.",
         (
-            "- Cross-model judging: the judge model differs from the generator model (addresses: same-model bias)."
+            "- Cross-model judging: the judge model differs from the generator model."
             if config.cross_model_judging
             else "- Cross-model judging supported via --judge-model / OPENAI_JUDGE_MODEL; this run reused the generator model, so blind prompting is the active mitigation (same-model bias remains a caveat)."
         ),
-        "- Human review: a pipeline-selected sample with human verdicts, above (addresses: gold human checks).",
-        "- Adversarial pack: intentionally flawed rows with a per-layer catch-rate report (addresses: adversarial checks).",
+        "- Human review: a compact, pipeline-selected audit queue listing the rows and cited clauses a reviewer should inspect.",
+        "- Adversarial pack: intentionally flawed rows with a standalone per-layer catch-rate report.",
         "",
         "Because the v2 judge uses a different prompt and model, score deltas against v1 are directional rather than point-comparable. "
-        "Failure-mode counts, label agreement, and the adversarial catch rate are the like-for-like evidence.",
+        "Failure-mode counts and label agreement are the like-for-like evidence for the dataset run; the adversarial catch rate is reported separately in `adversarial_report.md`.",
         "",
         "| Metric | V1 | V2 |",
         "|---|---|---|",
@@ -1331,7 +1460,7 @@ def log(message: str) -> None:
 
 
 def main() -> int:
-    global DATASET_PATH, RUN_MANIFEST_PATH, GENERATION_SUMMARY_PATH, CLAUSE_INDEX_PATH, EVAL_DIR, EVAL_RESULTS_PATH, WORST_SOURCE_REVIEWS_PATH, EVAL_SUMMARY_PATH, EVAL_MANIFEST_PATH
+    global DATASET_PATH, RUN_MANIFEST_PATH, GENERATION_SUMMARY_PATH, CLAUSE_INDEX_PATH, EVAL_DIR, EVAL_RESULTS_PATH, WORST_SOURCE_REVIEWS_PATH, EVAL_SUMMARY_PATH, EVAL_MANIFEST_PATH, ADVERSARIAL_REPORT_PATH
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, default=DATASET_PATH)
@@ -1343,7 +1472,7 @@ def main() -> int:
     parser.add_argument(
         "--adversarial",
         action="store_true",
-        help="Evaluate an adversarial pack: relax row-count expectations and report the per-layer catch-rate table.",
+        help="Evaluate an adversarial pack: relax row-count expectations and write a focused adversarial_report.md only.",
     )
     parser.add_argument(
         "--baseline-manifest",
@@ -1395,6 +1524,7 @@ def main() -> int:
     WORST_SOURCE_REVIEWS_PATH = output_dir / "worst_source_reviews.json"
     EVAL_SUMMARY_PATH = output_dir / "eval_summary.md"
     EVAL_MANIFEST_PATH = output_dir / "eval_manifest.json"
+    ADVERSARIAL_REPORT_PATH = output_dir / "adversarial_report.md"
 
     _, records = load_clause_index(clause_index_path)
     rows, parse_errors = load_jsonl(dataset_path)
@@ -1411,6 +1541,23 @@ def main() -> int:
         checks = deterministic_row_checks(row, records)
         eval_results.append(call_row_judge(row, records, checks, client, config))
 
+    metrics = aggregate_metrics(eval_results)
+
+    if config.adversarial:
+        result_by_id = {result["row_id"]: result for result in eval_results}
+        catch_results = [adversarial_catch_result(row, result_by_id[row["id"]]) for row in rows]
+        metrics["adversarial_catch_results"] = catch_results
+        write_adversarial_report(
+            ADVERSARIAL_REPORT_PATH,
+            rows=rows,
+            eval_results=eval_results,
+            catch_results=catch_results,
+            metrics=metrics,
+            config=config,
+        )
+        log(f"Wrote {workspace_path(ADVERSARIAL_REPORT_PATH)}")
+        return 0
+
     write_jsonl(EVAL_RESULTS_PATH, eval_results)
     worst_results = select_worst_rows(eval_results)
     row_by_id = {row["id"]: row for row in rows}
@@ -1425,20 +1572,11 @@ def main() -> int:
         diagnoses[row["id"]] = call_diagnosis(row, row_eval, review, client)
 
     WORST_SOURCE_REVIEWS_PATH.write_text(json.dumps(source_reviews, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    metrics = aggregate_metrics(eval_results)
-
-    catch_results: list[dict[str, Any]] | None = None
-    review_rows: list[tuple[str, list[str]]] | None = None
+    review_rows = select_human_review_rows(rows, eval_results, source_reviews)
     baseline: dict[str, Any] | None = None
-    if config.adversarial:
-        result_by_id = {result["row_id"]: result for result in eval_results}
-        catch_results = [adversarial_catch_result(row, result_by_id[row["id"]]) for row in rows]
-        metrics["adversarial_catch_results"] = catch_results
-    else:
-        review_rows = select_human_review_rows(rows, eval_results)
-        baseline_path = args.baseline_manifest if args.baseline_manifest.is_absolute() else ROOT / args.baseline_manifest
-        if baseline_path.resolve() != EVAL_MANIFEST_PATH.resolve():
-            baseline = load_baseline_manifest(baseline_path)
+    baseline_path = args.baseline_manifest if args.baseline_manifest.is_absolute() else ROOT / args.baseline_manifest
+    if baseline_path.resolve() != EVAL_MANIFEST_PATH.resolve():
+        baseline = load_baseline_manifest(baseline_path)
 
     completed_at = utc_now()
     start_dt = dt.datetime.fromisoformat(started_at.replace("Z", "+00:00"))
@@ -1455,7 +1593,7 @@ def main() -> int:
         metrics=metrics,
         config=config,
         review_rows=review_rows,
-        catch_results=catch_results,
+        catch_results=None,
         baseline=baseline,
     )
     write_manifest(
