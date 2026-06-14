@@ -34,6 +34,7 @@ CLAUSE_INDEX_PATH = ROOT / "data" / "processed" / "clause_index.json"
 # v2 outputs are versioned so the v1 artifacts and earlier v2 runs stay untouched.
 EVAL_DIR = ROOT / "data" / "eval" / "v2" / "v2.1"
 BASELINE_MANIFEST_PATH = ROOT / "data" / "eval" / "v1" / "eval_manifest.json"
+ADVERSARIAL_PACK_PATH = ROOT / "data" / "eval" / "adversarial_pack.jsonl"
 EVAL_RESULTS_PATH = EVAL_DIR / "eval_results.jsonl"
 WORST_SOURCE_REVIEWS_PATH = EVAL_DIR / "worst_source_reviews.json"
 EVAL_SUMMARY_PATH = EVAL_DIR / "eval_summary.md"
@@ -1415,6 +1416,7 @@ def write_manifest(
     manifest: dict[str, Any],
     dataset_check_result: dict[str, Any],
     metrics: dict[str, Any],
+    adversarial_status: dict[str, Any],
     started_at: str,
     completed_at: str,
     elapsed_seconds: float,
@@ -1444,6 +1446,7 @@ def write_manifest(
             "worst_source_reviews": workspace_path(WORST_SOURCE_REVIEWS_PATH),
             "eval_summary": workspace_path(EVAL_SUMMARY_PATH),
             "eval_manifest": workspace_path(EVAL_MANIFEST_PATH),
+            "adversarial_report": workspace_path(ADVERSARIAL_REPORT_PATH) if adversarial_status["ran"] else None,
         },
         "row_count": row_count,
         "started_at": started_at,
@@ -1451,6 +1454,7 @@ def write_manifest(
         "elapsed_seconds": round(elapsed_seconds, 2),
         "dataset_checks": dataset_check_result,
         "aggregate_metrics": metrics,
+        "adversarial": adversarial_status,
     }
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
@@ -1470,9 +1474,9 @@ def main() -> int:
     parser.add_argument("--output-dir", type=Path, default=EVAL_DIR)
     parser.add_argument("--judge-model", default=None, help="OpenAI judge model. Defaults to OPENAI_JUDGE_MODEL, OPENAI_MODEL, or gpt-5.5.")
     parser.add_argument(
-        "--adversarial",
+        "--skip-adversarial",
         action="store_true",
-        help="Evaluate an adversarial pack: relax row-count expectations and write a focused adversarial_report.md only.",
+        help="Only evaluate the main dataset; skip the default adversarial pack report.",
     )
     parser.add_argument(
         "--baseline-manifest",
@@ -1511,7 +1515,7 @@ def main() -> int:
         diagnosis_prompt_version=DIAGNOSIS_PROMPT_VERSION,
         judge_run_id=f"{started_at.replace(':', '').replace('-', '').replace('Z', 'Z')}_{JUDGE_PROMPT_VERSION}",
         generator_model=generator_model,
-        adversarial=args.adversarial,
+        adversarial=False,
     )
     client = OpenAIClient(api_key=api_key, model=config.judge_model, temperature=config.judge_temperature)
 
@@ -1527,13 +1531,23 @@ def main() -> int:
     ADVERSARIAL_REPORT_PATH = output_dir / "adversarial_report.md"
 
     _, records = load_clause_index(clause_index_path)
-    rows, parse_errors = load_jsonl(dataset_path)
-    if config.adversarial:
-        dataset_check_result = dataset_checks(
-            rows, parse_errors, records, manifest, expected_total=None, expected_per_category=None
+    adversarial_rows: list[dict[str, Any]] = []
+    adversarial_dataset_checks: dict[str, Any] | None = None
+    if not args.skip_adversarial:
+        adversarial_rows, adversarial_parse_errors = load_jsonl(ADVERSARIAL_PACK_PATH)
+        if adversarial_parse_errors:
+            raise RuntimeError("Adversarial pack parse errors:\n" + "\n".join(adversarial_parse_errors))
+        adversarial_dataset_checks = dataset_checks(
+            adversarial_rows,
+            adversarial_parse_errors,
+            records,
+            manifest,
+            expected_total=None,
+            expected_per_category=None,
         )
-    else:
-        dataset_check_result = dataset_checks(rows, parse_errors, records, manifest)
+
+    rows, parse_errors = load_jsonl(dataset_path)
+    dataset_check_result = dataset_checks(rows, parse_errors, records, manifest)
 
     eval_results = []
     for position, row in enumerate(rows, start=1):
@@ -1542,21 +1556,6 @@ def main() -> int:
         eval_results.append(call_row_judge(row, records, checks, client, config))
 
     metrics = aggregate_metrics(eval_results)
-
-    if config.adversarial:
-        result_by_id = {result["row_id"]: result for result in eval_results}
-        catch_results = [adversarial_catch_result(row, result_by_id[row["id"]]) for row in rows]
-        metrics["adversarial_catch_results"] = catch_results
-        write_adversarial_report(
-            ADVERSARIAL_REPORT_PATH,
-            rows=rows,
-            eval_results=eval_results,
-            catch_results=catch_results,
-            metrics=metrics,
-            config=config,
-        )
-        log(f"Wrote {workspace_path(ADVERSARIAL_REPORT_PATH)}")
-        return 0
 
     write_jsonl(EVAL_RESULTS_PATH, eval_results)
     worst_results = select_worst_rows(eval_results)
@@ -1578,10 +1577,6 @@ def main() -> int:
     if baseline_path.resolve() != EVAL_MANIFEST_PATH.resolve():
         baseline = load_baseline_manifest(baseline_path)
 
-    completed_at = utc_now()
-    start_dt = dt.datetime.fromisoformat(started_at.replace("Z", "+00:00"))
-    end_dt = dt.datetime.fromisoformat(completed_at.replace("Z", "+00:00"))
-    elapsed_seconds = (end_dt - start_dt).total_seconds()
     write_summary(
         EVAL_SUMMARY_PATH,
         rows=rows,
@@ -1596,21 +1591,75 @@ def main() -> int:
         catch_results=None,
         baseline=baseline,
     )
+
+    log(f"Wrote {workspace_path(EVAL_RESULTS_PATH)}")
+    log(f"Wrote {workspace_path(WORST_SOURCE_REVIEWS_PATH)}")
+    log(f"Wrote {workspace_path(EVAL_SUMMARY_PATH)}")
+
+    adversarial_status: dict[str, Any] = {
+        "ran": False,
+        "skipped": True,
+        "pack_path": workspace_path(ADVERSARIAL_PACK_PATH),
+        "report_path": None,
+        "row_count": 0,
+    }
+    if not args.skip_adversarial:
+        adversarial_config = EvalConfig(
+            judge_model=config.judge_model,
+            judge_temperature=config.judge_temperature,
+            judge_prompt_version=config.judge_prompt_version,
+            source_review_prompt_version=config.source_review_prompt_version,
+            diagnosis_prompt_version=config.diagnosis_prompt_version,
+            judge_run_id=f"{config.judge_run_id}_adversarial",
+            generator_model=config.generator_model,
+            adversarial=True,
+        )
+        assert adversarial_dataset_checks is not None
+        adversarial_results = []
+        for position, row in enumerate(adversarial_rows, start=1):
+            log(f"[adversarial {position}/{len(adversarial_rows)}] judging {row.get('id')}")
+            checks = deterministic_row_checks(row, records)
+            adversarial_results.append(call_row_judge(row, records, checks, client, adversarial_config))
+        adversarial_metrics = aggregate_metrics(adversarial_results)
+        adversarial_metrics["dataset_checks"] = adversarial_dataset_checks
+        result_by_id = {result["row_id"]: result for result in adversarial_results}
+        catch_results = [adversarial_catch_result(row, result_by_id[row["id"]]) for row in adversarial_rows]
+        adversarial_metrics["adversarial_catch_results"] = catch_results
+        write_adversarial_report(
+            ADVERSARIAL_REPORT_PATH,
+            rows=adversarial_rows,
+            eval_results=adversarial_results,
+            catch_results=catch_results,
+            metrics=adversarial_metrics,
+            config=adversarial_config,
+        )
+        log(f"Wrote {workspace_path(ADVERSARIAL_REPORT_PATH)}")
+        adversarial_status = {
+            "ran": True,
+            "skipped": False,
+            "pack_path": workspace_path(ADVERSARIAL_PACK_PATH),
+            "report_path": workspace_path(ADVERSARIAL_REPORT_PATH),
+            "row_count": len(adversarial_rows),
+            "flaws_caught": sum(1 for item in catch_results if item["caught"]),
+            "expected_layer_hits": sum(1 for item in catch_results if item.get("caught_by_expected_layer")),
+        }
+
+    completed_at = utc_now()
+    start_dt = dt.datetime.fromisoformat(started_at.replace("Z", "+00:00"))
+    end_dt = dt.datetime.fromisoformat(completed_at.replace("Z", "+00:00"))
+    elapsed_seconds = (end_dt - start_dt).total_seconds()
     write_manifest(
         EVAL_MANIFEST_PATH,
         config=config,
         manifest=manifest,
         dataset_check_result=dataset_check_result,
         metrics=metrics,
+        adversarial_status=adversarial_status,
         started_at=started_at,
         completed_at=completed_at,
         elapsed_seconds=elapsed_seconds,
         row_count=len(rows),
     )
-
-    log(f"Wrote {workspace_path(EVAL_RESULTS_PATH)}")
-    log(f"Wrote {workspace_path(WORST_SOURCE_REVIEWS_PATH)}")
-    log(f"Wrote {workspace_path(EVAL_SUMMARY_PATH)}")
     log(f"Wrote {workspace_path(EVAL_MANIFEST_PATH)}")
     return 0
 

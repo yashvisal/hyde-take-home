@@ -28,13 +28,12 @@ from src.schemas import RESPONSE_MODE_BY_CATEGORY, SCHEMA_VERSION, load_clause_i
 
 CLAUSE_INDEX_PATH = ROOT / "data" / "processed" / "clause_index.json"
 GOLD_CASES_PATH = ROOT / "data" / "gold_bench" / "gold_cases.jsonl"
-GOLD_OUTPUT_DIR = ROOT / "data" / "gold_bench" / "v2"
+GOLD_BENCH_DIR = ROOT / "data" / "gold_bench"
 OPENAI_CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions"
 DEFAULT_GENERATOR_MODEL = "gpt-5.5"
 DEFAULT_GENERATOR_TEMPERATURE = 1.0
 PROMPT_VERSION = "gold_bench_question_only_v1"
 REPORT_VERSION = "gold_bench_report_v2"
-RUN_VERSION = "v2"
 REPORT_CHANGES = [
     "separate blocking failures from passing rows with score/behavior gaps",
     "surface lower-scoring pass rows as diagnostic signals",
@@ -64,6 +63,26 @@ SCORE_DIMENSIONS = {
 
 def neutral_case_id(index: int) -> str:
     return f"bench_case_{index:03d}"
+
+
+def next_gold_output_dir(base_dir: Path = GOLD_BENCH_DIR) -> Path:
+    versions = []
+    if base_dir.exists():
+        for path in base_dir.iterdir():
+            if path.is_dir() and re.fullmatch(r"v\d+", path.name):
+                versions.append(int(path.name.removeprefix("v")))
+    return base_dir / f"v{max(versions, default=0) + 1}"
+
+
+def run_version_for_output_dir(output_dir: Path) -> str:
+    name = output_dir.name
+    return name if re.fullmatch(r"v\d+", name) else "custom"
+
+
+def prepare_output_dir(output_dir: Path, *, overwrite: bool) -> None:
+    if output_dir.exists() and any(output_dir.iterdir()) and not overwrite:
+        raise RuntimeError(f"Output directory already exists and is not empty: {workspace_path(output_dir)}. Use --overwrite to replace it.")
+    output_dir.mkdir(parents=True, exist_ok=True)
 
 
 class OpenAIClient:
@@ -1250,6 +1269,7 @@ def write_manifest(
     path: Path,
     *,
     run_id: str,
+    run_version: str,
     started_at: str,
     completed_at: str,
     elapsed_seconds: float,
@@ -1266,7 +1286,7 @@ def write_manifest(
 ) -> None:
     manifest = {
         "run_id": run_id,
-        "run_version": RUN_VERSION,
+        "run_version": run_version,
         "started_at": started_at,
         "completed_at": completed_at,
         "elapsed_seconds": round(elapsed_seconds, 2),
@@ -1311,9 +1331,13 @@ def run_benchmark(args: argparse.Namespace) -> int:
         raise RuntimeError("OPENAI_API_KEY is required unless --template-only is set.")
 
     cases_path = args.gold_cases if args.gold_cases.is_absolute() else ROOT / args.gold_cases
-    output_dir = args.output_dir if args.output_dir.is_absolute() else ROOT / args.output_dir
+    if args.output_dir is None:
+        output_dir = next_gold_output_dir()
+    else:
+        output_dir = args.output_dir if args.output_dir.is_absolute() else ROOT / args.output_dir
     clause_index_path = args.clause_index if args.clause_index.is_absolute() else ROOT / args.clause_index
-    output_dir.mkdir(parents=True, exist_ok=True)
+    prepare_output_dir(output_dir, overwrite=args.overwrite)
+    run_version = run_version_for_output_dir(output_dir)
 
     index, records = load_clause_index(clause_index_path)
     cases, parse_errors = load_jsonl(cases_path)
@@ -1323,7 +1347,7 @@ def run_benchmark(args: argparse.Namespace) -> int:
 
     started_at = utc_now()
     start = time.perf_counter()
-    run_id = f"{started_at.replace(':', '').replace('-', '')}_gold_bench_{RUN_VERSION}"
+    run_id = f"{started_at.replace(':', '').replace('-', '')}_gold_bench_{run_version}"
     client = None if args.template_only else OpenAIClient(api_key=api_key or "", model=model, temperature=temperature)
     rows: list[dict[str, Any]] = []
     results: list[dict[str, Any]] = []
@@ -1371,6 +1395,7 @@ def run_benchmark(args: argparse.Namespace) -> int:
     write_manifest(
         manifest_path,
         run_id=run_id,
+        run_version=run_version,
         started_at=started_at,
         completed_at=completed_at,
         elapsed_seconds=elapsed_seconds,
@@ -1395,11 +1420,12 @@ def run_benchmark(args: argparse.Namespace) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--gold-cases", type=Path, default=GOLD_CASES_PATH)
-    parser.add_argument("--output-dir", type=Path, default=GOLD_OUTPUT_DIR)
+    parser.add_argument("--output-dir", type=Path, default=None, help="Output directory. Defaults to the next unused data/gold_bench/vN directory.")
     parser.add_argument("--clause-index", type=Path, default=CLAUSE_INDEX_PATH)
     parser.add_argument("--model", default=None, help="OpenAI model name. Defaults to OPENAI_MODEL or gpt-5.5.")
     parser.add_argument("--temperature", type=float, default=None)
     parser.add_argument("--max-attempts", type=int, default=3)
+    parser.add_argument("--overwrite", action="store_true", help="Allow writing into a non-empty output directory.")
     parser.add_argument("--template-only", action="store_true", help="Use local question-only rules instead of OpenAI generation.")
     args = parser.parse_args()
     return run_benchmark(args)
