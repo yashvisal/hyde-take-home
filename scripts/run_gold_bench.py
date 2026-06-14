@@ -688,7 +688,7 @@ def generate_row(
                         validation_errors=validation_errors or None,
                     ),
                 )
-            except Exception as exc:
+            except (RuntimeError, json.JSONDecodeError, KeyError, IndexError, TypeError) as exc:
                 generation_notes["generation_errors"].append(f"attempt {attempt}: {type(exc).__name__}: {exc}")
                 continue
         row = assemble_row(
@@ -998,7 +998,6 @@ def score_case(row: dict[str, Any], case: dict[str, Any], records: dict[str, dic
             "assistant_has_visible_citation": has_visible_citation(row),
         },
     }
-    result["pipeline_gap_assessment"] = pipeline_gap_assessment(result)
     return result
 
 
@@ -1324,7 +1323,7 @@ def run_benchmark(args: argparse.Namespace) -> int:
 
     started_at = utc_now()
     start = time.perf_counter()
-    run_id = f"{started_at.replace(':', '').replace('-', '').replace('Z', 'Z')}_gold_bench_{RUN_VERSION}"
+    run_id = f"{started_at.replace(':', '').replace('-', '')}_gold_bench_{RUN_VERSION}"
     client = None if args.template_only else OpenAIClient(api_key=api_key or "", model=model, temperature=temperature)
     rows: list[dict[str, Any]] = []
     results: list[dict[str, Any]] = []
