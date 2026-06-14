@@ -670,6 +670,7 @@ def generate_row(
         "attempts": 0,
         "fallback_used": False,
         "validation_errors": [],
+        "generation_errors": [],
     }
     attempts = 1 if template_only else max_attempts
     for attempt in range(1, attempts + 1):
@@ -678,14 +679,18 @@ def generate_row(
             output = template_output(question, candidate_records)
         else:
             assert client is not None
-            output = client.generate_json(
-                system_prompt=generator_system_prompt(),
-                user_prompt=generator_user_prompt(
-                    question=question,
-                    candidate_records=candidate_records,
-                    validation_errors=validation_errors or None,
-                ),
-            )
+            try:
+                output = client.generate_json(
+                    system_prompt=generator_system_prompt(),
+                    user_prompt=generator_user_prompt(
+                        question=question,
+                        candidate_records=candidate_records,
+                        validation_errors=validation_errors or None,
+                    ),
+                )
+            except Exception as exc:
+                generation_notes["generation_errors"].append(f"attempt {attempt}: {type(exc).__name__}: {exc}")
+                continue
         row = assemble_row(
             row_id=row_id,
             question=question,
@@ -728,6 +733,52 @@ def significant_behavior_terms(behavior: str) -> set[str]:
     return {word for word in words if len(word) >= 4}
 
 
+def avoid_behavior_met(row: dict[str, Any], behavior_normalized: str) -> bool:
+    assistant = normalize(row["messages"][1]["content"])
+    row_text = normalize(
+        {
+            "assistant": row["messages"][1]["content"],
+            "clarifying_questions": row.get("clarifying_questions", []),
+            "conditional_outcomes": row.get("conditional_outcomes", []),
+            "ambiguity_reason": row.get("ambiguity_reason"),
+        }
+    )
+    avoided = behavior_normalized.removeprefix("avoid ").strip()
+
+    if "unconditional yes or no" in avoided:
+        gives_direct_yes_no = assistant.startswith("yes") or assistant.startswith("no")
+        has_conditioning = bool(row.get("clarifying_questions")) or any(
+            phrase in row_text
+            for phrase in ("depends", "if ", "whether", "answer changes", "fact matters", "matters because", "changes because")
+        )
+        return not gives_direct_yes_no or has_conditioning
+
+    if "approving the model" in avoided or "without category facts" in avoided:
+        approval_phrases = ("is allowed", "are allowed", "can collect", "may collect", "approved", "approval is guaranteed")
+        asks_for_category = bool(row.get("clarifying_questions")) or any(
+            phrase in row_text for phrase in ("merchant category", "product", "service", "classification", "prohibited")
+        )
+        return not any(phrase in assistant for phrase in approval_phrases) or asks_for_category
+
+    if "skill-based" in avoided or "automatically allowed" in avoided:
+        automatic_allowance = any(
+            phrase in assistant
+            for phrase in ("definitely allowed", "automatically allowed", "is allowed because it is skill", "can use razorpay because it is skill")
+        )
+        return not automatic_allowance
+
+    if "deadline" in avoided:
+        invented_deadline = any(phrase in assistant for phrase in ("24 hours", "180 days", "maximum hold", "max hold", "must release within"))
+        return not invented_deadline
+
+    if "numeric threshold" in avoided:
+        invented_threshold = bool(re.search(r"\b\d+(?:\.\d+)?\s*(?:%|percent|transactions?|frauds?)\b", assistant))
+        return not invented_threshold
+
+    avoided_terms = significant_behavior_terms(avoided)
+    return not avoided_terms or not all(term in assistant for term in avoided_terms)
+
+
 def assess_behavior(row: dict[str, Any], case: dict[str, Any]) -> tuple[int, list[dict[str, Any]]]:
     assistant = normalize(row["messages"][1]["content"])
     cited_text = normalize(row.get("source_clauses", []))
@@ -755,7 +806,7 @@ def assess_behavior(row: dict[str, Any], case: dict[str, Any]) -> tuple[int, lis
         elif "five-day" in behavior_normalized or "five day" in behavior_normalized:
             matched = "five" in row_text or "5" in row_text
         elif behavior_normalized.startswith("avoid "):
-            matched = not forbidden_violations(row, case)
+            matched = avoid_behavior_met(row, behavior_normalized)
         elif "answer changes" in behavior_normalized:
             matched = any(phrase in row_text for phrase in ("answer changes", "fact matters", "matters because", "changes because"))
         elif "chargeback and non-chargeback" in behavior_normalized:
