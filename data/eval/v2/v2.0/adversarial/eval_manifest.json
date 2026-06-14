@@ -18,10 +18,10 @@
     "clause_index": "data/processed/clause_index.json"
   },
   "output_paths": {
-    "eval_results": "data/eval/v2/adversarial/eval_results.jsonl",
-    "worst_source_reviews": "data/eval/v2/adversarial/worst_source_reviews.json",
-    "eval_summary": "data/eval/v2/adversarial/eval_summary.md",
-    "eval_manifest": "data/eval/v2/adversarial/eval_manifest.json"
+    "eval_results": "data/eval/v2/v2.0/adversarial/eval_results.jsonl",
+    "worst_source_reviews": "data/eval/v2/v2.0/adversarial/worst_source_reviews.json",
+    "eval_summary": "data/eval/v2/v2.0/adversarial/eval_summary.md",
+    "eval_manifest": "data/eval/v2/v2.0/adversarial/eval_manifest.json"
   },
   "row_count": 8,
   "started_at": "2026-06-12T11:34:02Z",
