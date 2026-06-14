@@ -28,13 +28,22 @@ from src.schemas import RESPONSE_MODE_BY_CATEGORY, SCHEMA_VERSION, load_clause_i
 
 CLAUSE_INDEX_PATH = ROOT / "data" / "processed" / "clause_index.json"
 GOLD_CASES_PATH = ROOT / "data" / "gold_bench" / "gold_cases.jsonl"
-GOLD_OUTPUT_DIR = ROOT / "data" / "gold_bench" / "v1"
+GOLD_OUTPUT_DIR = ROOT / "data" / "gold_bench" / "v2"
 OPENAI_CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions"
 DEFAULT_GENERATOR_MODEL = "gpt-5.5"
 DEFAULT_GENERATOR_TEMPERATURE = 1.0
 PROMPT_VERSION = "gold_bench_question_only_v1"
-RUN_VERSION = "v1"
+REPORT_VERSION = "gold_bench_report_v2"
+RUN_VERSION = "v2"
+REPORT_CHANGES = [
+    "separate blocking failures from passing rows with score/behavior gaps",
+    "surface lower-scoring pass rows as diagnostic signals",
+    "summarize score loss by dimension",
+    "connect missed behaviors and validation repairs to likely generator pipeline gaps",
+    "include suggested improvements for future generator runs",
+]
 HIDDEN_GOLD_FIELDS = [
+    "id",
     "expected_category",
     "reference_answer",
     "required_clause_ids",
@@ -51,6 +60,10 @@ SCORE_DIMENSIONS = {
     "cto_usefulness": 10,
     "citation_formatting": 5,
 }
+
+
+def neutral_case_id(index: int) -> str:
+    return f"bench_case_{index:03d}"
 
 
 class OpenAIClient:
@@ -270,7 +283,6 @@ def generator_system_prompt() -> str:
 
 def generator_user_prompt(
     *,
-    case_id: str,
     question: str,
     candidate_records: list[dict[str, Any]],
     validation_errors: list[str] | None = None,
@@ -278,7 +290,6 @@ def generator_user_prompt(
     instructions: dict[str, Any] = {
         "task": "Generate a final dataset row payload for this user question using only the candidate source records.",
         "user_question": question,
-        "row_id": case_id,
         "category_definitions": {
             "clear_answer": "The ToS directly and unambiguously answers the question.",
             "clarification_required": "The answer depends on a specific missing user fact.",
@@ -455,7 +466,7 @@ def normalize_generator_output(
 
 def assemble_row(
     *,
-    case_id: str,
+    row_id: str,
     question: str,
     output: dict[str, Any],
     candidate_records: list[dict[str, Any]],
@@ -469,8 +480,8 @@ def assemble_row(
     output = normalize_generator_output(output, question=question, candidate_records=candidate_records)
     source_clauses = [build_source_clause(support, records, output["category"]) for support in output["source_support"]]
     row = {
-        "id": case_id,
-        "issue_id": case_id,
+        "id": row_id,
+        "issue_id": row_id,
         "schema_version": SCHEMA_VERSION,
         "category": output["category"],
         "response_mode": RESPONSE_MODE_BY_CATEGORY[output["category"]],
@@ -639,6 +650,7 @@ def template_output(question: str, candidate_records: list[dict[str, Any]]) -> d
 def generate_row(
     *,
     case: dict[str, Any],
+    row_id: str,
     index: dict[str, Any],
     records: dict[str, dict[str, Any]],
     client: OpenAIClient | None,
@@ -669,14 +681,13 @@ def generate_row(
             output = client.generate_json(
                 system_prompt=generator_system_prompt(),
                 user_prompt=generator_user_prompt(
-                    case_id=case["id"],
                     question=question,
                     candidate_records=candidate_records,
                     validation_errors=validation_errors or None,
                 ),
             )
         row = assemble_row(
-            case_id=case["id"],
+            row_id=row_id,
             question=question,
             output=output,
             candidate_records=candidate_records,
@@ -698,7 +709,7 @@ def generate_row(
     generation_notes["fallback_used"] = True
     output = template_output(question, candidate_records)
     row = assemble_row(
-        case_id=case["id"],
+        row_id=row_id,
         question=question,
         output=output,
         candidate_records=candidate_records,
@@ -783,6 +794,75 @@ def forbidden_violations(row: dict[str, Any], case: dict[str, Any]) -> list[str]
     return violations
 
 
+def missed_behaviors_from_result(result: dict[str, Any]) -> list[str]:
+    return [item["behavior"] for item in result.get("must_have_behavior_assessment", []) if not item.get("met")]
+
+
+def pipeline_gap_assessment(result: dict[str, Any]) -> dict[str, Any]:
+    missed_behaviors = missed_behaviors_from_result(result)
+    validation_errors = result.get("generation_notes", {}).get("validation_errors", [])
+    quality_warnings = result.get("deterministic_checks", {}).get("quality_lint_warnings", [])
+    gap_types: list[str] = []
+    likely_causes: list[str] = []
+    suggestions: list[str] = []
+
+    if not result.get("category_match"):
+        gap_types.append("category_selection")
+        likely_causes.append("question-only category classification selected the wrong response mode")
+        suggestions.append("tighten category boundary instructions with contrastive examples for clarification versus ambiguity")
+    if result.get("required_clauses_missed"):
+        gap_types.append("source_retrieval_or_selection")
+        likely_causes.append("retrieval or source selection missed a required gold clause")
+        suggestions.append("boost required-like sibling and cross-reference retrieval before generation")
+    if result.get("forbidden_claim_violations"):
+        gap_types.append("overreach_control")
+        likely_causes.append("assistant answer introduced a prohibited unsupported claim")
+        suggestions.append("add a post-generation overreach check before accepting the row")
+    if missed_behaviors:
+        gap_types.append("behavior_completeness")
+        likely_causes.append("the row chose the right category and sources but missed part of the expected answer behavior")
+        suggestions.append("make the generator explicitly cover every branch/gap implied by the chosen category")
+        missed_text = normalize(" ".join(missed_behaviors))
+        if any(term in missed_text for term in ("chargeback", "non-chargeback", "rbi", "npci", "branches", "answer changes")):
+            gap_types.append("multi_branch_explanation")
+            likely_causes.append("clarification answers identify the missing fact but do not fully map the downstream branches")
+            suggestions.append("add a required branch-map sentence for clarification rows with multiple legal or operational outcomes")
+        if any(term in missed_text for term in ("confirming", "checking", "counsel", "guidance", "legal")):
+            gap_types.append("ambiguity_next_step")
+            likely_causes.append("ambiguity answers identify the ToS gap but understate the concrete follow-up needed")
+            suggestions.append("require ambiguity rows to state what external source or party should confirm the unresolved point")
+        if "tos alone" in missed_text or "classify the exact product" in missed_text:
+            gap_types.append("ambiguity_gap_specificity")
+            likely_causes.append("ambiguity answers cite external dependence but do not sharply state why the ToS alone is incomplete")
+            suggestions.append("prompt ambiguity rows to name the exact unresolved classification or definition")
+        if any(term in missed_text for term in ("refund", "fee obligation", "does not remove")):
+            gap_types.append("clear_answer_obligation_specificity")
+            likely_causes.append("clear answers can cite the right clause while not restating the operative obligation explicitly enough")
+            suggestions.append("prompt clear answers to restate the operative rule in business terms before or alongside the citation")
+    if validation_errors:
+        gap_types.append("schema_repair")
+        likely_causes.append("initial generation referenced uncited clauses or invalid structured fields before repair")
+        suggestions.append("constrain missing_facts and conditional_outcomes to cited source IDs during generation")
+    if quality_warnings:
+        gap_types.append("source_quality")
+        likely_causes.append("deterministic quality lints found weak quotes or thin source support")
+        suggestions.append("prefer substantive parent clauses over thin child fragments when citing ambiguity context")
+
+    if not gap_types:
+        gap_types.append("none")
+        likely_causes.append("no meaningful pipeline gap detected")
+        suggestions.append("no generator change suggested")
+
+    return {
+        "gap_types": sorted(set(gap_types)),
+        "missed_behaviors": missed_behaviors,
+        "quality_warnings": quality_warnings,
+        "validation_repair_errors": validation_errors,
+        "likely_causes": sorted(set(likely_causes)),
+        "suggested_improvements": sorted(set(suggestions)),
+    }
+
+
 def score_case(row: dict[str, Any], case: dict[str, Any], records: dict[str, dict[str, Any]]) -> dict[str, Any]:
     generated_clause_ids = [source["clause_id"] for source in row.get("source_clauses", [])]
     required_ids = case.get("required_clause_ids", [])
@@ -843,8 +923,9 @@ def score_case(row: dict[str, Any], case: dict[str, Any], records: dict[str, dic
         recommended_fix = "Minor improvement: strengthen the answer against the missed behavior checks."
     else:
         recommended_fix = "No generator fix required."
-    return {
-        "id": case["id"],
+    result = {
+        "id": row["id"],
+        "gold_case_id": case["id"],
         "boundary_focus": case.get("boundary_focus"),
         "expected_category": case["expected_category"],
         "generated_category": row["category"],
@@ -866,6 +947,8 @@ def score_case(row: dict[str, Any], case: dict[str, Any], records: dict[str, dic
             "assistant_has_visible_citation": has_visible_citation(row),
         },
     }
+    result["pipeline_gap_assessment"] = pipeline_gap_assessment(result)
+    return result
 
 
 def validate_gold_cases(cases: list[dict[str, Any]], records: dict[str, dict[str, Any]]) -> None:
@@ -902,7 +985,30 @@ def aggregate_results(results: list[dict[str, Any]]) -> dict[str, Any]:
         for result in results
         if result["pass"] and any(not item["met"] for item in result.get("must_have_behavior_assessment", []))
     ]
+    diagnostic_rows = [result for result in results if result["pass"] and result["score"] < 95]
     weakest_case = min(results, key=lambda result: result["score"]) if results else None
+    dimension_loss = {
+        name: sum(max_points - result["scores"].get(name, 0) for result in results)
+        for name, max_points in SCORE_DIMENSIONS.items()
+    }
+    gap_counts = Counter(
+        gap
+        for result in results
+        for gap in result.get("pipeline_gap_assessment", {}).get("gap_types", [])
+        if gap != "none"
+    )
+    improvement_counts = Counter(
+        suggestion
+        for result in results
+        for suggestion in result.get("pipeline_gap_assessment", {}).get("suggested_improvements", [])
+        if suggestion != "no generator change suggested"
+    )
+    score_bands = {
+        "100": sum(1 for score in scores if score == 100),
+        "95_99": sum(1 for score in scores if 95 <= score < 100),
+        "80_94": sum(1 for score in scores if 80 <= score < 95),
+        "below_80": sum(1 for score in scores if score < 80),
+    }
     return {
         "mean_score": round(statistics.mean(scores), 2) if scores else 0,
         "median_score": round(statistics.median(scores), 2) if scores else 0,
@@ -917,12 +1023,23 @@ def aggregate_results(results: list[dict[str, Any]]) -> dict[str, Any]:
         "blocking_failures": [result["id"] for result in blocking_failures],
         "minor_behavior_feedback_count": len(minor_behavior_feedback),
         "minor_behavior_feedback_rows": [result["id"] for result in minor_behavior_feedback],
+        "diagnostic_pass_rows_count": len(diagnostic_rows),
+        "diagnostic_pass_rows": [result["id"] for result in diagnostic_rows],
+        "score_bands": score_bands,
+        "dimension_loss_totals": dict(sorted(dimension_loss.items(), key=lambda item: (-item[1], item[0]))),
+        "pipeline_gap_counts": dict(sorted(gap_counts.items())),
+        "suggested_improvement_counts": dict(improvement_counts.most_common()),
         "weakest_case": {
             "id": weakest_case["id"],
             "score": weakest_case["score"],
+            "pass": weakest_case["pass"],
+            "category_match": weakest_case["category_match"],
             "expected_category": weakest_case["expected_category"],
             "generated_category": weakest_case["generated_category"],
             "feedback": weakest_case["feedback"],
+            "boundary_focus": weakest_case.get("boundary_focus"),
+            "gap_types": weakest_case.get("pipeline_gap_assessment", {}).get("gap_types", []),
+            "suggested_improvements": weakest_case.get("pipeline_gap_assessment", {}).get("suggested_improvements", []),
         }
         if weakest_case
         else None,
@@ -943,18 +1060,20 @@ def aggregate_results(results: list[dict[str, Any]]) -> dict[str, Any]:
 
 def write_summary(path: Path, *, results: list[dict[str, Any]], aggregate: dict[str, Any], generated_rows_path: Path, manifest_path: Path) -> None:
     weakest_case = aggregate.get("weakest_case")
+    diagnostic_rows = [result for result in results if result["pass"] and result["score"] < 95]
     lines = [
         "# Gold Mini-Benchmark Summary",
         "",
         "## Purpose",
         "",
-        "This is a small generator-facing regression benchmark for known-hard Razorpay ToS questions. The generator receives the user question and retrieved ToS candidate sources, while hidden gold expectations are used only for scoring.",
+        "This is a small generator-facing regression benchmark for known-hard Razorpay ToS questions. The generator receives the user question and retrieved ToS candidate sources, while hidden gold expectations are used only for scoring. The v2 report separates blocking failures from non-blocking quality signals so the benchmark can guide future generator improvements.",
         "",
         "## Scope",
         "",
         "- 9 human-curated gold cases.",
         "- 3 cases per category: `clear_answer`, `clarification_required`, and `genuine_ambiguity`.",
         "- Separate from the main 45-row dataset and the eval-hardening adversarial evaluator checks.",
+        "- Report v2 adds score-band diagnostics, dimension-loss analysis, pipeline gap themes, and suggested improvements.",
         "",
         "## Aggregate Results",
         "",
@@ -968,17 +1087,27 @@ def write_summary(path: Path, *, results: list[dict[str, Any]], aggregate: dict[
         f"- Minor behavior feedback rows: `{aggregate['minor_behavior_feedback_count']}`",
         f"- Weakest case: `{weakest_case['id']}` at `{weakest_case['score']}/100`" if weakest_case else "- Weakest case: `n/a`",
         "",
-        "## Per-Case Results",
+        "## Quality Signals",
         "",
-        "| Case | Expected | Generated | Score | Pass | Required Hit | Feedback |",
-        "|---|---|---|---:|---|---|---|",
+        f"- Score bands: `100={aggregate['score_bands']['100']}`, `95-99={aggregate['score_bands']['95_99']}`, `80-94={aggregate['score_bands']['80_94']}`, `below_80={aggregate['score_bands']['below_80']}`",
+        f"- Passing rows below 95: `{aggregate['diagnostic_pass_rows_count']}`",
+        "- Score loss by dimension:",
     ]
-    for result in results:
-        hit = ", ".join(result["required_clauses_hit"]) or "-"
-        feedback = result["feedback"].replace("|", "\\|")
-        lines.append(
-            f"| `{result['id']}` | `{result['expected_category']}` | `{result['generated_category']}` | {result['score']} | `{result['pass']}` | {hit} | {feedback} |"
-        )
+    for name, loss in aggregate["dimension_loss_totals"].items():
+        if loss:
+            lines.append(f"  - `{name}`: `{loss}` points lost")
+    if not any(aggregate["dimension_loss_totals"].values()):
+        lines.append("  - No score loss recorded.")
+    lines.extend(
+        [
+            "- Pipeline gap themes:",
+        ]
+    )
+    if aggregate["pipeline_gap_counts"]:
+        for gap, count in aggregate["pipeline_gap_counts"].items():
+            lines.append(f"  - `{gap}`: `{count}` rows")
+    else:
+        lines.append("  - No diagnostic gap themes recorded.")
     failing = [result for result in results if not result["pass"]]
     minor_feedback = [
         result
@@ -1002,9 +1131,58 @@ def write_summary(path: Path, *, results: list[dict[str, Any]], aggregate: dict[
             lines.append(f"- `{result['id']}` ({result['score']}/100): " + "; ".join(missed))
     if weakest_case:
         lines.extend(["", "## Weakest Case", ""])
+        if weakest_case.get("pass"):
+            lines.append(
+                f"`{weakest_case['id']}` scored `{weakest_case['score']}/100` on `{weakest_case.get('boundary_focus')}`. "
+                "It passed category and required-source checks, so the signal is non-blocking. "
+                f"The gap is `{weakest_case.get('feedback')}`, which suggests the generator handles the boundary but should improve explanatory completeness for future runs."
+            )
+        else:
+            lines.append(
+                f"`{weakest_case['id']}` scored `{weakest_case['score']}/100` on `{weakest_case.get('boundary_focus')}` and failed the strict gate. "
+                f"The gap is `{weakest_case.get('feedback')}`. This points to a generator category-selection issue, not a source-retrieval miss, because required citation coverage still succeeded."
+            )
+    if aggregate["suggested_improvement_counts"]:
+        lines.extend(["", "## Suggested Generator Improvements", ""])
+        for suggestion, count in aggregate["suggested_improvement_counts"].items():
+            lines.append(f"- `{count}` row(s): {suggestion}")
+    lines.extend(
+        [
+            "",
+            "## Changes In This Report Version",
+            "",
+        ]
+    )
+    lines.extend(f"- {item}." for item in REPORT_CHANGES)
+    lines.extend(
+        [
+            "",
+            "## Diagnostic Pass Rows",
+            "",
+        ]
+    )
+    if diagnostic_rows:
+        lines.extend(["| Case | Score | Boundary Focus | Main Gap Signal |", "|---|---:|---|---|"])
+        for result in diagnostic_rows:
+            gap_types = ", ".join(result.get("pipeline_gap_assessment", {}).get("gap_types", [])) or "none"
+            focus = str(result.get("boundary_focus", "")).replace("|", "\\|")
+            lines.append(f"| `{result['id']}` | {result['score']} | {focus} | {gap_types} |")
+    else:
+        lines.append("No passing rows scored below 95.")
+    lines.extend(
+        [
+            "",
+            "## Per-Case Results",
+            "",
+            "| Case | Expected | Generated | Score | Pass | Required Hit | Feedback |",
+            "|---|---|---|---:|---|---|---|",
+        ]
+    )
+    for result in results:
+        hit = ", ".join(result["required_clauses_hit"]) or "-"
+        feedback = result["feedback"].replace("|", "\\|")
         lines.append(
-            f"`{weakest_case['id']}` scored `{weakest_case['score']}/100`. "
-            "This is the primary generator improvement target even though it may still pass the strict gate."
+            f"| `{result['id']}` | `{result['expected_category']}` | `{result['generated_category']}` | {result['score']} | `{result['pass']}` | {hit} | {feedback} |"
         )
     lines.extend(
         [
@@ -1045,17 +1223,19 @@ def write_manifest(
         "generator_model": "template-question-rules" if template_only else model,
         "generator_temperature": temperature,
         "prompt_version": PROMPT_VERSION,
+        "report_version": REPORT_VERSION,
+        "report_changes": REPORT_CHANGES,
         "source_hash": index["metadata"]["source_hash"],
         "source_fetched_at": index["metadata"]["source_fetched_at"],
         "gold_cases_path": workspace_path(cases_path),
         "gold_fields_hidden_from_generator": HIDDEN_GOLD_FIELDS,
         "generator_visible_inputs": [
-            "case id",
             "user question",
             "question-retrieved candidate source records",
             "schema instructions",
             "prior validation errors on repair attempts",
         ],
+        "id_policy": "Gold case IDs are not sent to the generator. Generated rows use neutral bench_case_NNN IDs assigned by the runner after loading the curated cases.",
         "output_paths": {
             "output_dir": workspace_path(output_dir),
             "generated_rows": workspace_path(generated_rows_path),
@@ -1098,9 +1278,11 @@ def run_benchmark(args: argparse.Namespace) -> int:
     rows: list[dict[str, Any]] = []
     results: list[dict[str, Any]] = []
 
-    for case in cases:
+    for index_case, case in enumerate(cases, start=1):
+        row_id = neutral_case_id(index_case)
         row, generation_notes = generate_row(
             case=case,
+            row_id=row_id,
             index=index,
             records=records,
             client=client,
@@ -1118,9 +1300,10 @@ def run_benchmark(args: argparse.Namespace) -> int:
         rows.append(row)
         result = score_case(row, case, records)
         result["generation_notes"] = generation_notes
+        result["pipeline_gap_assessment"] = pipeline_gap_assessment(result)
         results.append(result)
 
-    dataset_failures = validate_dataset(rows, records, expected_total=9, expected_per_category=3)
+    dataset_failures = validate_dataset(rows, records, expected_total=9, expected_per_category=None)
     if dataset_failures:
         raise RuntimeError("Gold benchmark generated rows failed schema validation:\n" + json.dumps(dataset_failures, indent=2))
 

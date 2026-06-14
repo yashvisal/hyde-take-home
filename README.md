@@ -47,10 +47,11 @@ Handcrafted evaluation inputs:
 Gold mini-benchmark:
 
 - `data/gold_bench/gold_cases.jsonl`: 9 curated hard user questions with hidden gold expectations for generator-facing regression checks.
-- `data/gold_bench/v1/generated_rows.jsonl`: rows generated from the gold questions.
-- `data/gold_bench/v1/gold_bench_results.jsonl`: per-case scoring against hidden gold expectations.
-- `data/gold_bench/v1/gold_bench_summary.md`: human-readable benchmark summary.
-- `data/gold_bench/v1/gold_bench_manifest.json`: benchmark provenance, hidden-field list, output paths, source hash, and aggregate metrics.
+- `data/gold_bench/v1/`: initial live baseline run.
+- `data/gold_bench/v2/generated_rows.jsonl`: rows generated from the gold questions.
+- `data/gold_bench/v2/gold_bench_results.jsonl`: per-case scoring against hidden gold expectations.
+- `data/gold_bench/v2/gold_bench_summary.md`: human-readable benchmark summary with blocking failures, minor behavior feedback, score-band diagnostics, and suggested generator improvements.
+- `data/gold_bench/v2/gold_bench_manifest.json`: benchmark provenance, hidden-field list, output paths, source hash, report version, and aggregate metrics.
 
 ## Schema Overview
 
@@ -163,7 +164,11 @@ Run the generator-facing Gold Mini-Benchmark:
 uv run python scripts/run_gold_bench.py
 ```
 
-This uses `data/gold_bench/gold_cases.jsonl`, generates rows from question-only benchmark inputs plus question-retrieved ToS candidate sources, and writes versioned outputs under `data/gold_bench/v1/`.
+This uses `data/gold_bench/gold_cases.jsonl`, generates rows from question-only benchmark inputs plus question-retrieved ToS candidate sources, and writes versioned outputs under `data/gold_bench/v2/`.
+
+The current default writes to `data/gold_bench/v2/`. V1 is retained as the first live baseline; V2 keeps the same benchmark concept but improves the reporting layer so lower-scoring passing rows become useful diagnostic signals instead of being hidden behind the pass count.
+
+The first live gold run exposed a benchmark-design issue: prompt-visible case IDs such as `gold_clear_001`, `gold_clarification_002`, and `gold_ambiguity_003` carried the expected category in the name. That could contaminate a question-only benchmark by giving the generator an unintended category hint. The runner now assigns neutral generated-row IDs such as `bench_case_001` and keeps the original curated gold IDs as scoring/audit metadata only. After removing that leakage, the v2 results became more useful: category-selection and source-selection misses show up as benchmark failures instead of being masked, which gives clearer targets for future generator iterations.
 
 For a deterministic local smoke run without an API key:
 
@@ -208,7 +213,7 @@ Gold Mini-Benchmark determinism:
 - The curated gold cases, hidden expectations, pass rule, source hash, schema validation, and scoring dimensions are deterministic.
 - The live LLM-generated rows are not expected to be byte-identical across runs.
 - `--template-only` uses local question-only rules for a deterministic smoke run and records `generator_model: template-question-rules` in the manifest.
-- The generator prompt does not receive `expected_category`, `reference_answer`, `required_clause_ids`, `optional_clause_ids`, `must_have_behaviors`, `forbidden_claims`, or `boundary_focus`; the manifest records this hidden-field list.
+- The first live run caught that category-bearing gold case IDs could leak the expected class into the generator prompt. The generator prompt now receives no gold case ID, `expected_category`, `reference_answer`, `required_clause_ids`, `optional_clause_ids`, `must_have_behaviors`, `forbidden_claims`, or `boundary_focus`; the manifest records this hidden-field list and the neutral ID policy.
 
 ## Evaluation Design
 
@@ -233,6 +238,8 @@ V2 adds two checks on the evaluation framework itself:
 The Gold Mini-Benchmark is a separate generator-facing check, not an eval-hardening check. It asks whether the generator can handle 9 known-hard Razorpay questions before future full-dataset regeneration. Each case passes only if the score is at least 80, the generated category matches the hidden expected category, no forbidden claims appear, and at least one required clause is cited.
 
 The gold summary separates blocking failures from non-blocking improvement signals. Rows that pass the strict gate can still appear under Minor Behavior Feedback when they miss part of a hidden expected behavior, and the summary calls out the weakest passing case as the next generator improvement target.
+
+The V2 gold summary adds quality-oriented diagnostics: score bands, score loss by dimension, passing rows below 95, likely pipeline gap themes, and suggested generator improvements for future runs.
 
 The scoring rubric is:
 
