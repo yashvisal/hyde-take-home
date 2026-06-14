@@ -232,6 +232,8 @@ V2 adds two checks on the evaluation framework itself:
 
 The Gold Mini-Benchmark is a separate generator-facing check, not an eval-hardening check. It asks whether the generator can handle 9 known-hard Razorpay questions before future full-dataset regeneration. Each case passes only if the score is at least 80, the generated category matches the hidden expected category, no forbidden claims appear, and at least one required clause is cited.
 
+The gold summary separates blocking failures from non-blocking improvement signals. Rows that pass the strict gate can still appear under Minor Behavior Feedback when they miss part of a hidden expected behavior, and the summary calls out the weakest passing case as the next generator improvement target.
+
 The scoring rubric is:
 
 

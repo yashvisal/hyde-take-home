@@ -832,11 +832,17 @@ def score_case(row: dict[str, Any], case: dict[str, Any], records: dict[str, dic
     if violations:
         feedback_parts.append("Forbidden claims detected: " + "; ".join(violations) + ".")
     missed_behaviors = [item["behavior"] for item in behavior_assessment if not item["met"]]
-    if total < 80 and missed_behaviors:
-        feedback_parts.append("Missed behavior checks: " + "; ".join(missed_behaviors) + ".")
+    if missed_behaviors:
+        label = "Minor behavior gaps" if passed else "Missed behavior checks"
+        feedback_parts.append(f"{label}: " + "; ".join(missed_behaviors) + ".")
     if not feedback_parts:
-        feedback_parts.append("Meets the hidden category, source, and behavior expectations.")
-    recommended_fix = "No generator fix required." if passed else "Improve category classification, source retrieval, or answer constraints for this boundary case."
+        feedback_parts.append("Fully meets the hidden behavior expectations.")
+    if not passed:
+        recommended_fix = "Improve category classification, source retrieval, or answer constraints for this boundary case."
+    elif missed_behaviors:
+        recommended_fix = "Minor improvement: strengthen the answer against the missed behavior checks."
+    else:
+        recommended_fix = "No generator fix required."
     return {
         "id": case["id"],
         "boundary_focus": case.get("boundary_focus"),
@@ -890,6 +896,13 @@ def aggregate_results(results: list[dict[str, Any]]) -> dict[str, Any]:
     category_matches = sum(1 for result in results if result["category_match"])
     required_coverage = sum(1 for result in results if result["required_clauses_hit"])
     forbidden_count = sum(len(result["forbidden_claim_violations"]) for result in results)
+    blocking_failures = [result for result in results if not result["pass"]]
+    minor_behavior_feedback = [
+        result
+        for result in results
+        if result["pass"] and any(not item["met"] for item in result.get("must_have_behavior_assessment", []))
+    ]
+    weakest_case = min(results, key=lambda result: result["score"]) if results else None
     return {
         "mean_score": round(statistics.mean(scores), 2) if scores else 0,
         "median_score": round(statistics.median(scores), 2) if scores else 0,
@@ -900,7 +913,20 @@ def aggregate_results(results: list[dict[str, Any]]) -> dict[str, Any]:
         "category_match_count": category_matches,
         "required_citation_coverage_count": required_coverage,
         "forbidden_claim_violation_count": forbidden_count,
-        "rows_needing_generator_changes": [result["id"] for result in results if not result["pass"]],
+        "blocking_failure_count": len(blocking_failures),
+        "blocking_failures": [result["id"] for result in blocking_failures],
+        "minor_behavior_feedback_count": len(minor_behavior_feedback),
+        "minor_behavior_feedback_rows": [result["id"] for result in minor_behavior_feedback],
+        "weakest_case": {
+            "id": weakest_case["id"],
+            "score": weakest_case["score"],
+            "expected_category": weakest_case["expected_category"],
+            "generated_category": weakest_case["generated_category"],
+            "feedback": weakest_case["feedback"],
+        }
+        if weakest_case
+        else None,
+        "rows_needing_generator_changes": [result["id"] for result in blocking_failures],
         "by_expected_category": {
             category: {
                 "rows": len(items),
@@ -916,6 +942,7 @@ def aggregate_results(results: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def write_summary(path: Path, *, results: list[dict[str, Any]], aggregate: dict[str, Any], generated_rows_path: Path, manifest_path: Path) -> None:
+    weakest_case = aggregate.get("weakest_case")
     lines = [
         "# Gold Mini-Benchmark Summary",
         "",
@@ -937,7 +964,9 @@ def write_summary(path: Path, *, results: list[dict[str, Any]], aggregate: dict[
         f"- Category match count: `{aggregate['category_match_count']}/{aggregate['row_count']}`",
         f"- Required citation coverage count: `{aggregate['required_citation_coverage_count']}/{aggregate['row_count']}`",
         f"- Forbidden-claim violations: `{aggregate['forbidden_claim_violation_count']}`",
-        f"- Rows needing generator changes: `{len(aggregate['rows_needing_generator_changes'])}`",
+        f"- Blocking failures: `{aggregate['blocking_failure_count']}`",
+        f"- Minor behavior feedback rows: `{aggregate['minor_behavior_feedback_count']}`",
+        f"- Weakest case: `{weakest_case['id']}` at `{weakest_case['score']}/100`" if weakest_case else "- Weakest case: `n/a`",
         "",
         "## Per-Case Results",
         "",
@@ -951,14 +980,32 @@ def write_summary(path: Path, *, results: list[dict[str, Any]], aggregate: dict[
             f"| `{result['id']}` | `{result['expected_category']}` | `{result['generated_category']}` | {result['score']} | `{result['pass']}` | {hit} | {feedback} |"
         )
     failing = [result for result in results if not result["pass"]]
+    minor_feedback = [
+        result
+        for result in results
+        if result["pass"] and any(not item["met"] for item in result.get("must_have_behavior_assessment", []))
+    ]
     lines.extend(["", "## Findings", ""])
-    if failing:
-        lines.append("The failing cases identify generator changes to consider before future full-dataset regeneration:")
+    if not failing:
+        lines.append(
+            "All cases passed the strict gate, with no category mismatches, required-citation failures, or forbidden-claim violations."
+        )
+    else:
+        lines.append("Blocking failures are rows that failed the pass rule and should be fixed before relying on this benchmark:")
         lines.append("")
         for result in failing:
             lines.append(f"- `{result['id']}`: {result['recommended_generator_fix']}")
-    else:
-        lines.append("All cases passed the strict gate: score >= 80, category match, no forbidden claims, and at least one required clause hit.")
+    if minor_feedback:
+        lines.extend(["", "## Minor Behavior Feedback", ""])
+        for result in minor_feedback:
+            missed = [item["behavior"] for item in result.get("must_have_behavior_assessment", []) if not item["met"]]
+            lines.append(f"- `{result['id']}` ({result['score']}/100): " + "; ".join(missed))
+    if weakest_case:
+        lines.extend(["", "## Weakest Case", ""])
+        lines.append(
+            f"`{weakest_case['id']}` scored `{weakest_case['score']}/100`. "
+            "This is the primary generator improvement target even though it may still pass the strict gate."
+        )
     lines.extend(
         [
             "",

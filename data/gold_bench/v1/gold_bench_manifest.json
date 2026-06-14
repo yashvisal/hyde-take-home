@@ -44,6 +44,23 @@
     "category_match_count": 9,
     "required_citation_coverage_count": 9,
     "forbidden_claim_violation_count": 0,
+    "blocking_failure_count": 0,
+    "blocking_failures": [],
+    "minor_behavior_feedback_count": 5,
+    "minor_behavior_feedback_rows": [
+      "gold_clarification_001",
+      "gold_clarification_002",
+      "gold_ambiguity_001",
+      "gold_ambiguity_002",
+      "gold_ambiguity_003"
+    ],
+    "weakest_case": {
+      "id": "gold_clarification_002",
+      "score": 81,
+      "expected_category": "clarification_required",
+      "generated_category": "clarification_required",
+      "feedback": "Minor behavior gaps: explain that chargeback and non-chargeback paths differ; mention RBI or NPCI external-rule dependence where relevant; cite the fraud clauses."
+    },
     "rows_needing_generator_changes": [],
     "by_expected_category": {
       "clarification_required": {
