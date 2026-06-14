@@ -44,6 +44,14 @@ Handcrafted evaluation inputs:
 
 - `data/tests/eval/adversarial_pack.jsonl`: 8 human-authored, intentionally flawed rows with an `adversarial_metadata` field recording the planted flaw and the layer expected to catch it.
 
+Gold mini-benchmark:
+
+- `data/gold_bench/gold_cases.jsonl`: 9 curated hard user questions with hidden gold expectations for generator-facing regression checks.
+- `data/gold_bench/v1/generated_rows.jsonl`: rows generated from the gold questions.
+- `data/gold_bench/v1/gold_bench_results.jsonl`: per-case scoring against hidden gold expectations.
+- `data/gold_bench/v1/gold_bench_summary.md`: human-readable benchmark summary.
+- `data/gold_bench/v1/gold_bench_manifest.json`: benchmark provenance, hidden-field list, output paths, source hash, and aggregate metrics.
+
 ## Schema Overview
 
 Each JSONL row includes:
@@ -149,6 +157,20 @@ uv run python scripts/evaluate_dataset.py --dataset data/tests/eval/adversarial_
 
 The `--adversarial` flag relaxes the 45-row/15-per-category expectations and writes only `data/eval/v2/v2.1/adversarial_report.md`.
 
+Run the generator-facing Gold Mini-Benchmark:
+
+```bash
+uv run python scripts/run_gold_bench.py
+```
+
+This uses `data/gold_bench/gold_cases.jsonl`, generates rows from question-only benchmark inputs plus question-retrieved ToS candidate sources, and writes versioned outputs under `data/gold_bench/v1/`.
+
+For a deterministic local smoke run without an API key:
+
+```bash
+uv run python scripts/run_gold_bench.py --template-only
+```
+
 ## Determinism And Reproducibility
 
 Deterministic generation components:
@@ -181,6 +203,13 @@ Evaluation determinism:
 - The human-review audit queue uses a seeded positive-control sample (`seed 42`), so perfect-score rows selected for review are reproducible across re-runs with the same eval results.
 - The selected GPT-5.5 endpoint does not expose an explicit temperature parameter through the provider interface used for this run, so the eval records `judge_temperature: null` and `judge_temperature_note: provider default`.
 
+Gold Mini-Benchmark determinism:
+
+- The curated gold cases, hidden expectations, pass rule, source hash, schema validation, and scoring dimensions are deterministic.
+- The live LLM-generated rows are not expected to be byte-identical across runs.
+- `--template-only` uses local question-only rules for a deterministic smoke run and records `generator_model: template-question-rules` in the manifest.
+- The generator prompt does not receive `expected_category`, `reference_answer`, `required_clause_ids`, `optional_clause_ids`, `must_have_behaviors`, `forbidden_claims`, or `boundary_focus`; the manifest records this hidden-field list.
+
 ## Evaluation Design
 
 The evaluation has two layers.
@@ -200,6 +229,8 @@ V2 adds two checks on the evaluation framework itself:
 
 - A Human Review section in `eval_summary.md`: the pipeline now produces a compact audit queue rather than a blank worksheet. It selects rows using a risk-first strategy: lowest judge scores, label disagreements, deterministic/schema failures, source-review insufficiency, capped judge/lint flags, category-coverage backfill, and a seeded sample of perfect-score rows as positive controls. The section lists only the row ID, planned-vs-predicted category, score, reason for review, and cited clauses to inspect.
 - An adversarial pack (`data/tests/eval/adversarial_pack.jsonl`): 8 hand-authored rows, each with exactly one planted flaw and an expected catching layer. Three rows violate hard constraints (fabricated quote, unknown clause ID, category-shape violation) and should be caught deterministically; two are schema-valid but weak (vague clarifying question, thin section-heading source) and should be caught by quality lints; three are clean at both lower layers (manufactured ambiguity over a clause that clearly answers, an invented 24-hour refund guarantee, an invented 180-day fund-hold maximum) and can only be caught by the blind judge. The adversarial result is documented in a focused standalone report instead of the normal four dataset-eval output files.
+
+The Gold Mini-Benchmark is a separate generator-facing check, not an eval-hardening check. It asks whether the generator can handle 9 known-hard Razorpay questions before future full-dataset regeneration. Each case passes only if the score is at least 80, the generated category matches the hidden expected category, no forbidden claims appear, and at least one required clause is cited.
 
 The scoring rubric is:
 
