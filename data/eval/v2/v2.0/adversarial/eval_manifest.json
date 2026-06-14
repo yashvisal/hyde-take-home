@@ -1,0 +1,230 @@
+{
+  "judge_model": "gpt-5.5",
+  "generator_model": "gpt-5.5",
+  "cross_model_judging": false,
+  "judge_blinding": "blind (no planned label, deterministic checks, or annotation fields in judge prompt)",
+  "dataset_profile": "adversarial",
+  "judge_temperature": null,
+  "judge_temperature_note": "provider default",
+  "judge_prompt_version": "judge_v2_blind",
+  "source_review_prompt_version": "source_review_v1",
+  "diagnosis_prompt_version": "worst_diagnosis_v1",
+  "judge_run_id": "20260612T113402Z_judge_v2_blind",
+  "source_hash": "sha256:684e37541a8f723d2111b3b1a18c5c18d16aa14154a706f9064babf6ca6d17f0",
+  "input_paths": {
+    "dataset": "data/tests/eval/adversarial_pack.jsonl",
+    "run_manifest": "data/output/run_manifest.json",
+    "generation_summary": "data/output/generation_summary.md",
+    "clause_index": "data/processed/clause_index.json"
+  },
+  "output_paths": {
+    "eval_results": "data/eval/v2/v2.0/adversarial/eval_results.jsonl",
+    "worst_source_reviews": "data/eval/v2/v2.0/adversarial/worst_source_reviews.json",
+    "eval_summary": "data/eval/v2/v2.0/adversarial/eval_summary.md",
+    "eval_manifest": "data/eval/v2/v2.0/adversarial/eval_manifest.json"
+  },
+  "row_count": 8,
+  "started_at": "2026-06-12T11:34:02Z",
+  "completed_at": "2026-06-12T11:36:42Z",
+  "elapsed_seconds": 160.0,
+  "dataset_checks": {
+    "row_count": 8,
+    "expected_row_count": null,
+    "category_counts": {
+      "clarification_required": 2,
+      "clear_answer": 4,
+      "genuine_ambiguity": 2
+    },
+    "expected_category_counts": null,
+    "source_hash_matches_manifest": true,
+    "all_rows_parse": true,
+    "parse_errors": [],
+    "dataset_validation_failures": [
+      {
+        "row_number": 1,
+        "id": "adv_det_001",
+        "errors": [
+          "relevant_quote is not supported by PartB.PartI.3.4."
+        ]
+      },
+      {
+        "row_number": 2,
+        "id": "adv_det_002",
+        "errors": [
+          "Unknown clause_id: PartZ.9.9",
+          "coverage_metadata.service_area is not derived from cited records."
+        ]
+      },
+      {
+        "row_number": 3,
+        "id": "adv_det_003",
+        "errors": [
+          "clarification_required rows need missing facts, clarifying questions, and conditional outcomes."
+        ]
+      }
+    ]
+  },
+  "aggregate_metrics": {
+    "mean_score": 60.88,
+    "median_score": 56.0,
+    "lowest_score": 17,
+    "highest_score": 99,
+    "by_category": {
+      "clarification_required": {
+        "mean_score": 80.5,
+        "lowest_score": 68,
+        "row_count": 2
+      },
+      "clear_answer": {
+        "mean_score": 47.5,
+        "lowest_score": 17,
+        "row_count": 4
+      },
+      "genuine_ambiguity": {
+        "mean_score": 68,
+        "lowest_score": 40,
+        "row_count": 2
+      }
+    },
+    "dimension_means": {
+      "category_fit": 14.88,
+      "groundedness": 13.62,
+      "citation_source_sufficiency": 12.62,
+      "answer_usefulness": 4.88,
+      "no_overreach": 5.12,
+      "category_specific_behavior": 4.75,
+      "user_question_realism": 5
+    },
+    "failure_mode_counts": {
+      "low_business_value": 1,
+      "missed_ambiguity": 3,
+      "overstated_ambiguity": 1,
+      "unsupported_claim": 4,
+      "vague_clarifying_question": 1,
+      "weak_citation": 2,
+      "wrong_category": 4
+    },
+    "judge_failure_count": 0,
+    "label_agreement_rate": 0.375,
+    "label_agreement_count": 3,
+    "label_judged_count": 8,
+    "label_mismatch_row_ids": [
+      "adv_det_003",
+      "adv_judge_006",
+      "adv_judge_007",
+      "adv_judge_008",
+      "adv_lint_004"
+    ],
+    "adversarial_catch_results": [
+      {
+        "row_id": "adv_det_001",
+        "planted_flaw": "fabricated relevant_quote: the quoted waiver language does not exist in Clause 3.4 (the clause says the opposite - fees remain payable after refunds)",
+        "expected_layer": "deterministic",
+        "caught": true,
+        "caught_by": [
+          "deterministic",
+          "judge"
+        ],
+        "caught_by_expected_layer": true,
+        "judge_total_score": 44,
+        "judge_predicted_category": "clear_answer",
+        "planned_category": "clear_answer"
+      },
+      {
+        "row_id": "adv_det_002",
+        "planted_flaw": "citation to a clause that does not exist in the document (PartZ.9.9)",
+        "expected_layer": "deterministic",
+        "caught": true,
+        "caught_by": [
+          "deterministic",
+          "quality_lints"
+        ],
+        "caught_by_expected_layer": true,
+        "judge_total_score": 99,
+        "judge_predicted_category": "clear_answer",
+        "planned_category": "clear_answer"
+      },
+      {
+        "row_id": "adv_det_003",
+        "planted_flaw": "clarification_required row with empty missing_facts, clarifying_questions, and conditional_outcomes, and an assistant answer that never asks a question",
+        "expected_layer": "deterministic",
+        "caught": true,
+        "caught_by": [
+          "deterministic",
+          "quality_lints",
+          "judge"
+        ],
+        "caught_by_expected_layer": true,
+        "judge_total_score": 93,
+        "judge_predicted_category": "clear_answer",
+        "planned_category": "clarification_required"
+      },
+      {
+        "row_id": "adv_lint_004",
+        "planted_flaw": "schema-valid clarification row whose clarifying question is the vague 'Can you provide more details?' instead of a targeted missing-fact question",
+        "expected_layer": "quality_lints",
+        "caught": true,
+        "caught_by": [
+          "quality_lints",
+          "judge"
+        ],
+        "caught_by_expected_layer": true,
+        "judge_total_score": 68,
+        "judge_predicted_category": "genuine_ambiguity",
+        "planned_category": "clarification_required"
+      },
+      {
+        "row_id": "adv_lint_005",
+        "planted_flaw": "schema-valid ambiguity row whose only cited support is a thin section heading (the Part III preamble) instead of substantive clause text",
+        "expected_layer": "quality_lints",
+        "caught": true,
+        "caught_by": [
+          "quality_lints"
+        ],
+        "caught_by_expected_layer": true,
+        "judge_total_score": 96,
+        "judge_predicted_category": "genuine_ambiguity",
+        "planned_category": "genuine_ambiguity"
+      },
+      {
+        "row_id": "adv_judge_006",
+        "planted_flaw": "mislabeled row: the cited clause answers the question explicitly (fees always payable irrespective of refund), but the row is labeled genuine_ambiguity and the answer manufactures uncertainty",
+        "expected_layer": "judge",
+        "caught": true,
+        "caught_by": [
+          "judge"
+        ],
+        "caught_by_expected_layer": true,
+        "judge_total_score": 40,
+        "judge_predicted_category": "clear_answer",
+        "planned_category": "genuine_ambiguity"
+      },
+      {
+        "row_id": "adv_judge_007",
+        "planted_flaw": "valid citation and quote, but the answer invents a 24-hour guarantee and a fee waiver, and converts the clause's 'may initiate auto-refund within five (5) days' into a certainty",
+        "expected_layer": "judge",
+        "caught": true,
+        "caught_by": [
+          "judge"
+        ],
+        "caught_by_expected_layer": true,
+        "judge_total_score": 30,
+        "judge_predicted_category": "genuine_ambiguity",
+        "planned_category": "clear_answer"
+      },
+      {
+        "row_id": "adv_judge_008",
+        "planted_flaw": "mislabeled and overreaching: the ToS is silent on fund-hold duration (this should be genuine_ambiguity), and the answer invents a 180-day maximum that appears nowhere in the cited text",
+        "expected_layer": "judge",
+        "caught": true,
+        "caught_by": [
+          "judge"
+        ],
+        "caught_by_expected_layer": true,
+        "judge_total_score": 17,
+        "judge_predicted_category": "genuine_ambiguity",
+        "planned_category": "clear_answer"
+      }
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "row_id": "adv_judge_008",
+    "source_adequacy_score": 45,
+    "original_sources_sufficient": false,
+    "better_candidate_clauses": [
+      {
+        "clause_id": "PartB.PartI.4.1",
+        "reason": "It is more specific to suspended settlements because it expressly says Razorpay PA may suspend settlements, in addition to its Clause 16 rights, during the pendency of inquiries, investigations, and resolution by Facility Providers; it still does not support a 180-day maximum."
+      },
+      {
+        "clause_id": "PartB.PartI.2.4",
+        "reason": "It contains an actual withholding duration of 120 days, but only for chargeback-related withholding after notice of termination, so it may be relevant as a contrast but does not support the assistant's 180-day claim or a general Clause 16 suspension rule."
+      }
+    ],
+    "source_issue_type": "multiple",
+    "diagnosis": "The cited Clause 16.1 supports only that Razorpay may suspend settlement, while the 180-day maximum was invented and more specific candidate clauses show conditional or different withholding rules rather than a general 180-day limit.",
+    "review_metadata": {
+      "judge_status": "ok",
+      "judge_model": "gpt-5.5",
+      "judge_temperature": null,
+      "source_review_prompt_version": "source_review_v1",
+      "judge_run_id": "20260612T113402Z_judge_v2_blind",
+      "candidate_count": 35,
+      "repair_attempted": false
+    }
+  },
+  {
+    "row_id": "adv_judge_007",
+    "source_adequacy_score": 90,
+    "original_sources_sufficient": true,
+    "better_candidate_clauses": [],
+    "source_issue_type": "answer_generation",
+    "diagnosis": "The originally cited Clause 3.5 is the most specific source for late-authorized uncaptured payments, but the answer overstates it by changing “may” to a guarantee and inventing a 24-hour/no-cost refund term.",
+    "review_metadata": {
+      "judge_status": "ok",
+      "judge_model": "gpt-5.5",
+      "judge_temperature": null,
+      "source_review_prompt_version": "source_review_v1",
+      "judge_run_id": "20260612T113402Z_judge_v2_blind",
+      "candidate_count": 35,
+      "repair_attempted": false
+    }
+  },
+  {
+    "row_id": "adv_judge_006",
+    "source_adequacy_score": 100,
+    "original_sources_sufficient": true,
+    "better_candidate_clauses": [],
+    "source_issue_type": "answer_generation",
+    "diagnosis": "The cited clause directly answers that Razorpay PA fees remain payable despite a refund, so the problem was the assistant's unsupported ambiguity rather than source selection.",
+    "review_metadata": {
+      "judge_status": "ok",
+      "judge_model": "gpt-5.5",
+      "judge_temperature": null,
+      "source_review_prompt_version": "source_review_v1",
+      "judge_run_id": "20260612T113402Z_judge_v2_blind",
+      "candidate_count": 35,
+      "repair_attempted": false
+    }
+  }
+]
