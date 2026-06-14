@@ -42,7 +42,7 @@ Evaluation outputs (V2, hardened mechanism):
 
 Handcrafted evaluation inputs:
 
-- `data/tests/eval/adversarial_pack.jsonl`: 8 human-authored, intentionally flawed rows with an `adversarial_metadata` field recording the planted flaw and the layer expected to catch it.
+- `data/eval/adversarial_pack.jsonl`: 8 human-authored, intentionally flawed rows with an `adversarial_metadata` field recording the planted flaw and the layer expected to catch it.
 
 Gold mini-benchmark:
 
@@ -147,16 +147,17 @@ This writes (the v1 artifacts in `data/eval/v1/` and older v2 runs such as `data
 - `data/eval/v2/v2.1/worst_source_reviews.json`
 - `data/eval/v2/v2.1/eval_summary.md`
 - `data/eval/v2/v2.1/eval_manifest.json`
+- `data/eval/v2/v2.1/adversarial_report.md`
 
 To judge with a different model than the generator (recommended to reduce same-model bias), pass `--judge-model` or set `OPENAI_JUDGE_MODEL`. The eval manifest records `generator_model`, `judge_model`, and a `cross_model_judging` flag, and the script warns when the judge matches the generator.
 
-Run the adversarial pack through the same evaluation:
+The normal eval command also runs `data/eval/adversarial_pack.jsonl` and writes the focused adversarial report into the same eval output directory.
+
+To skip the adversarial pack for a main-dataset-only run:
 
 ```bash
-uv run python scripts/evaluate_dataset.py --dataset data/tests/eval/adversarial_pack.jsonl --adversarial
+uv run python scripts/evaluate_dataset.py --skip-adversarial
 ```
-
-The `--adversarial` flag relaxes the 45-row/15-per-category expectations and writes only `data/eval/v2/v2.1/adversarial_report.md`.
 
 Run the generator-facing Gold Mini-Benchmark:
 
@@ -164,9 +165,23 @@ Run the generator-facing Gold Mini-Benchmark:
 uv run python scripts/run_gold_bench.py
 ```
 
-This uses `data/gold_bench/gold_cases.jsonl`, generates rows from question-only benchmark inputs plus question-retrieved ToS candidate sources, and writes versioned outputs under `data/gold_bench/v2/`.
+This uses `data/gold_bench/gold_cases.jsonl`, generates rows from question-only benchmark inputs plus question-retrieved ToS candidate sources, and writes to the next unused versioned output directory under `data/gold_bench/`.
 
-The current default writes to `data/gold_bench/v2/`. V1 is retained as the first live baseline; V2 keeps the same benchmark concept but improves the reporting layer so lower-scoring passing rows become useful diagnostic signals instead of being hidden behind the pass count.
+For example, if `data/gold_bench/v1/` and `data/gold_bench/v2/` already exist, the default command writes to `data/gold_bench/v3/`. Existing non-empty output directories are not overwritten unless `--overwrite` is passed.
+
+To write a specific location:
+
+```bash
+uv run python scripts/run_gold_bench.py --output-dir data/gold_bench/v3
+```
+
+To intentionally refresh an existing output directory:
+
+```bash
+uv run python scripts/run_gold_bench.py --output-dir data/gold_bench/v3 --overwrite
+```
+
+V1 is retained as the first live baseline; V2 keeps the same benchmark concept but improves the reporting layer so lower-scoring passing rows become useful diagnostic signals instead of being hidden behind the pass count.
 
 The first live gold run exposed a benchmark-design issue: prompt-visible case IDs such as `gold_clear_001`, `gold_clarification_002`, and `gold_ambiguity_003` carried the expected category in the name. That could contaminate a question-only benchmark by giving the generator an unintended category hint. The runner now assigns neutral generated-row IDs such as `bench_case_001` and keeps the original curated gold IDs as scoring/audit metadata only. After removing that leakage, the v2 results became more useful: category-selection and source-selection misses show up as benchmark failures instead of being masked, which gives clearer targets for future generator iterations.
 
@@ -233,7 +248,7 @@ Second, an LLM judge scores every row out of 100. In V2 the judge is blind: it s
 V2 adds two checks on the evaluation framework itself:
 
 - A Human Review section in `eval_summary.md`: the pipeline now produces a compact audit queue rather than a blank worksheet. It selects rows using a risk-first strategy: lowest judge scores, label disagreements, deterministic/schema failures, source-review insufficiency, capped judge/lint flags, category-coverage backfill, and a seeded sample of perfect-score rows as positive controls. The section lists only the row ID, planned-vs-predicted category, score, reason for review, and cited clauses to inspect.
-- An adversarial pack (`data/tests/eval/adversarial_pack.jsonl`): 8 hand-authored rows, each with exactly one planted flaw and an expected catching layer. Three rows violate hard constraints (fabricated quote, unknown clause ID, category-shape violation) and should be caught deterministically; two are schema-valid but weak (vague clarifying question, thin section-heading source) and should be caught by quality lints; three are clean at both lower layers (manufactured ambiguity over a clause that clearly answers, an invented 24-hour refund guarantee, an invented 180-day fund-hold maximum) and can only be caught by the blind judge. The adversarial result is documented in a focused standalone report instead of the normal four dataset-eval output files.
+- An adversarial pack (`data/eval/adversarial_pack.jsonl`): 8 hand-authored rows, each with exactly one planted flaw and an expected catching layer. Three rows violate hard constraints (fabricated quote, unknown clause ID, category-shape violation) and should be caught deterministically; two are schema-valid but weak (vague clarifying question, thin section-heading source) and should be caught by quality lints; three are clean at both lower layers (manufactured ambiguity over a clause that clearly answers, an invented 24-hour refund guarantee, an invented 180-day fund-hold maximum) and can only be caught by the blind judge. The adversarial result is documented in a focused standalone report instead of the normal four dataset-eval output files.
 
 The Gold Mini-Benchmark is a separate generator-facing check, not an eval-hardening check. It asks whether the generator can handle 9 known-hard Razorpay questions before future full-dataset regeneration. Each case passes only if the score is at least 80, the generated category matches the hidden expected category, no forbidden claims appear, and at least one required clause is cited.
 
@@ -295,8 +310,8 @@ The lowest-scoring rows are documented in `data/eval/v2/v2.1/eval_summary.md`, w
 | Eval framework could leak signals to the judge | Blind judging: planned label, support roles, deterministic checks, and annotation fields are withheld; judge predicts the category itself (`judge_v2_blind`)                                                 |
 | Same model for generation and eval risks bias  | Cross-model judging supported via `--judge-model` / `OPENAI_JUDGE_MODEL`; provenance (`generator_model`, `judge_model`, `cross_model_judging`) recorded in the eval manifest; same-model runs emit a warning |
 | No gold human checks                           | Human Review audit queue in `eval_summary.md` with pipeline-selected rows, review reasons, and cited clauses to inspect                                                                                      |
-| No adversarial checks                          | `data/tests/eval/adversarial_pack.jsonl` plus `--adversarial` mode writing a focused `adversarial_report.md` with per-layer catch-rate evidence                                                              |
-| Visible iteration                              | V2 artifacts versioned under `data/eval/v2/v2.0/` and `data/eval/v2/v2.1/`; `eval_summary.md` includes a Changes Since V1 comparison against the frozen V1 manifest                                         |
+| No adversarial checks                          | `data/eval/adversarial_pack.jsonl` runs by default with the normal eval command and writes a focused `adversarial_report.md` with per-layer catch-rate evidence                                              |
+| Visible iteration                              | V2 artifacts versioned under `data/eval/v2/v2.0/` and `data/eval/v2/v2.1/`; `eval_summary.md` includes a Changes Since V1 comparison against the frozen V1 manifest                                          |
 
 
 The generated dataset (`data/output/razorpay_synthetic_qa.jsonl`) is unchanged; V2 only hardens the evaluation mechanism around it.
