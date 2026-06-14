@@ -1,0 +1,86 @@
+{
+  "run_id": "20260614T160850Z_gold_bench_v1",
+  "run_version": "v1",
+  "started_at": "2026-06-14T16:08:50Z",
+  "completed_at": "2026-06-14T16:12:48Z",
+  "elapsed_seconds": 238.69,
+  "generator_model": "gpt-5.5",
+  "generator_temperature": 1.0,
+  "prompt_version": "gold_bench_question_only_v1",
+  "source_hash": "sha256:684e37541a8f723d2111b3b1a18c5c18d16aa14154a706f9064babf6ca6d17f0",
+  "source_fetched_at": "2026-05-22T19:44:43Z",
+  "gold_cases_path": "data/gold_bench/gold_cases.jsonl",
+  "gold_fields_hidden_from_generator": [
+    "expected_category",
+    "reference_answer",
+    "required_clause_ids",
+    "optional_clause_ids",
+    "must_have_behaviors",
+    "forbidden_claims",
+    "boundary_focus"
+  ],
+  "generator_visible_inputs": [
+    "case id",
+    "user question",
+    "question-retrieved candidate source records",
+    "schema instructions",
+    "prior validation errors on repair attempts"
+  ],
+  "output_paths": {
+    "output_dir": "data/gold_bench/v1",
+    "generated_rows": "data/gold_bench/v1/generated_rows.jsonl",
+    "gold_bench_results": "data/gold_bench/v1/gold_bench_results.jsonl",
+    "gold_bench_summary": "data/gold_bench/v1/gold_bench_summary.md",
+    "gold_bench_manifest": "data/gold_bench/v1/gold_bench_manifest.json"
+  },
+  "row_count": 9,
+  "aggregate_metrics": {
+    "mean_score": 95.22,
+    "median_score": 94,
+    "min_score": 81,
+    "max_score": 100,
+    "pass_count": 9,
+    "row_count": 9,
+    "category_match_count": 9,
+    "required_citation_coverage_count": 9,
+    "forbidden_claim_violation_count": 0,
+    "blocking_failure_count": 0,
+    "blocking_failures": [],
+    "minor_behavior_feedback_count": 5,
+    "minor_behavior_feedback_rows": [
+      "gold_clarification_001",
+      "gold_clarification_002",
+      "gold_ambiguity_001",
+      "gold_ambiguity_002",
+      "gold_ambiguity_003"
+    ],
+    "weakest_case": {
+      "id": "gold_clarification_002",
+      "score": 81,
+      "expected_category": "clarification_required",
+      "generated_category": "clarification_required",
+      "feedback": "Minor behavior gaps: explain that chargeback and non-chargeback paths differ; mention RBI or NPCI external-rule dependence where relevant; cite the fraud clauses."
+    },
+    "rows_needing_generator_changes": [],
+    "by_expected_category": {
+      "clarification_required": {
+        "rows": 3,
+        "mean_score": 91.67,
+        "pass_count": 3
+      },
+      "clear_answer": {
+        "rows": 3,
+        "mean_score": 100,
+        "pass_count": 3
+      },
+      "genuine_ambiguity": {
+        "rows": 3,
+        "mean_score": 94,
+        "pass_count": 3
+      }
+    }
+  },
+  "pass_rule": "score >= 80 and category_match and no forbidden_claim_violations and at least one required clause hit",
+  "note": "Generator-facing benchmark only; does not modify the main 45-row dataset or evaluator outputs.",
+  "template_only": false
+}
