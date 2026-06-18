@@ -44,7 +44,7 @@ ADVERSARIAL_REPORT_PATH = EVAL_DIR / "adversarial_report.md"
 OPENAI_CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions"
 DEFAULT_JUDGE_MODEL = "gpt-5.5"
 JUDGE_TEMPERATURE: float | None = None
-JUDGE_PROMPT_VERSION = "judge_v2_blind"
+JUDGE_PROMPT_VERSION = "judge_v2_blind_neutral_ids"
 SOURCE_REVIEW_PROMPT_VERSION = "source_review_v1"
 DIAGNOSIS_PROMPT_VERSION = "worst_diagnosis_v1"
 MAX_JUDGE_ATTEMPTS = 2
@@ -172,6 +172,10 @@ def workspace_path(path: Path) -> str:
         return str(path).replace("\\", "/")
 
 
+def neutral_judge_row_id(position: int) -> str:
+    return f"judge_row_{position:03d}"
+
+
 def load_jsonl(path: Path) -> tuple[list[dict[str, Any]], list[str]]:
     rows: list[dict[str, Any]] = []
     errors: list[str] = []
@@ -260,14 +264,20 @@ def truncate_source_text(text: str, quote: str, limit: int = 1500) -> str:
     return "\n...\n".join(parts)
 
 
-def row_prompt_payload(row: dict[str, Any], records: dict[str, dict[str, Any]]) -> dict[str, Any]:
+def row_prompt_payload(
+    row: dict[str, Any],
+    records: dict[str, dict[str, Any]],
+    *,
+    prompt_row_id: str,
+) -> dict[str, Any]:
     """Blind judge payload.
 
     The judge sees only what a reader of the conversation would see: the user
     question, the assistant answer, and the cited clause text. It does NOT see
     the planned category, support roles (which map 1:1 to categories), the
-    structured annotation fields, or any deterministic check results. Those
-    stay in eval_results.jsonl as audit metadata next to the judgment.
+    structured annotation fields, deterministic check results, or the original
+    row ID. Those stay in eval_results.jsonl as audit metadata next to the
+    judgment.
     """
     cited_sources = []
     for source in row.get("source_clauses", []):
@@ -281,7 +291,7 @@ def row_prompt_payload(row: dict[str, Any], records: dict[str, dict[str, Any]]) 
             }
         )
     return {
-        "row_id": row.get("id"),
+        "row_id": prompt_row_id,
         "user_question": row.get("messages", [{}, {}])[0].get("content", ""),
         "assistant_answer": row.get("messages", [{}, {}])[1].get("content", ""),
         "cited_source_clauses": cited_sources,
@@ -430,9 +440,9 @@ def row_judge_user_prompt(payload: dict[str, Any], validation_errors: list[str] 
     return json.dumps(instructions, indent=2, ensure_ascii=False)
 
 
-def validate_row_judge_response(response: dict[str, Any], row: dict[str, Any]) -> list[str]:
+def validate_row_judge_response(response: dict[str, Any], prompt_row_id: str) -> list[str]:
     errors: list[str] = []
-    if response.get("row_id") != row.get("id"):
+    if response.get("row_id") != prompt_row_id:
         errors.append("row_id mismatch")
     # Blind judging: the judge predicts the category instead of echoing the
     # planned label, and disagreement is allowed (it becomes a metric).
@@ -469,7 +479,14 @@ def validate_row_judge_response(response: dict[str, Any], row: dict[str, Any]) -
     return errors
 
 
-def fallback_row_eval(row: dict[str, Any], deterministic_checks: dict[str, Any], errors: list[str], config: EvalConfig) -> dict[str, Any]:
+def fallback_row_eval(
+    row: dict[str, Any],
+    deterministic_checks: dict[str, Any],
+    errors: list[str],
+    config: EvalConfig,
+    *,
+    prompt_row_id: str,
+) -> dict[str, Any]:
     return {
         "row_id": row.get("id"),
         "category": row.get("category"),
@@ -487,6 +504,7 @@ def fallback_row_eval(row: dict[str, Any], deterministic_checks: dict[str, Any],
             "judge_temperature": config.judge_temperature,
             "judge_prompt_version": config.judge_prompt_version,
             "judge_run_id": config.judge_run_id,
+            "prompt_row_id": prompt_row_id,
             "repair_attempted": True,
         },
     }
@@ -498,8 +516,10 @@ def call_row_judge(
     deterministic_checks: dict[str, Any],
     client: OpenAIClient,
     config: EvalConfig,
+    *,
+    prompt_row_id: str,
 ) -> dict[str, Any]:
-    payload = row_prompt_payload(row, records)
+    payload = row_prompt_payload(row, records, prompt_row_id=prompt_row_id)
     validation_errors: list[str] = []
     last_errors: list[str] = []
     repair_attempted = False
@@ -514,7 +534,7 @@ def call_row_judge(
             last_errors = [f"judge_call_failed: {exc}"]
             validation_errors = last_errors
             continue
-        last_errors = validate_row_judge_response(response, row)
+        last_errors = validate_row_judge_response(response, prompt_row_id)
         if last_errors:
             validation_errors = last_errors
             continue
@@ -536,10 +556,11 @@ def call_row_judge(
                 "judge_temperature": config.judge_temperature,
                 "judge_prompt_version": config.judge_prompt_version,
                 "judge_run_id": config.judge_run_id,
+                "prompt_row_id": prompt_row_id,
                 "repair_attempted": repair_attempted,
             },
         }
-    return fallback_row_eval(row, deterministic_checks, last_errors, config)
+    return fallback_row_eval(row, deterministic_checks, last_errors, config, prompt_row_id=prompt_row_id)
 
 
 def normalize_words(*values: Any) -> set[str]:
@@ -655,7 +676,14 @@ def source_review_system_prompt() -> str:
     )
 
 
-def source_review_user_prompt(row: dict[str, Any], row_eval: dict[str, Any], candidates: list[dict[str, Any]], validation_errors: list[str] | None = None) -> str:
+def source_review_user_prompt(
+    row: dict[str, Any],
+    row_eval: dict[str, Any],
+    candidates: list[dict[str, Any]],
+    *,
+    prompt_row_id: str,
+    validation_errors: list[str] | None = None,
+) -> str:
     instructions: dict[str, Any] = {
         "task": "Review whether the original cited clauses are sufficient and whether a better candidate clause exists.",
         "questions_to_answer": [
@@ -666,14 +694,18 @@ def source_review_user_prompt(row: dict[str, Any], row_eval: dict[str, Any], can
         ],
         "allowed_source_issue_types": sorted(SOURCE_ISSUE_TYPES),
         "output_schema": {
-            "row_id": row["id"],
+            "row_id": prompt_row_id,
             "source_adequacy_score": "integer 0-100",
             "original_sources_sufficient": "boolean",
             "better_candidate_clauses": [{"clause_id": "...", "reason": "..."}],
             "source_issue_type": "one allowed_source_issue_types value",
             "diagnosis": "one concise sentence",
         },
-        "row": row_prompt_payload(row, {candidate["clause_id"]: {"text": candidate["text"]} for candidate in candidates}),
+        "row": row_prompt_payload(
+            row,
+            {candidate["clause_id"]: {"text": candidate["text"]} for candidate in candidates},
+            prompt_row_id=prompt_row_id,
+        ),
         "row_level_eval": {
             "total_score": row_eval["total_score"],
             "scores": row_eval["scores"],
@@ -688,9 +720,13 @@ def source_review_user_prompt(row: dict[str, Any], row_eval: dict[str, Any], can
     return json.dumps(instructions, indent=2, ensure_ascii=False)
 
 
-def validate_source_review_response(response: dict[str, Any], row: dict[str, Any], candidate_ids: set[str]) -> list[str]:
+def validate_source_review_response(
+    response: dict[str, Any],
+    prompt_row_id: str,
+    candidate_ids: set[str],
+) -> list[str]:
     errors: list[str] = []
-    if response.get("row_id") != row.get("id"):
+    if response.get("row_id") != prompt_row_id:
         errors.append("row_id mismatch")
     if type(response.get("source_adequacy_score")) is not int or not 0 <= response.get("source_adequacy_score", -1) <= 100:
         errors.append("source_adequacy_score must be integer 0-100")
@@ -719,34 +755,45 @@ def call_source_review(
 ) -> dict[str, Any]:
     candidates = candidate_clause_pack(row, records)
     candidate_ids = {candidate["clause_id"] for candidate in candidates}
+    prompt_row_id = row_eval.get("judge_metadata", {}).get("prompt_row_id", str(row.get("id", "")))
     validation_errors: list[str] = []
     last_errors: list[str] = []
     for attempt in range(1, MAX_JUDGE_ATTEMPTS + 1):
         try:
             response = client.generate_json(
                 system_prompt=source_review_system_prompt(),
-                user_prompt=source_review_user_prompt(row, row_eval, candidates, validation_errors or None),
+                user_prompt=source_review_user_prompt(
+                    row,
+                    row_eval,
+                    candidates,
+                    prompt_row_id=prompt_row_id,
+                    validation_errors=validation_errors or None,
+                ),
             )
         except (json.JSONDecodeError, RuntimeError, KeyError) as exc:
             last_errors = [f"source_review_call_failed: {exc}"]
             validation_errors = last_errors
             continue
-        last_errors = validate_source_review_response(response, row, candidate_ids)
+        last_errors = validate_source_review_response(response, prompt_row_id, candidate_ids)
         if last_errors:
             validation_errors = last_errors
             continue
+        response["prompt_row_id"] = response["row_id"]
+        response["row_id"] = row["id"]
         response["review_metadata"] = {
             "judge_status": "ok",
             "judge_model": config.judge_model,
             "judge_temperature": config.judge_temperature,
             "source_review_prompt_version": config.source_review_prompt_version,
             "judge_run_id": config.judge_run_id,
+            "prompt_row_id": prompt_row_id,
             "candidate_count": len(candidates),
             "repair_attempted": attempt > 1,
         }
         return response
     return {
         "row_id": row["id"],
+        "prompt_row_id": prompt_row_id,
         "source_adequacy_score": 0,
         "original_sources_sufficient": False,
         "better_candidate_clauses": [],
@@ -759,6 +806,7 @@ def call_source_review(
             "judge_temperature": config.judge_temperature,
             "source_review_prompt_version": config.source_review_prompt_version,
             "judge_run_id": config.judge_run_id,
+            "prompt_row_id": prompt_row_id,
             "candidate_count": len(candidates),
             "repair_attempted": True,
         },
@@ -776,8 +824,13 @@ def diagnosis_user_prompt(
     row: dict[str, Any],
     row_eval: dict[str, Any],
     source_review: dict[str, Any],
+    *,
+    prompt_row_id: str,
     validation_errors: list[str] | None = None,
 ) -> str:
+    prompt_source_review = dict(source_review)
+    prompt_source_review["row_id"] = prompt_row_id
+    prompt_source_review["prompt_row_id"] = prompt_row_id
     instructions: dict[str, Any] = {
         "task": "Write one approximately 50-word diagnosis for this worst-scoring dataset example.",
         "must_cover": [
@@ -787,11 +840,11 @@ def diagnosis_user_prompt(
             "what rubric or code change would catch it",
         ],
         "output_schema": {
-            "row_id": row["id"],
+            "row_id": prompt_row_id,
             "diagnosis": "approximately 50 words, one paragraph",
         },
         "row": {
-            "id": row["id"],
+            "id": prompt_row_id,
             "category": row["category"],
             "user_question": row.get("messages", [{}, {}])[0].get("content", ""),
             "assistant_answer": row.get("messages", [{}, {}])[1].get("content", ""),
@@ -804,7 +857,7 @@ def diagnosis_user_prompt(
             "judge_rationale": row_eval["judge_rationale"],
             "deterministic_checks": row_eval["deterministic_checks"],
         },
-        "source_adequacy_review": source_review,
+        "source_adequacy_review": prompt_source_review,
     }
     if validation_errors:
         instructions["previous_invalid_response_errors"] = validation_errors
@@ -812,9 +865,9 @@ def diagnosis_user_prompt(
     return json.dumps(instructions, indent=2, ensure_ascii=False)
 
 
-def validate_diagnosis_response(response: dict[str, Any], row: dict[str, Any]) -> list[str]:
+def validate_diagnosis_response(response: dict[str, Any], prompt_row_id: str) -> list[str]:
     errors: list[str] = []
-    if response.get("row_id") != row["id"]:
+    if response.get("row_id") != prompt_row_id:
         errors.append("row_id mismatch")
     diagnosis = response.get("diagnosis")
     if not isinstance(diagnosis, str) or not diagnosis.strip():
@@ -828,17 +881,24 @@ def call_diagnosis(
     source_review: dict[str, Any],
     client: OpenAIClient,
 ) -> str:
+    prompt_row_id = row_eval.get("judge_metadata", {}).get("prompt_row_id", str(row.get("id", "")))
     validation_errors: list[str] = []
     for _attempt in range(1, MAX_JUDGE_ATTEMPTS + 1):
         try:
             response = client.generate_json(
                 system_prompt=diagnosis_system_prompt(),
-                user_prompt=diagnosis_user_prompt(row, row_eval, source_review, validation_errors or None),
+                user_prompt=diagnosis_user_prompt(
+                    row,
+                    row_eval,
+                    source_review,
+                    prompt_row_id=prompt_row_id,
+                    validation_errors=validation_errors or None,
+                ),
             )
         except (json.JSONDecodeError, RuntimeError, KeyError) as exc:
             validation_errors = [f"diagnosis_call_failed: {exc}"]
             continue
-        errors = validate_diagnosis_response(response, row)
+        errors = validate_diagnosis_response(response, prompt_row_id)
         if errors:
             validation_errors = errors
             continue
@@ -1075,15 +1135,15 @@ def write_summary(
         f"- Generator model: `{config.generator_model}`",
         f"- Judge model: `{config.judge_model}`",
         f"- Cross-model judging: `{config.cross_model_judging}`",
-        f"- Judge prompt version: `{config.judge_prompt_version}` (blind: no planned label, no deterministic-check results, no annotation fields in the judge prompt)",
+        f"- Judge prompt version: `{config.judge_prompt_version}` (blind: no planned label, no original row ID, no deterministic-check results, no annotation fields in the judge prompt)",
         f"- Judge temperature: {config.judge_temperature if config.judge_temperature is not None else 'provider default'}",
         "",
         "## Evaluation Design",
         "",
         "This evaluation combines deterministic schema/source validators with a blind row-level LLM judge. "
-        "The judge sees only the user question, assistant answer, and full cited clause text; it independently predicts which "
+        "The judge sees only the user question, assistant answer, full cited clause text, and a neutral prompt row ID; it independently predicts which "
         "response category the situation calls for, then scores the row out of 100 against that prediction. The planned category "
-        "label, deterministic check results, and structured annotation fields are withheld from the judge and recorded separately "
+        "label, original dataset/adversarial row ID, deterministic check results, and structured annotation fields are withheld from the judge and recorded separately "
         "as audit metadata, so the judge cannot anchor on prior automated signals. Judge-vs-label agreement is reported as a metric. "
         "The lowest-scoring rows then receive a deeper source-adequacy review using hierarchy and taxonomy from the clause index.",
         "",
@@ -1426,11 +1486,12 @@ def write_manifest(
         "judge_model": config.judge_model,
         "generator_model": config.generator_model,
         "cross_model_judging": config.cross_model_judging,
-        "judge_blinding": "blind (no planned label, deterministic checks, or annotation fields in judge prompt)",
+        "judge_blinding": "blind (no planned label, deterministic checks, annotation fields, or original row IDs in judge prompt)",
         "dataset_profile": "adversarial" if config.adversarial else "main",
         "judge_temperature": config.judge_temperature,
         "judge_temperature_note": "provider default" if config.judge_temperature is None else "explicit",
         "judge_prompt_version": config.judge_prompt_version,
+        "judge_prompt_id_policy": "LLM-facing row IDs are neutral judge_row_NNN values; original dataset/adversarial IDs are retained only in saved outputs and metadata.",
         "source_review_prompt_version": config.source_review_prompt_version,
         "diagnosis_prompt_version": config.diagnosis_prompt_version,
         "judge_run_id": config.judge_run_id,
@@ -1553,7 +1614,16 @@ def main() -> int:
     for position, row in enumerate(rows, start=1):
         log(f"[{position}/{len(rows)}] judging {row.get('id')}")
         checks = deterministic_row_checks(row, records)
-        eval_results.append(call_row_judge(row, records, checks, client, config))
+        eval_results.append(
+            call_row_judge(
+                row,
+                records,
+                checks,
+                client,
+                config,
+                prompt_row_id=neutral_judge_row_id(position),
+            )
+        )
 
     metrics = aggregate_metrics(eval_results)
 
@@ -1619,7 +1689,16 @@ def main() -> int:
         for position, row in enumerate(adversarial_rows, start=1):
             log(f"[adversarial {position}/{len(adversarial_rows)}] judging {row.get('id')}")
             checks = deterministic_row_checks(row, records)
-            adversarial_results.append(call_row_judge(row, records, checks, client, adversarial_config))
+            adversarial_results.append(
+                call_row_judge(
+                    row,
+                    records,
+                    checks,
+                    client,
+                    adversarial_config,
+                    prompt_row_id=neutral_judge_row_id(position),
+                )
+            )
         adversarial_metrics = aggregate_metrics(adversarial_results)
         adversarial_metrics["dataset_checks"] = adversarial_dataset_checks
         result_by_id = {result["row_id"]: result for result in adversarial_results}

@@ -243,7 +243,7 @@ First, deterministic validation checks every row for:
 - category-specific field shape
 - generation-quality lint warnings
 
-Second, an LLM judge scores every row out of 100. In V2 the judge is blind: it sees only the user question, the assistant answer, and the full cited clause text. It does not see the planned category label, support roles, deterministic-check results, or the structured annotation fields (those are recorded next to the judgment in `eval_results.jsonl` as audit metadata). The judge first predicts which category the situation truly calls for, then scores the row against that prediction using one shared rubric with per-category behavior rules. Judge-vs-label agreement is reported as a metric, and every disagreement is routed into the human-review section.
+Second, an LLM judge scores every row out of 100. In V2 the judge is blind: it sees only the user question, the assistant answer, the full cited clause text, and a neutral prompt row ID such as `judge_row_001`. It does not see the planned category label, category-bearing dataset/adversarial row ID, support roles, deterministic-check results, or the structured annotation fields (those are recorded next to the judgment in `eval_results.jsonl` as audit metadata). The judge first predicts which category the situation truly calls for, then scores the row against that prediction using one shared rubric with per-category behavior rules. Judge-vs-label agreement is reported as a metric, and every disagreement is routed into the human-review section.
 
 V2 adds two checks on the evaluation framework itself:
 
