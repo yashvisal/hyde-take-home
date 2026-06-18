@@ -31,10 +31,11 @@ DATASET_PATH = ROOT / "data" / "output" / "razorpay_synthetic_qa.jsonl"
 RUN_MANIFEST_PATH = ROOT / "data" / "output" / "run_manifest.json"
 GENERATION_SUMMARY_PATH = ROOT / "data" / "output" / "generation_summary.md"
 CLAUSE_INDEX_PATH = ROOT / "data" / "processed" / "clause_index.json"
-# v2 outputs are versioned so the v1 artifacts and earlier v2 runs stay untouched.
-EVAL_DIR = ROOT / "data" / "eval" / "v2" / "v2.1"
-BASELINE_MANIFEST_PATH = ROOT / "data" / "eval" / "v1" / "eval_manifest.json"
-ADVERSARIAL_PACK_PATH = ROOT / "data" / "eval" / "adversarial_pack.jsonl"
+# Eval outputs are versioned so prior run artifacts stay untouched.
+EVAL_BASE_DIR = ROOT / "data" / "eval"
+EVAL_DIR = EVAL_BASE_DIR / "v2" / "v2.1"
+BASELINE_MANIFEST_PATH = EVAL_BASE_DIR / "v1" / "eval_manifest.json"
+ADVERSARIAL_PACK_PATH = EVAL_BASE_DIR / "adversarial_pack.jsonl"
 EVAL_RESULTS_PATH = EVAL_DIR / "eval_results.jsonl"
 WORST_SOURCE_REVIEWS_PATH = EVAL_DIR / "worst_source_reviews.json"
 EVAL_SUMMARY_PATH = EVAL_DIR / "eval_summary.md"
@@ -170,6 +171,23 @@ def workspace_path(path: Path) -> str:
         return str(path.relative_to(ROOT)).replace("\\", "/")
     except ValueError:
         return str(path).replace("\\", "/")
+
+
+def next_eval_output_dir(base_dir: Path = EVAL_BASE_DIR) -> Path:
+    versions = []
+    if base_dir.exists():
+        for path in base_dir.iterdir():
+            if path.is_dir() and re.fullmatch(r"v\d+", path.name):
+                versions.append(int(path.name.removeprefix("v")))
+    return base_dir / f"v{max(versions, default=0) + 1}"
+
+
+def prepare_output_dir(output_dir: Path, *, overwrite: bool) -> None:
+    if output_dir.exists() and any(output_dir.iterdir()) and not overwrite:
+        raise RuntimeError(
+            f"Output directory already exists and is not empty: {workspace_path(output_dir)}. Use --overwrite to replace it."
+        )
+    output_dir.mkdir(parents=True, exist_ok=True)
 
 
 def neutral_judge_row_id(position: int) -> str:
@@ -1532,7 +1550,8 @@ def main() -> int:
     parser.add_argument("--run-manifest", type=Path, default=RUN_MANIFEST_PATH)
     parser.add_argument("--generation-summary", type=Path, default=GENERATION_SUMMARY_PATH)
     parser.add_argument("--clause-index", type=Path, default=CLAUSE_INDEX_PATH)
-    parser.add_argument("--output-dir", type=Path, default=EVAL_DIR)
+    parser.add_argument("--output-dir", type=Path, default=None, help="Output directory. Defaults to the next unused data/eval/vN directory.")
+    parser.add_argument("--overwrite", action="store_true", help="Allow writing into a non-empty output directory.")
     parser.add_argument("--judge-model", default=None, help="OpenAI judge model. Defaults to OPENAI_JUDGE_MODEL, OPENAI_MODEL, or gpt-5.5.")
     parser.add_argument(
         "--skip-adversarial",
@@ -1558,8 +1577,11 @@ def main() -> int:
     dataset_path = args.dataset if args.dataset.is_absolute() else ROOT / args.dataset
     run_manifest_path = args.run_manifest if args.run_manifest.is_absolute() else ROOT / args.run_manifest
     clause_index_path = args.clause_index if args.clause_index.is_absolute() else ROOT / args.clause_index
-    output_dir = args.output_dir if args.output_dir.is_absolute() else ROOT / args.output_dir
-    output_dir.mkdir(parents=True, exist_ok=True)
+    if args.output_dir is None:
+        output_dir = next_eval_output_dir()
+    else:
+        output_dir = args.output_dir if args.output_dir.is_absolute() else ROOT / args.output_dir
+    prepare_output_dir(output_dir, overwrite=args.overwrite)
 
     manifest = json.loads(run_manifest_path.read_text(encoding="utf-8"))
     generator_model = manifest.get("generator_model")
